@@ -1,0 +1,31 @@
+
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+
+@Injectable()
+export class HttpService {
+
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
+    };
+    constructor(private httpClient:HttpClient) {}
+
+
+    get(url: string ) {
+        return this.httpClient.get(url);
+    }
+
+    post(url: string , body: any ) {
+        return this.httpClient.post( url , body , this.httpOptions);
+    }
+
+    searchCompany( companyName : string) {
+
+        const prm = new HttpParams();
+        prm.set('name' , companyName);
+        const body = { 'name' : companyName };
+        return this.httpClient.post( '/api/company/' , body );
+    }
+
+
+}

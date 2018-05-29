@@ -1,0 +1,40 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-row-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.home-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+
+
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.mat-header-cell.mat-sort-header-sorted {
+  color: black;
+}
