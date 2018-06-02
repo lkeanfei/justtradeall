@@ -1,0 +1,71 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-row-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.home-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.div-center {
+  align-self: center;
+}
+
+.table-class {
+  width: 80%;
+  height: 100%;
+  align-self: center;
+}
+
+.my-mat-row {
+  min-height: 100%;
+  padding: 1px 0;
+}
+
+.cell-class {
+  font-size:12px;
+}
+
+.full-height {
+  height : 100vh;
+}
+
+.list-pointer {
+  cursor : pointer;
+}
+
+
+
+
+.mat-table {
+  overflow: auto;
+
+}
+
+.mat-header-cell.mat-sort-header-sorted {
+  color: black;
+}
+
+.maxHeightNone{
+  max-height: none;
+}

@@ -1,0 +1,77 @@
+<div fxLayout="column" fxLayoutAlign="center"  fxLayoutGap="10px">
+  <div >
+
+  </div>
+  <div >
+
+  </div>
+
+</div>
+<div fxLayout="row"  fxLayoutAlign="center">
+  <div   fxFlex="40%" >
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title fxLayoutAlign="center">Register</mat-card-title>
+
+      </mat-card-header>
+      <mat-card-content>
+
+        <div fxLayout="column"  fxLayoutGap="10px">
+
+          <mat-form-field>
+            <input matInput type="email" placeholder="Email" [formControl]="emailFormControl">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="password" placeholder="Password" [formControl]="passwordFormControl">
+            <mat-error *ngIf="passwordFormControl.hasError('minlength') && !passwordFormControl.hasError('required')">
+              Minimum 8 characters for password
+            </mat-error>
+
+          </mat-form-field>
+          <div *ngIf="signupFailed">
+            {{ signupFailedMessage }}
+          </div>
+          <div fxLayoutAlign="center">
+            <button mat-raised-button color="primary"  (click)="signUp()">Sign Up Now!</button>
+          </div>
+          <div  fxLayoutAlign="center" >
+            OR
+          </div>
+
+          <div fxLayout="column"   fxFlex="20%" fxLayoutGap="10px" >
+            <div  class="spanFB" >
+
+              <button class="btn btn-facebook" fxFlex (click)="loginFacebook()"><i class="fab fa-facebook" style="font-size:16px;"></i>  |  Sign up with Facebook</button>
+
+            </div>
+            <div class="spanGoogle">
+
+              <button class="btn btn-google-plus" fxFlex (click)="loginGoogle()"><i class="fab fa-google-plus" style="font-size:16px;"></i>  |  Sign up with Google</button>
+            </div>
+            <div class="spanTwitter">
+
+              <button class="btn btn-twitter"  fxFlex (click)="loginTwitter()"><i class="fab fa-twitter" style="font-size:16px;"></i>  |  Sign up with Twitter</button>
+            </div>
+          </div>
+
+
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
