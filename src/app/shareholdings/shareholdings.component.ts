@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {HttpService} from '../shared/httpservice.service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 
@@ -26,18 +26,22 @@ export class ShareholdingsComponent implements OnInit {
   rowList : any = []
   companyDataSource: any;
   companyColumns = ['id', 'name', 'shares', 'percentage'];
+  options: FormGroup;
 
 
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, fb: FormBuilder) {
 
     this.hasResults = false;
     this.startSearch = false;
     this.showByStock = true;
     this.selStyles.push('aqua');
     this.selStyles.push('white');
-
     this.companyDataSource = new MatTableDataSource<CompanyData>( );
+    this.options = fb.group({
+      hideRequired: false,
+      floatLabel: 'auto',
+    });
   }
 
 

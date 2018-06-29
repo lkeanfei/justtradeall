@@ -8,6 +8,13 @@
   justify-content: center;
 }
 
+.topcontainer {
+  display: flex; /* or inline-flex */
+  flex-direction: column;
+  width: 80%;
+  margin-left: 10%;
+}
+
 .container {
   display: flex; /* or inline-flex */
   flex-direction: row;

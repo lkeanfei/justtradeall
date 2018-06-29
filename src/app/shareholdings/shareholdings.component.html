@@ -18,13 +18,24 @@
 
       <div *ngIf="showByStock" fxLayout="column">
 
-        <div class="div-center">
-          <form class="home-form"  (ngSubmit)="onSearchCompany()" >
-            <mat-form-field class="example-full-width" >
-              <input type="search"  [formControl]="companyField" matInput placeholder="Search"/>
-            </mat-form-field>
-          </form>
+        <div class="div-center" fxFlexAlign="center" fxLayout="row">
+          <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
+            <mat-label>Search</mat-label>
+            <input type="search"  [formControl]="companyField" matInput placeholder="Search Stock Symbol, Code or Name">
+          </mat-form-field>
         </div>
+        <!--<div class="div-center">-->
+          <!--<form class="home-form"  (ngSubmit)="onSearchCompany()" >-->
+            <!--&lt;!&ndash;<mat-form-field class="example-full-width" >&ndash;&gt;-->
+              <!--&lt;!&ndash;<input type="search"  [formControl]="companyField" matInput placeholder="Search"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
+
+            <!--<mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">-->
+              <!--<mat-label>Search</mat-label>-->
+              <!--<input type="search"  [formControl]="companyField" matInput placeholder="Search Stock Symbol, Code or Name">-->
+            <!--</mat-form-field>-->
+          <!--</form>-->
+        <!--</div>-->
 
         <div class="table-class">
           <mat-table #table [dataSource]="companyDataSource">
@@ -61,62 +72,6 @@
         </div>
 
       </div>
-
-
-
-      <!--<div class="home-container" style="height: 100px;" *ngIf="showByStock" fxLayout="column">-->
-
-      <!--<div class="home-row-container">-->
-      <!--<form class="home-form"  (ngSubmit)="onSearchCompany()" >-->
-      <!--<mat-form-field class="example-full-width" >-->
-      <!--<input type="search"  [formControl]="companyField" matInput placeholder="Search"/>-->
-      <!--</mat-form-field>-->
-      <!--</form>-->
-      <!--</div>-->
-      <!--<div class="home-row-container">-->
-      <!--<div>-->
-      <!--Search for stock symbol or company name-->
-      <!--</div>-->
-
-      <!--</div>-->
-      <!--<div class="table-class">-->
-      <!--<mat-table #table [dataSource]="companyDataSource">-->
-
-      <!--&lt;!&ndash; ID Column &ndash;&gt;-->
-      <!--<ng-container matColumnDef="id">-->
-      <!--<mat-header-cell *matHeaderCellDef> ID </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>-->
-      <!--</ng-container>-->
-
-      <!--&lt;!&ndash; Name Column &ndash;&gt;-->
-      <!--<ng-container matColumnDef="name">-->
-      <!--<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element"> {{ element.name}} </mat-cell>-->
-      <!--</ng-container>-->
-
-      <!--&lt;!&ndash; Shares Column &ndash;&gt;-->
-      <!--<ng-container matColumnDef="shares">-->
-      <!--<mat-header-cell *matHeaderCellDef> Shares </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element"> {{ element.shares}} </mat-cell>-->
-      <!--</ng-container>-->
-
-      <!--&lt;!&ndash; Percentage Column &ndash;&gt;-->
-      <!--<ng-container matColumnDef="percentage">-->
-      <!--<mat-header-cell *matHeaderCellDef> Percentage </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element"> {{element.percentage }} </mat-cell>-->
-      <!--</ng-container>-->
-
-      <!--<mat-header-row *matHeaderRowDef="companyColumns"></mat-header-row>-->
-      <!--<mat-row *matRowDef="let row; columns: companyColumns;"></mat-row>-->
-      <!--</mat-table>-->
-
-      <!--<mat-paginator #paginator-->
-      <!--[pageSize]="20"-->
-      <!--[pageSizeOptions]="[5, 10, 20]">-->
-      <!--</mat-paginator>-->
-      <!--</div>-->
-
-      <!--</div>-->
 
       <div class="home-container" style="height: 100px;" *ngIf="!showByStock">
 
