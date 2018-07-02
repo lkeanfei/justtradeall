@@ -26,12 +26,15 @@ export class ShareholdingsComponent implements OnInit {
   selStyles: any = [];
   rowList : any = []
   companyDataSource: any;
+  holdersDataSource: any;
   companyColumns = ['id', 'name', 'shares', 'percentage'];
   options: FormGroup;
   idColumnWidth = 10;
   nameColumnWidth = 45;
   sharesColumnWidth = 25;
   percentageColumnWidth = 20;
+  companySelectedYear = '2017';
+  shareHolderSelectedYear = '2017';
 
 
 
@@ -44,6 +47,7 @@ export class ShareholdingsComponent implements OnInit {
     this.selStyles.push('aqua');
     this.selStyles.push('white');
     this.companyDataSource = new MatTableDataSource<CompanyData>( );
+    this.holdersDataSource = new MatTableDataSource<CompanyData>();
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -89,7 +93,7 @@ export class ShareholdingsComponent implements OnInit {
 
     this.httpService.searchShareHolders(this.shareholderField.value).subscribe( (data:any) => {
 
-      this.companyDataSource.data = data['results'];
+      this.holdersDataSource.data = data['results'];
       this.hasHolderResults = true;
     });
   }

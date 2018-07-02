@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {
   MatButtonModule,
-  MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule, MatSidenavModule,
+  MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule, MatSelectModule,
+  MatSidenavModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
+    MatSelectModule,
     MatCardModule,
     MatTableModule,
     MatFormFieldModule,

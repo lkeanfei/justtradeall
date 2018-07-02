@@ -25,6 +25,16 @@
           </mat-form-field>
         </div>
 
+        <div *ngIf="hasCompanyResults">
+          <mat-form-field>
+            <mat-select placeholder="Year" [(value)]="companySelectedYear">
+              <mat-option value="2017">2017</mat-option>
+              <mat-option value="2016">2016</mat-option>
+              <mat-option value="2015">2015</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <div *ngIf="hasCompanyResults" class="table-class">
           <mat-table #table [dataSource]="companyDataSource">
 
@@ -71,8 +81,10 @@
           </mat-form-field>
         </div>
 
+
+
         <div *ngIf="hasHolderResults" class="table-class">
-          <mat-table #table [dataSource]="companyDataSource">
+          <mat-table #table [dataSource]="holdersDataSource">
 
             <!-- ID Column -->
             <ng-container matColumnDef="id">
@@ -89,7 +101,7 @@
             <!-- Shares Column -->
             <ng-container matColumnDef="shares">
               <mat-header-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matHeaderCellDef> Shares </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matCellDef="let element"> {{ element.shares}} </mat-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matCellDef="let element"> {{ element.shares.toLocaleString()}} </mat-cell>
             </ng-container>
 
             <!-- Percentage Column -->
