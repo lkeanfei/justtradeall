@@ -89,6 +89,17 @@
   align-self: stretch;
 }
 
+.mat-column-shares {
+  display:flex;
+  justify-content:flex-end;
+
+}
+
+.mat-column-percentage {
+  display:flex;
+  justify-content:flex-end;
+
+}
 .maxHeightNone{
   max-height: none;
 }
