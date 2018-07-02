@@ -16,28 +16,62 @@
     </mat-sidenav>
     <mat-sidenav-content >
 
-      <div *ngIf="showByStock" fxLayout="column">
-
+      <div *ngIf="showByStock" fxLayout="column" fxLayoutGap="15px">
+        <div></div>
         <div class="div-center" fxFlexAlign="center" fxLayout="row">
           <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
-            <mat-label>Search</mat-label>
-            <input type="search"  [formControl]="companyField" matInput placeholder="Search Stock Symbol, Code or Name">
+            <mat-label>Stock Symbol, Code or Name</mat-label>
+            <input type="search"  [formControl]="companyField" (keyup.enter)="onSearchCompany()" matInput placeholder="Search">
           </mat-form-field>
         </div>
-        <!--<div class="div-center">-->
-          <!--<form class="home-form"  (ngSubmit)="onSearchCompany()" >-->
-            <!--&lt;!&ndash;<mat-form-field class="example-full-width" >&ndash;&gt;-->
-              <!--&lt;!&ndash;<input type="search"  [formControl]="companyField" matInput placeholder="Search"/>&ndash;&gt;-->
-            <!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
 
-            <!--<mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">-->
-              <!--<mat-label>Search</mat-label>-->
-              <!--<input type="search"  [formControl]="companyField" matInput placeholder="Search Stock Symbol, Code or Name">-->
-            <!--</mat-form-field>-->
-          <!--</form>-->
-        <!--</div>-->
+        <div *ngIf="hasCompanyResults" class="table-class">
+          <mat-table #table [dataSource]="companyDataSource">
 
-        <div class="table-class">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <mat-header-cell class="cell-class"  fxFlex="5" *matHeaderCellDef> ID </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="10" *matCellDef="let element"> {{element.id}}. </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <mat-header-cell class="cell-class"  fxLayoutAlign="center"  fxFlex="35" *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="45" *matCellDef="let element"> {{ element.name}} </mat-cell>
+            </ng-container>
+
+            <!-- Shares Column -->
+            <ng-container matColumnDef="shares">
+              <mat-header-cell class="cell-class"  fxFlex="35" fxLayoutAlign="center"  *matHeaderCellDef> Shares </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="25"  *matCellDef="let element"> {{ element.shares.toLocaleString() }} </mat-cell>
+            </ng-container>
+
+            <!-- Percentage Column -->
+            <ng-container matColumnDef="percentage">
+              <mat-header-cell class="cell-class" fxFlex="25" *matHeaderCellDef> Percentage </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="20" *matCellDef="let element"> {{element.percentage }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row  class="my-mat-row" *matHeaderRowDef="companyColumns"></mat-header-row>
+            <mat-row class="my-mat-row" *matRowDef="let row; columns: companyColumns;"></mat-row>
+          </mat-table>
+
+
+        </div>
+
+      </div>
+
+      <div *ngIf="!showByStock" fxLayout="column"  fxLayoutGap="15px">
+
+        <div></div>
+        <div class="div-center" fxFlexAlign="center" fxLayout="row">
+          <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
+            <mat-label>Shareholder's name</mat-label>
+            <input type="search"  [formControl]="shareholderField" matInput placeholder="Search">
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="hasHolderResults" class="table-class">
           <mat-table #table [dataSource]="companyDataSource">
 
             <!-- ID Column -->
@@ -72,24 +106,6 @@
         </div>
 
       </div>
-
-      <div class="home-container" style="height: 100px;" *ngIf="!showByStock">
-
-        <div class="home-row-container">
-          <form class="home-form"  (ngSubmit)="onSearchShareholders()" >
-            <mat-form-field class="example-full-width" >
-              <input type="search"  [formControl]="shareholderField" matInput placeholder="Search"/>
-            </mat-form-field>
-          </form>
-        </div>
-        <div class="home-row-container">
-          <div>
-            Search for shareholder's name
-          </div>
-
-        </div>
-      </div>
-
 
     </mat-sidenav-content>
   </mat-sidenav-container>

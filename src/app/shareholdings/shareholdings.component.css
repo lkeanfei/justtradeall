@@ -45,7 +45,7 @@
 }
 
 .cell-class {
-  font-size:12px;
+  font-size:15px;
 }
 
 .full-height {
@@ -66,6 +66,27 @@
 
 .mat-header-cell.mat-sort-header-sorted {
   color: black;
+}
+
+.mat-column-position{
+  border-right: 1px solid grey;
+  align-self: stretch;
+  text-align: center;
+
+}
+.mat-column-weight{
+  border-right: 1px solid grey;
+  align-self: stretch;
+  text-align: center;
+
+}
+.mat-column-symbol{
+
+  text-align: center;
+  align-self: stretch;
+}
+.mat-column-weight{
+  align-self: stretch;
 }
 
 .maxHeightNone{

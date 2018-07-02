@@ -20,7 +20,8 @@ export class ShareholdingsComponent implements OnInit {
   companyField: FormControl;
   shareholderField: FormControl;
   showByStock: boolean;
-  hasResults: boolean;
+  hasCompanyResults: boolean;
+  hasHolderResults: boolean;
   startSearch: boolean;
   selStyles: any = [];
   rowList : any = []
@@ -32,7 +33,8 @@ export class ShareholdingsComponent implements OnInit {
 
   constructor(private httpService: HttpService, fb: FormBuilder) {
 
-    this.hasResults = false;
+    this.hasCompanyResults = false;
+    this.hasHolderResults = false;
     this.startSearch = false;
     this.showByStock = true;
     this.selStyles.push('aqua');
@@ -66,15 +68,16 @@ export class ShareholdingsComponent implements OnInit {
     this.httpService.searchCompany(this.companyField.value).subscribe( (data:any) => {
 
       this.companyDataSource.data = data['results'];
-      this.hasResults = true;
-
-
-
+      this.hasCompanyResults = true;
     });
   }
 
   processNumber(num: number) {
 
+  }
+
+  onEnterCompany() {
+    console.log('Search company ' + this.companyField.value);
   }
 
   onSearchShareholders() {
