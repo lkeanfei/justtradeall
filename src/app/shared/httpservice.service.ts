@@ -27,6 +27,12 @@ export class HttpService {
         return this.httpClient.post( '/api/company/' , body );
     }
 
+    searchShareHolders( shareHolder: string) {
+      const body = { 'shareholder' : shareHolder };
+      return this.httpClient.post( '/api/company/' , body );
+
+    }
+
 
 
 

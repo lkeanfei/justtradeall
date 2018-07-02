@@ -28,6 +28,10 @@ export class ShareholdingsComponent implements OnInit {
   companyDataSource: any;
   companyColumns = ['id', 'name', 'shares', 'percentage'];
   options: FormGroup;
+  idColumnWidth = 10;
+  nameColumnWidth = 45;
+  sharesColumnWidth = 25;
+  percentageColumnWidth = 20;
 
 
 
@@ -81,7 +85,13 @@ export class ShareholdingsComponent implements OnInit {
   }
 
   onSearchShareholders() {
-    console.log('Search shareholders ' + this.shareholderField.value);
+    console.log('Search share holder ' + this.shareholderField.value);
+
+    this.httpService.searchShareHolders(this.shareholderField.value).subscribe( (data:any) => {
+
+      this.companyDataSource.data = data['results'];
+      this.hasHolderResults = true;
+    });
   }
 
   ngOnInit() {
