@@ -25,13 +25,18 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ShareholdingsComponent } from './shareholdings/shareholdings.component';
 import { ResetComponent } from './reset/reset.component';
+import { CoolchartComponent } from './coolchart/coolchart.component';
+import { SubplotComponent } from './subplot/subplot.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
   {path: 'login' , component: LoginComponent} ,
   {path: 'register' , component: RegisterComponent} ,
   {path: 'reset' , component: ResetComponent} ,
-  {path: 'shareholdings' , component: ShareholdingsComponent}
+  {path: 'shareholdings' , component: ShareholdingsComponent},
+  {path: 'coolchart' , component: CoolchartComponent},
+  {path: 'subplot' , component: SubplotComponent}
+
 
 ];
 
@@ -42,7 +47,9 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     ShareholdingsComponent,
-    ResetComponent
+    ResetComponent,
+    CoolchartComponent,
+    SubplotComponent
   ],
   imports: [
     BrowserModule,
