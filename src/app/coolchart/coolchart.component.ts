@@ -55,7 +55,7 @@ export class CoolchartComponent implements OnInit {
       type: 'scatter'
     };
 
-    const data = [trace1, trace2];
+    const data = [trace1];
 
     const layout = {
       dragmode: 'zoom',
@@ -80,12 +80,7 @@ export class CoolchartComponent implements OnInit {
         range: [114.609999778, 137.410004222],
         type: 'linear'
       },
-      xaxis2: {domain: [0.55, 1]},
-      yaxis2: {
-        domain: [0, 0.45],
-        anchor: 'x2'
-      },
-    };
+        };
 
     Plotly.newPlot('myDiv', data, layout);
     // Plotly.newPlot('myDiv', data);
