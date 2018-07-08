@@ -8,114 +8,98 @@ import {Config, Data, Layout, ScatterData} from 'plotly.js';
   styleUrls: ['./subplot.component.css']
 })
 export class SubplotComponent implements OnInit {
+  rangeStart = 113;
+  histoData = [];
+  layoutRight = {};
+  y = [];
 
   constructor() { }
 
   ngOnInit() {
-    const trace1 = {
-      x: [1, 2, 3],
-      y: [2, 3, 4],
-      xaxis: 'x',
-      yaxis: 'y',
-      type: 'scatter'
-    };
-
-    const trace2 = {
-      x: [2, 3, 4],
-      y: [5, 16, 5],
-      xaxis: 'x2',
-      yaxis: 'y',
-      type: 'scatter'
-    };
-
-    const bardata = [{
-      type: 'bar',
-      x: [2, 3, 4],
-      y: [5, 16, 5],
-      xaxis: 'x2',
-      yaxis: 'y',
-      orientation: 'h'
-    }];
-
-    const data = [trace1, trace2];
-
-    const layout1 = {
-      autosize: false,
-      width: 300,
-      height: 300,
-      margin: {
-        l: 5,
-        r: 5,
-        b: 5,
-        t: 5,
-        pad: 4
-      },
-
-      xaxis: {domain: [0, 0.45]},
-      yaxis: {
-        autotick: false,
-        scaleratio: 0.2,
-        ticks: 'outside',
-        tick0: 0,
-        dtick: 2,
-        ticklen: 18,
-        tickwidth: 1,
-        tickcolor: '#000',
-        range: [0,30],
-        domain: [0, 1]
-      },
-      xaxis2: {domain: [0.55, 1]},
-
-    };
-
-    const layout = {
-      autosize: false,
-      width: 300,
-      height: 300,
-      margin: {
-        l: 15,
-        r: 15,
-        b: 15,
-        t: 15,
-        pad: 4
-      },
-      paper_bgcolor: '#7f7f7f',
-      plot_bgcolor: '#c7c7c7',
-      xaxis: {domain: [0, 0.45]},
-      yaxis: {domain: [0, 1]},
-      xaxis2: {domain: [0.55, 1]},
-
-    };
-
-    const leftChart = [trace1];
-    const rightChart = [trace2];
-    // Plotly.newPlot('myDiv', data, layout);
-    const datatop = [
+   const dataRight = [
       {
-        x: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13, 14,15,16,17,18,19,20],
-        y: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13, 14,15,16,17,18,19,20],
+        x: [  0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13, 14,15,16,17,18,19,20],
+        y: [ 120, 121, 122, 123, 124, 125, 126, 127, 128, 129,130,131,132,133, 134,135,136,137,138,139, 140],
         type: 'scatter'
       }
     ];
-    const layouttop = {
+    this.layoutRight = {
       autosize: false,
-      width: 500,
+      xaxis: {
+        tickmode: 'array',
+        tickvals: [1,3,5,7,9,11,13,15,17,19,21],
+        tick0: 3
+      },
+      //  yxis: {
+      //   // scaleanchor: "x",
+      //   // scaleratio: 0.5,
+      //    ticklen: 15,
+      //   tickmode: 'linear',
+      //   // tickvals: [115.0,120.0,125.0,130.0,135.0,140.0],
+      //   tick0: 115,
+      //    dtick: 3,
+      //   range: [100, 137.410004222],
+      // },
+      yaxis: {
+        autotick: false,
+        ticks: 'outside',
+        tick0: this.rangeStart,
+        dtick: 2,
+        ticklen: 8,
+        tickwidth: 4,
+        tickcolor: '#000',
+        range: [this.rangeStart, 150],
+      },
+      width: 200,
       height: 500,
       margin: {
-        r: 10,
+        r: 40,
         t: 25,
-        b: 40,
+        b: 154,
         l: 60,
         pad: 4
       },
-      paper_bgcolor: '#7f7f7f',
-      plot_bgcolor: '#c7c7c7'
+      // paper_bgcolor: '#7f7f7f',
+      // plot_bgcolor: '#c7c7c7'
     };
-    Plotly.newPlot('leftDiv', datatop, layouttop);
-    // Plotly.newPlot('leftDiv', leftChart, layout);
-    Plotly.newPlot('rightDiv', datatop, layouttop);
 
-    const trace1 = {
+    const barData = [{
+      type: 'bar',
+      x: [20, 14, 23],
+      y: [ '115', '120', '130'],
+      orientation: 'h',
+      // yaxis: {
+      //   autotick: false,
+      //   ticks: 'outside',
+      //   tick0: 115,
+      //   dtick: 2,
+      //   ticklen: 8,
+      //   tickwidth: 4,
+      //   tickcolor: '#000',
+      //   range: [115, 150],
+      // },
+    }];
+
+    // Plotly.newPlot('rightBarDiv', barData, layoutRight);
+    this.y = [];
+    for (let i = 0; i < 500; i ++) {
+      this.y[i] = Math.random() * 30 + 116;
+    }
+
+    this.histoData = [
+      {
+        y: this.y,
+        type: 'histogram',
+        marker: {
+          color: 'black',
+        },
+      }
+    ];
+    Plotly.newPlot('histoDiv', this.histoData , this.layoutRight);
+
+    // Plotly.newPlot('rightDiv', dataRight, layoutRight);
+
+    const candletrace = {
       x: ['2017-01-04', '2017-01-05', '2017-01-06', '2017-01-09', '2017-01-10', '2017-01-11', '2017-01-12',
         '2017-01-13', '2017-01-17', '2017-01-18', '2017-01-19', '2017-01-20', '2017-01-23', '2017-01-24', '2017-01-25',
         '2017-01-26', '2017-01-27', '2017-01-30', '2017-01-31', '2017-02-01', '2017-02-02', '2017-02-03', '2017-02-06',
@@ -149,22 +133,16 @@ export class SubplotComponent implements OnInit {
       yaxis: 'y'
     };
 
-    const trace2 = {
-      x: [20, 30, 40],
-      y: [50, 60, 70],
-      xaxis: 'x2',
-      yaxis: 'y2',
-      type: 'scatter'
-    };
 
-    const candledata = [trace1];
+
+    const candledata = [candletrace];
 
     const candlelayout = {
       dragmode: 'zoom',
-      width: 500,
+      width: 800,
       height: 500,
       margin: {
-        r: 10,
+        r: 35,
         t: 25,
         b: 40,
         l: 60
@@ -172,17 +150,30 @@ export class SubplotComponent implements OnInit {
       showlegend: false,
       xaxis: {
         autorange: true,
+        nticks: 20,
         domain: [0, 1],
         range: ['2017-01-03 12:00', '2017-02-15 12:00'],
         rangeslider: {range: ['2017-01-03 12:00', '2017-02-15 12:00']},
         title: 'Date',
         type: 'date'
       },
+      // yaxis: {
+      //   autorange: true,
+      //   scaleratio: 1,
+      //   domain: [0, 1],
+      //   range: [114.609999778, 137.410004222],
+      //   type: 'linear'
+      // },
       yaxis: {
-        autorange: true,
-        domain: [0, 1],
-        range: [114.609999778, 137.410004222],
-        type: 'linear'
+        autotick: false,
+        side: 'right',
+        ticks: 'outside',
+        tick0: 115,
+        dtick: 2,
+        ticklen: 8,
+        tickwidth: 4,
+        tickcolor: '#000',
+        range: [this.rangeStart, 150],
       },
     };
 
@@ -196,6 +187,66 @@ export class SubplotComponent implements OnInit {
     // }];
 
     // Plotly.newPlot('barDiv', bardata);
+  }
+
+  clickButton() {
+    this.rangeStart = this.rangeStart - 2;
+    console.log('Rage start ' + this.rangeStart);
+    this.y = [];
+    for (let i = 0; i < 500; i ++) {
+      this.y[i] = Math.random() * 30 + 116;
+    }
+
+    this.histoData = [
+      {
+        y: this.y,
+        type: 'histogram',
+        marker: {
+          color: 'black',
+        },
+      }
+    ];
+
+    this.layoutRight = {
+      autosize: false,
+      xaxis: {
+        tickmode: 'array',
+        tickvals: [1,3,5,7,9,11,13,15,17,19,21],
+        tick0: 3
+      },
+      //  yxis: {
+      //   // scaleanchor: "x",
+      //   // scaleratio: 0.5,
+      //    ticklen: 15,
+      //   tickmode: 'linear',
+      //   // tickvals: [115.0,120.0,125.0,130.0,135.0,140.0],
+      //   tick0: 115,
+      //    dtick: 3,
+      //   range: [100, 137.410004222],
+      // },
+      yaxis: {
+        autotick: false,
+        ticks: 'outside',
+        tick0: this.rangeStart,
+        dtick: 2,
+        ticklen: 8,
+        tickwidth: 4,
+        tickcolor: '#000',
+        range: [this.rangeStart, 150],
+      },
+      width: 200,
+      height: 500,
+      margin: {
+        r: 40,
+        t: 25,
+        b: 154,
+        l: 60,
+        pad: 4
+      },
+      // paper_bgcolor: '#7f7f7f',
+      // plot_bgcolor: '#c7c7c7'
+    };
+    Plotly.newPlot('histoDiv', this.histoData, this.layoutRight);
   }
 
 }

@@ -27,6 +27,7 @@ import { ShareholdingsComponent } from './shareholdings/shareholdings.component'
 import { ResetComponent } from './reset/reset.component';
 import { CoolchartComponent } from './coolchart/coolchart.component';
 import { SubplotComponent } from './subplot/subplot.component';
+import { IndicatorsComponent } from './indicators/indicators.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -49,7 +50,8 @@ const appRoutes: Routes = [
     ShareholdingsComponent,
     ResetComponent,
     CoolchartComponent,
-    SubplotComponent
+    SubplotComponent,
+    IndicatorsComponent
   ],
   imports: [
     BrowserModule,

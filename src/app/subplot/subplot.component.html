@@ -1,12 +1,16 @@
 <div fxLayout="column" fxLayoutAlign="center center">
   <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
-  <div fxLayout="center">
-    <div id="leftDiv"  style="width: 100%; height: 500px;"></div>
-    <!--<div id="rightDiv"  style="width: 100%; height: 500px;"></div>-->
+  <!--<div fxLayout="center">-->
+    <!--<div id="leftDiv"  style="width: 100%; height: 500px;"></div>-->
+    <!--&lt;!&ndash;<div id="rightDiv"  style="width: 100%; height: 500px;"></div>&ndash;&gt;-->
+  <!--</div>-->
+  <div>
+    <button mat-button (click)="clickButton()">Click me!</button>
+
   </div>
   <div fxLayout="center">
     <div id="candleDiv" style="width: 100%; height: 500px;"></div>
-    <div id="rightDiv"  style="width: 100%; height: 500px;"></div>
+    <div id="histoDiv"  style="width: 100%; height: 500px;"></div>
   </div>
 
 </div>
