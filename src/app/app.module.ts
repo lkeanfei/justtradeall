@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HighchartsChartModule } from 'highcharts-angular';
 import { AppComponent } from './app.component';
 import {
   MatButtonModule,
@@ -28,6 +28,7 @@ import { ResetComponent } from './reset/reset.component';
 import { CoolchartComponent } from './coolchart/coolchart.component';
 import { SubplotComponent } from './subplot/subplot.component';
 import { IndicatorsComponent } from './indicators/indicators.component';
+import { HighstockComponent } from './highstock/highstock.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
   {path: 'reset' , component: ResetComponent} ,
   {path: 'shareholdings' , component: ShareholdingsComponent},
   {path: 'coolchart' , component: CoolchartComponent},
-  {path: 'subplot' , component: SubplotComponent}
+  {path: 'subplot' , component: SubplotComponent},
+  {path: 'highstock' , component: HighstockComponent}
 
 
 ];
@@ -51,7 +53,8 @@ const appRoutes: Routes = [
     ResetComponent,
     CoolchartComponent,
     SubplotComponent,
-    IndicatorsComponent
+    IndicatorsComponent,
+    HighstockComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(  environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    HighchartsChartModule
   ],
   providers: [AuthService, HttpService],
   bootstrap: [AppComponent]

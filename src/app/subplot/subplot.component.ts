@@ -16,6 +16,8 @@ export class SubplotComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    const myPlot = document.getElementById('');
+
    const dataRight = [
       {
         x: [  0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13, 14,15,16,17,18,19,20],
@@ -148,8 +150,10 @@ export class SubplotComponent implements OnInit {
         l: 60
       },
       showlegend: false,
+      hovermode: 'closest',
       xaxis: {
         autorange: true,
+        showspikes : true,
         nticks: 20,
         domain: [0, 1],
         range: ['2017-01-03 12:00', '2017-02-15 12:00'],
@@ -166,6 +170,7 @@ export class SubplotComponent implements OnInit {
       // },
       yaxis: {
         autotick: false,
+        showspikes : true,
         side: 'right',
         ticks: 'outside',
         tick0: 115,
@@ -178,6 +183,35 @@ export class SubplotComponent implements OnInit {
     };
 
     Plotly.newPlot('candleDiv', candledata, candlelayout);
+
+    const candleDiv : any = document.getElementById('candleDiv');
+    let timerId = 0;
+    let startDate , endDate;
+    candleDiv.on('plotly_relayout', (eventdata) =>{
+      if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
+        console.log('rangeslider event!!');
+
+
+        startDate = eventdata['xaxis.range'][0];
+        endDate = eventdata['xaxis.rane'][1];
+
+
+        if(timerId>=0){
+          //timer is running: stop it
+          window.clearTimeout(timerId);
+        }
+
+        timerId = window.setTimeout(function(){
+          //fire end event
+          console.log('rangeslider event ENDS');
+          console.log('starts '  + startDate);
+          console.log('ends '  + startDate);
+
+          //reset timer to undefined
+          timerId = -1;
+        }, 800);
+      }
+    })
 
     // const bardata = [{
     //   type: 'bar',
