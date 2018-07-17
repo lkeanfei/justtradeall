@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Plotly from 'plotly.js';
 import {Config, Data, Layout, ScatterData} from 'plotly.js';
+import {HttpService } from '../shared/httpservice.service';
 
 @Component({
   selector: 'app-subplot',
@@ -13,10 +14,17 @@ export class SubplotComponent implements OnInit {
   layoutRight = {};
   y = [];
 
-  constructor() { }
+  constructor(private httpService: HttpService) { }
 
   ngOnInit() {
+
+    const input = { 'id' : '0010.MY', 'fromDate' : '2018-04-01' , 'toDate' : '2018-04-30' , 'intra' : true};
+    this.httpService.getPriceVolume(input).subscribe((data:any) => {
+      console.log('Price data is ');
+      console.log(data);
+    });
     const myPlot = document.getElementById('');
+
 
    const dataRight = [
       {
@@ -205,7 +213,7 @@ export class SubplotComponent implements OnInit {
           //fire end event
           console.log('rangeslider event ENDS');
           console.log('starts '  + startDate);
-          console.log('ends '  + startDate);
+          console.log('ends '  + endDate);
 
           //reset timer to undefined
           timerId = -1;

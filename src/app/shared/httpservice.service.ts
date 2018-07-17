@@ -2,6 +2,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
+interface PriceRequestInput {
+  id: string,
+  fromDate: string,
+  toDate: string,
+  intra: boolean
+}
+
 @Injectable()
 export class HttpService {
 
@@ -31,6 +38,14 @@ export class HttpService {
       const body = { 'shareholder' : shareHolder };
       return this.httpClient.post( '/api/company/' , body );
 
+    }
+
+    getPriceVolume( input: PriceRequestInput ) {
+      const body = { 'id' : input.id,
+      'from' : input.fromDate ,
+      'to' : input.toDate,
+      'intra' : input.intra };
+      return this.httpClient.post( '/api/price/' , body );
     }
 
 
