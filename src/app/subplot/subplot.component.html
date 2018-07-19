@@ -1,10 +1,13 @@
-<div *ngIf="bOrderFlowLoading">Loading Loading Loading Loading</div>
+<div *ngIf="bOrderFlowLoading">
+  <mat-progress-spinner>
+  </mat-progress-spinner>
+</div>
 <div fxLayout="column" fxLayoutAlign="center center">
 
 
   <div fxLayout="center">
     <div #tag id="candleDiv" style="width: 100%; height: 500px;"></div>
-    <div id="histoDiv"  style="width: 100%; height: 500px;"></div>
+    <div id="histoDiv"></div>
 
 
 

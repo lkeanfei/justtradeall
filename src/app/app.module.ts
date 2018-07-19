@@ -4,7 +4,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { AppComponent } from './app.component';
 import {
   MatButtonModule,
-  MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule, MatSelectModule,
+  MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule,
+  MatProgressSpinnerModule, MatSelectModule,
   MatSidenavModule,
   MatTableModule,
   MatToolbarModule
@@ -65,6 +66,7 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
     MatToolbarModule,
     MatSelectModule,
     MatCardModule,

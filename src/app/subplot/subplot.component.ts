@@ -126,6 +126,8 @@ export class SubplotComponent implements OnInit {
       xaxis: {
         autorange: true,
         showspikes : true,
+        spikemode: 'toaxis+across+marker',
+        spikesnap: 'cursor',
         nticks: 20,
         domain: [0, 1],
         range: [dateList[0], dateList[this.dataPointsLength - 1]],
@@ -143,6 +145,8 @@ export class SubplotComponent implements OnInit {
       yaxis: {
         autotick: false,
         showspikes : true,
+        spikemode: 'toaxis+across+marker',
+        spikesnap: 'cursor',
         side: 'right',
         ticks: 'outside',
         tick0: this.yRangeMin,
