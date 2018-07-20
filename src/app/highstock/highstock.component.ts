@@ -237,7 +237,11 @@ export class HighstockComponent implements OnInit {
       type : 'candlestick',
       data: this.data
     }],
+    yAxis: {
+      crosshair: true
+    },
     xAxis: {
+      crosshair: true,
       events: {
         setExtremes:(evt) => {
           let minDate = new Date(evt.min);
@@ -255,6 +259,7 @@ export class HighstockComponent implements OnInit {
     },
     xAxis: {
       tickPixelInterval: 5,
+      crosshair: true,
       tickInterval: 0.02,
       categories: [1.01, 1.02, 1.03, 1.04, 1.05],
       title: {
@@ -526,7 +531,7 @@ export class HighstockComponent implements OnInit {
 
   ngOnInit() {
 
-
+     this.Highcharts.Renderer()
 
   }
 

@@ -150,7 +150,7 @@ export class SubplotComponent implements OnInit {
         side: 'right',
         ticks: 'outside',
         tick0: this.yRangeMin,
-        dtick: 0.005,
+        dtick: 0.01,
         ticklen: 4,
         tickwidth: 2,
         tickcolor: '#000',
@@ -197,7 +197,32 @@ export class SubplotComponent implements OnInit {
 
   }
 
-  plotHistogram() {
+  calculateOptimalBinWidth( intraDayPrices: number[]) {
+    let xMax = Math.max(...intraDayPrices), xMin = Math.min(...intraDayPrices);
+    const minBins = 4, maxBins = 50;
+    // double[] N = Enumerable.Range(minBins, maxBins - minBins)
+    //   .Select(v => (double)v).ToArray();
+    let N =[] , D =[] , C=[];
+    for(let n = minBins; n < maxBins; n++) {
+      N.push(n);
+      D.push( (xMax-xMin)/n);
+    }
+
+
+
+
+  // LinearSpace(double a, double b, int count)
+  // {
+  //   double[] output = new double[count];
+  //
+  //   for (int i = 0; i < count; i++)
+  // {
+  //   output[i] = a + ((i * (b - a)) / (count - 1));
+  // }
+  //
+  // return output;
+  }
+plotHistogram() {
 
     this.layoutRight = {
       autosize: false,
@@ -205,7 +230,7 @@ export class SubplotComponent implements OnInit {
         autotick: false,
         ticks: 'outside',
         tick0: this.yRangeMin,
-        dtick: 0.005,
+        dtick: 0.01,
         ticklen: 8,
         tickwidth: 4,
         tickcolor: '#000',
