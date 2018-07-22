@@ -531,7 +531,7 @@ export class HighstockComponent implements OnInit {
 
   ngOnInit() {
 
-     this.Highcharts.Renderer()
+
 
   }
 

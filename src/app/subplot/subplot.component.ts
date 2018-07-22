@@ -202,11 +202,92 @@ export class SubplotComponent implements OnInit {
     const minBins = 4, maxBins = 50;
     // double[] N = Enumerable.Range(minBins, maxBins - minBins)
     //   .Select(v => (double)v).ToArray();
-    let N =[] , D =[] , C=[];
-    for(let n = minBins; n < maxBins; n++) {
+    let N = [], D = [], C = [];
+    for (let n = minBins; n < maxBins; n++) {
       N.push(n);
-      D.push( (xMax-xMin)/n);
+      D.push((xMax - xMin) / n);
     }
+
+    for (let i = 0; i < N.length; i++)
+    {
+      const binIntervals = this.linearSpace(xMin, xMax, Math.round(N[i]) + 1);
+      let ki = this.histoGram(x, binIntervals);
+      // let kiOut = ki.Skip(1).Take(ki.length - 2).ToArray();
+      let kiOut = ki.slice(1,1+ki.length-1);
+
+      const mean = this.calcAverage(kiOut);
+      const variance = this.calcVariance(kiOut , mean , N[i]);
+      console.log('D[i] is ' + D[i]);
+
+      C[i] = (2 * mean - variance) / (Math.pow(D[i], 2));
+    }
+
+    const minC = Math.min(...C);
+    const index = C.Select((c, ix) => new { Value = c, Index = ix })
+      .Where(c => c.Value == minC).First().Index;
+    const optimalBinWidth = D[index];
+  }
+
+  calcAverage(arr: number[]) {
+    let s = 0;
+
+    for (const data of arr) {
+      s = s + data;
+    }
+    return s / arr.length;
+  }
+
+  calcVariance(arr: number[], mean: number , nLength: number) {
+    let s = 0;
+     for(const data of arr ) {
+       s = s + Math.pow(data - mean, 2);
+     }
+     return s / nLength;
+  }
+
+  linearSpace(a: number, b: number, count: number) {
+     const output: number[];
+      for ( let i = 0; i < count; i++) {
+        output.push(a + ((i * (b - a)) / (count - 1)));
+      }
+      return output;
+    }
+
+    histoGram(data: number[] , binEdges: number[]) {
+      let counts: number[];
+      for (let i = 0; i < binEdges.length - 1; i++) {
+        const lower = binEdges[i];
+        const upper = binEdges[i + 1];
+        for (let j = 0; j < data.length; j++) {
+          if ((data[j] - lower >= 0.00001) && (data[j] - upper < 0.00001)) {
+            counts[i]++;
+          }
+        }
+
+      }
+
+      return counts;
+    }
+
+  // public double[] Histogram(double[] data, double[] binEdges)
+  //   {
+  //     double[] counts = new double[binEdges.Length - 1];
+  //
+  //     for (int i = 0; i < binEdges.Length - 1; i++)
+  //     {
+  //       double lower = binEdges[i], upper = binEdges[i + 1];
+  //
+  //       for (int j = 0; j < data.Length; j++)
+  //       {
+  //         if (data[j] >= lower && data[j] <= upper)
+  //         {
+  //           counts[i]++;
+  //         }
+  //       }
+  //     }
+  //
+  //     return counts;
+  //   }
 
 
 
