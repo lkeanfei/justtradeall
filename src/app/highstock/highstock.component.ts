@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
+import { SeriesObject} from 'highcharts';
 import {chart} from 'highcharts';
+import {HttpService} from '../shared/httpservice.service';
+
 
 @Component({
   selector: 'app-highstock',
@@ -11,6 +14,8 @@ export class HighstockComponent implements OnInit {
 
   updateFlag = false; // optional boolean
   oneToOneFlag = true; // optional boolean, defaults to false
+  yInterval: number;
+  intradayObject: any;
   Highcharts = Highcharts; // required
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
   histoConstructor = 'chart'
@@ -238,7 +243,8 @@ export class HighstockComponent implements OnInit {
       data: this.data
     }],
     yAxis: {
-      crosshair: true
+      crosshair: true,
+      tickPixelInterval: 10,
     },
     xAxis: {
       crosshair: true,
@@ -258,16 +264,16 @@ export class HighstockComponent implements OnInit {
       text: 'Historic World Population by Region'
     },
     xAxis: {
-      tickPixelInterval: 5,
-      crosshair: true,
-      tickInterval: 0.02,
-      categories: [1.01, 1.02, 1.03, 1.04, 1.05],
-      title: {
-        text: null
-      }
+      type: 'linear',
+      minTickInterval: 10,
+      tickPixelInterval: 10,
+
     },
     yAxis: {
       min: 0,
+      minTickInterval: 10,
+      tickPixelInterval: 10,
+
       title: {
         text: 'Population (millions)',
         align: 'high'
@@ -281,6 +287,7 @@ export class HighstockComponent implements OnInit {
   },
   plotOptions: {
     bar: {
+      pointWidth: 10,
       dataLabels: {
         enabled: true
       }
@@ -301,13 +308,19 @@ export class HighstockComponent implements OnInit {
   },
   series: [{
     name: 'Year 1800',
-    data: [107, 31, 635, 203, 2]
+    data: [ [0.1 , 107] , [0.2 , 31], [0.3 ,635], [0.4,203], [0.5,2] ,
+      [0.6 , 107] , [0.7 , 31], [0.8 ,635], [0.9,203], [1.0,2] ]
   }]}
   // chartCallback = function (chart) { ... } // optional function, defaults to null
 
 
 
-  constructor() {
+  constructor(private httpService: HttpService) {
+    const input = { 'id' : '4707.MY', 'fromDate' : '2018-04-01' , 'toDate' : '2018-04-20' , 'intra' : true};
+    this.httpService.getPriceVolume(input).subscribe((data:any) => {
+      this.intradayObject = data['intraday'];
+      this.calculateOptimalBinWidth();
+    });
     this.data = [
       [
         1468243800000,
@@ -533,6 +546,84 @@ export class HighstockComponent implements OnInit {
 
 
 
+  }
+
+
+  calculateOptimalBinWidth() {
+
+    let prices = Object.keys(this.intradayObject).map( v => parseFloat(v));
+    console.log('intArray ****' );
+    console.log(prices);
+
+    // const intraDayPrices = Object.keys(this.intradayObject);
+    // const histoPriceTransVol = [];
+    // let prices = [];
+    // for(const price of histoPriceRange) {
+    //
+    //   const vol = this.intradayObject[price];
+    //   const numZeros = Math.log10(vol);
+    //   const normalizeVol = vol / Math.pow(10, 3);
+    //   for(let cnt=0 ; cnt < normalizeVol ; cnt++) {
+    //     prices.push(price);
+    //   }
+    // }
+
+    let xMax = Math.max(...prices), xMin = Math.min(...prices);
+    const delta = (xMax - xMin);
+    let interval = Math.ceil( delta/ (20 * 0.005)) * 0.005;
+    console.log('Diff ' + (xMax - xMin) + ' interval ' + interval );
+    if( interval > 0.10 ) {
+      // refine it to a better interval
+      console.log('it is bigger than 0.10');
+      const newInterval = Math.round(interval * 100);
+      interval = (newInterval  + 5 - (newInterval % 5)) / 100
+    }
+    console.log('Refined interval ' + interval);
+    this.yInterval = interval;
+
+    // const minBins = 4, maxBins = 50;
+    // // double[] N = Enumerable.Range(minBins, maxBins - minBins)
+    // //   .Select(v => (double)v).ToArray();
+    // let N = [], D = [], C = [];
+    // for (let n = minBins; n < maxBins; n++) {
+    //   N.push(n);
+    //   D.push((xMax - xMin) / n);
+    // }
+    //
+    // for (let i = 0; i < N.length; i++)
+    // {
+    //   const binIntervals = this.linearSpace(xMin, xMax, Math.round(N[i]) + 1);
+    //   let ki = this.histoGram(x, binIntervals);
+    //   // let kiOut = ki.Skip(1).Take(ki.length - 2).ToArray();
+    //   let kiOut = ki.slice(1,1 + ki.length - 1);
+    //
+    //   const mean = this.calcAverage(kiOut);
+    //   const variance = this.calcVariance(kiOut , mean , N[i]);
+    //   console.log('D[i] is ' + D[i]);
+    //
+    //   C[i] = (2 * mean - variance) / (Math.pow(D[i], 2));
+    // }
+
+    // const minC = Math.min(...C);
+    // const minCArray = [];
+    // C.forEach( (value,idx) => {
+    //    console.log('index is ' + idx + '.Value ' + value + ' minC = ' + minC );
+    //    if( Math.abs(value - minC ) < 0.000001) {
+    //      minCArray.push({'value' : value , 'index' : idx})
+    //    }
+    // })
+    // console.log('minArray ** ');
+    // console.log(minCArray);
+    // const index = C.Select((c, ix) => new { Value = c, Index = ix })
+    //   .Where(c => c.Value == minC).First().Index;
+    // const optimalBinWidth = D[index];
+  }
+
+  checkCharts() {
+    this.Highcharts.charts[0].options.xAxis
+    this.Highcharts.charts[0].getSelectedSeries().forEach( (seriesObject: SeriesObject) => {
+      seriesObject.xAxis
+    })
   }
 
 }

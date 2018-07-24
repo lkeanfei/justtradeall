@@ -17,6 +17,7 @@ export class SubplotComponent implements OnInit {
   y = [];
   yRangeMin: number;
   yRangeMax: number;
+  yInterval: number;
   dataPointsLength: number;
   bOrderFlowLoading = true;
   intradayObject: any;
@@ -31,7 +32,7 @@ export class SubplotComponent implements OnInit {
 
     console.log('on init triggered!');
 
-    const input = { 'id' : '0010.MY', 'fromDate' : '2018-04-01' , 'toDate' : '2018-04-30' , 'intra' : true};
+    const input = { 'id' : '4707.MY', 'fromDate' : '2018-04-01' , 'toDate' : '2018-04-20' , 'intra' : true};
     this.httpService.getPriceVolume(input).subscribe((data:any) => {
       this.plotCharts(data);
     });
@@ -86,6 +87,7 @@ export class SubplotComponent implements OnInit {
     this.yRangeMax = Math.max(...openList.concat(highList, lowList, closeList)) ;
     this.bOrderFlowLoading = false;
 
+    this.calculateOptimalBinWidth();
     this.plotCandlesticks(dateList, openList, highList, lowList , closeList , volumeList);
 
     this.plotHistogram();
@@ -128,6 +130,8 @@ export class SubplotComponent implements OnInit {
         showspikes : true,
         spikemode: 'toaxis+across+marker',
         spikesnap: 'cursor',
+        spikethickness: 1,
+        spikedash: 'solid',
         nticks: 20,
         domain: [0, 1],
         range: [dateList[0], dateList[this.dataPointsLength - 1]],
@@ -147,10 +151,12 @@ export class SubplotComponent implements OnInit {
         showspikes : true,
         spikemode: 'toaxis+across+marker',
         spikesnap: 'cursor',
+        spikethickness: 1,
+        spikedash: 'solid',
         side: 'right',
         ticks: 'outside',
         tick0: this.yRangeMin,
-        dtick: 0.01,
+        dtick: this.yInterval,
         ticklen: 4,
         tickwidth: 2,
         tickcolor: '#000',
@@ -197,35 +203,74 @@ export class SubplotComponent implements OnInit {
 
   }
 
-  calculateOptimalBinWidth( intraDayPrices: number[]) {
-    let xMax = Math.max(...intraDayPrices), xMin = Math.min(...intraDayPrices);
-    const minBins = 4, maxBins = 50;
-    // double[] N = Enumerable.Range(minBins, maxBins - minBins)
-    //   .Select(v => (double)v).ToArray();
-    let N = [], D = [], C = [];
-    for (let n = minBins; n < maxBins; n++) {
-      N.push(n);
-      D.push((xMax - xMin) / n);
+  calculateOptimalBinWidth() {
+
+    let prices = Object.keys(this.intradayObject).map( v => parseFloat(v));
+    console.log('intArray ****' );
+    console.log(prices);
+
+      // const intraDayPrices = Object.keys(this.intradayObject);
+    // const histoPriceTransVol = [];
+    // let prices = [];
+    // for(const price of histoPriceRange) {
+    //
+    //   const vol = this.intradayObject[price];
+    //   const numZeros = Math.log10(vol);
+    //   const normalizeVol = vol / Math.pow(10, 3);
+    //   for(let cnt=0 ; cnt < normalizeVol ; cnt++) {
+    //     prices.push(price);
+    //   }
+    // }
+
+    let xMax = Math.max(...prices), xMin = Math.min(...prices);
+    const delta = (xMax - xMin);
+    let interval = Math.ceil( delta/ (20 * 0.005)) * 0.005;
+    console.log('Diff ' + (xMax - xMin) + ' interval ' + interval );
+    if( interval > 0.10 ) {
+      // refine it to a better interval
+      console.log('it is bigger than 0.10');
+      const newInterval = Math.round(interval * 100);
+      interval = (newInterval  + 5 - (newInterval % 5)) / 100
     }
+    console.log('Refined interval ' + interval);
+    this.yInterval = interval;
 
-    for (let i = 0; i < N.length; i++)
-    {
-      const binIntervals = this.linearSpace(xMin, xMax, Math.round(N[i]) + 1);
-      let ki = this.histoGram(x, binIntervals);
-      // let kiOut = ki.Skip(1).Take(ki.length - 2).ToArray();
-      let kiOut = ki.slice(1,1+ki.length-1);
+    // const minBins = 4, maxBins = 50;
+    // // double[] N = Enumerable.Range(minBins, maxBins - minBins)
+    // //   .Select(v => (double)v).ToArray();
+    // let N = [], D = [], C = [];
+    // for (let n = minBins; n < maxBins; n++) {
+    //   N.push(n);
+    //   D.push((xMax - xMin) / n);
+    // }
+    //
+    // for (let i = 0; i < N.length; i++)
+    // {
+    //   const binIntervals = this.linearSpace(xMin, xMax, Math.round(N[i]) + 1);
+    //   let ki = this.histoGram(x, binIntervals);
+    //   // let kiOut = ki.Skip(1).Take(ki.length - 2).ToArray();
+    //   let kiOut = ki.slice(1,1 + ki.length - 1);
+    //
+    //   const mean = this.calcAverage(kiOut);
+    //   const variance = this.calcVariance(kiOut , mean , N[i]);
+    //   console.log('D[i] is ' + D[i]);
+    //
+    //   C[i] = (2 * mean - variance) / (Math.pow(D[i], 2));
+    // }
 
-      const mean = this.calcAverage(kiOut);
-      const variance = this.calcVariance(kiOut , mean , N[i]);
-      console.log('D[i] is ' + D[i]);
-
-      C[i] = (2 * mean - variance) / (Math.pow(D[i], 2));
-    }
-
-    const minC = Math.min(...C);
-    const index = C.Select((c, ix) => new { Value = c, Index = ix })
-      .Where(c => c.Value == minC).First().Index;
-    const optimalBinWidth = D[index];
+    // const minC = Math.min(...C);
+    // const minCArray = [];
+    // C.forEach( (value,idx) => {
+    //    console.log('index is ' + idx + '.Value ' + value + ' minC = ' + minC );
+    //    if( Math.abs(value - minC ) < 0.000001) {
+    //      minCArray.push({'value' : value , 'index' : idx})
+    //    }
+    // })
+    // console.log('minArray ** ');
+    // console.log(minCArray);
+    // const index = C.Select((c, ix) => new { Value = c, Index = ix })
+    //   .Where(c => c.Value == minC).First().Index;
+    // const optimalBinWidth = D[index];
   }
 
   calcAverage(arr: number[]) {
@@ -246,7 +291,7 @@ export class SubplotComponent implements OnInit {
   }
 
   linearSpace(a: number, b: number, count: number) {
-     const output: number[];
+     const output = [];
       for ( let i = 0; i < count; i++) {
         output.push(a + ((i * (b - a)) / (count - 1)));
       }
@@ -269,41 +314,9 @@ export class SubplotComponent implements OnInit {
       return counts;
     }
 
-  // public double[] Histogram(double[] data, double[] binEdges)
-  //   {
-  //     double[] counts = new double[binEdges.Length - 1];
-  //
-  //     for (int i = 0; i < binEdges.Length - 1; i++)
-  //     {
-  //       double lower = binEdges[i], upper = binEdges[i + 1];
-  //
-  //       for (int j = 0; j < data.Length; j++)
-  //       {
-  //         if (data[j] >= lower && data[j] <= upper)
-  //         {
-  //           counts[i]++;
-  //         }
-  //       }
-  //     }
-  //
-  //     return counts;
-  //   }
-
-
-
-
-  // LinearSpace(double a, double b, int count)
-  // {
-  //   double[] output = new double[count];
-  //
-  //   for (int i = 0; i < count; i++)
-  // {
-  //   output[i] = a + ((i * (b - a)) / (count - 1));
-  // }
-  //
-  // return output;
-  }
 plotHistogram() {
+
+
 
     this.layoutRight = {
       autosize: false,
@@ -311,7 +324,7 @@ plotHistogram() {
         autotick: false,
         ticks: 'outside',
         tick0: this.yRangeMin,
-        dtick: 0.01,
+        dtick: this.yInterval,
         ticklen: 8,
         tickwidth: 4,
         tickcolor: '#000',
@@ -322,7 +335,7 @@ plotHistogram() {
       margin: {
         r: 40,
         t: 25,
-        b: 154,
+        b: 164,
         l: 60,
         pad: 4
       },
