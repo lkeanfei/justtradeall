@@ -619,11 +619,6 @@ export class HighstockComponent implements OnInit {
     // const optimalBinWidth = D[index];
   }
 
-  checkCharts() {
-    this.Highcharts.charts[0].options.xAxis
-    this.Highcharts.charts[0].getSelectedSeries().forEach( (seriesObject: SeriesObject) => {
-      seriesObject.xAxis
-    })
-  }
+
 
 }

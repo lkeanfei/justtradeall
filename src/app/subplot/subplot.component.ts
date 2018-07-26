@@ -314,7 +314,12 @@ export class SubplotComponent implements OnInit {
       return counts;
     }
 
-plotHistogram() {
+    plotHistogram() {
+
+    let bins = this.generateHistogramBins();
+    console.log('****** bins ');
+    console.log(bins);
+    const minZeros = this.calcNormalizeVol();
 
 
 
@@ -326,7 +331,7 @@ plotHistogram() {
         tick0: this.yRangeMin,
         dtick: this.yInterval,
         ticklen: 8,
-        tickwidth: 4,
+        tickwidth: 2,
         tickcolor: '#000',
         range: [this.yRangeMin, this.yRangeMax],
       },
@@ -369,13 +374,17 @@ plotHistogram() {
     const histoPriceRange = Object.keys(this.intradayObject);
     const histoPriceTransVol = [];
     let prices = [];
-    for(const price of histoPriceRange) {
+    for(let bin of bins) {
 
-      const vol = this.intradayObject[price];
-      const numZeros = Math.log10(vol);
-      const normalizeVol = vol / Math.pow(10, 3);
-       for(let cnt=0 ; cnt < normalizeVol ; cnt++) {
-        prices.push(price);
+      for ( const price of histoPriceRange) {
+        if ( price >= bin['min'] && price < bin['max']) {
+              const vol = this.intradayObject[price];
+              const normalizeVol = vol / Math.pow(10, minZeros);
+              console.log('price is ' + price + '.bin mid is ' + bin['mid']);
+            for ( let cnt=0 ; cnt < normalizeVol ; cnt++) {
+              prices.push(bin['mid']);
+            }
+         }
       }
     }
 
@@ -383,6 +392,12 @@ plotHistogram() {
       {
         y: prices,
         type: 'histogram',
+        ybins: {
+          end: this.yRangeMax,
+          size: this.yInterval,
+          start: this.yRangeMin
+
+        },
         marker: {
           color: 'black',
         },
@@ -391,6 +406,30 @@ plotHistogram() {
 
     Plotly.newPlot('histoDiv', this.histoData , this.layoutRight);
 
+  }
+
+  calcNormalizeVol() {
+    const allPrices = Object.keys(this.intradayObject);
+    const numZerosRange = [];
+    for(const price of allPrices ) {
+       const vol = this.intradayObject[price];
+       const numZeros = Math.floor(Math.log10(vol));
+       numZerosRange.push(numZeros);
+    }
+
+    const minZeros = Math.min(...numZerosRange);
+    return minZeros;
+  }
+  generateHistogramBins() {
+    let bins = [];
+    for(let yCnt = this.yRangeMin; yCnt < this.yRangeMax ; yCnt = yCnt + this.yInterval) {
+        let minPt = Number(yCnt.toPrecision(6));
+        let maxPt = Number( (yCnt + this.yInterval).toPrecision(6));
+        let midPt = Number(((minPt + maxPt) / 2).toPrecision(6));
+        bins.push({'min' : minPt , 'max' : maxPt , 'mid': midPt });
+    }
+
+    return bins;
   }
 
   clickButton() {
