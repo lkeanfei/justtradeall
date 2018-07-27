@@ -115,10 +115,14 @@ export class SubplotComponent implements OnInit {
       xaxis: 'x',
       yaxis: 'y'
     };
+    let widthArray = new Array(dateList.length);
+    widthArray = widthArray.fill( 0.25 *1000*3600*24 , 0);
 
     const voltrace = {
       x: dateList,
       y: volumeList,
+      width: widthArray,
+      marker: {color: 'rgb(211, 211, 211)'},
       type: 'bar',
       yaxis: 'y2',
     }
