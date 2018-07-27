@@ -4,6 +4,7 @@ import {Config, Data, Layout, PlotlyHTMLElement, ScatterData} from 'plotly.js';
 import {HttpService } from '../shared/httpservice.service';
 import '../../../node_modules/plotly.js/dist/plotly.js';
 
+
 @Component({
   selector: 'app-subplot',
   templateUrl: './subplot.component.html',
@@ -13,6 +14,7 @@ export class SubplotComponent implements OnInit {
   @ViewChild('tag') plotDiv: ElementRef;
   rangeStart = 113;
   histoData = [];
+  candleData = [];
   layoutRight = {};
   y = [];
   yRangeMin: number;
@@ -22,6 +24,10 @@ export class SubplotComponent implements OnInit {
   bOrderFlowLoading = true;
   intradayObject: any;
   candleElem: PlotlyHTMLElement;
+
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
 
   constructor(private httpService: HttpService) {
     console.log('on construct triggered!');
@@ -34,11 +40,12 @@ export class SubplotComponent implements OnInit {
 
     const input = { 'id' : '4707.MY', 'fromDate' : '2018-04-01' , 'toDate' : '2018-04-20' , 'intra' : true};
     this.httpService.getPriceVolume(input).subscribe((data:any) => {
+      this.bOrderFlowLoading = false;
       this.plotCharts(data);
     });
-    const myPlot = document.getElementById('');
-    const candleDiv : any = document.getElementById('candleDiv');
-
+    // const myPlot = document.getElementById('');
+    // const candleDiv : any = document.getElementById('candleDiv');
+    //
 
     //
     // candleDiv.on('plotly_relayout', (eventdata) => {
@@ -167,39 +174,154 @@ export class SubplotComponent implements OnInit {
     console.log('candle y range min ' + this.yRangeMin);
     console.log('candle y range max ' + this.yRangeMax);
 
-    Plotly.newPlot('candleDiv', candledata, candlelayout).then( (htmlElem: PlotlyHTMLElement) => {
-       this.candleElem = htmlElem;
+    let candlePromise: any;
 
-       this.candleElem.on('plotly_relayout', (eventdata) => {
-        console.log('relayout event!');
-         let timerId = 0;
-         let startDate , endDate;
-        if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
-          console.log('rangeslider event!!');
+      setTimeout(() => {
+        const node = document.getElementById('candleDiv');
+        console.log('Node ' + node);
+        candlePromise = Plotly.newPlot('candleDiv', candledata, candlelayout);
+        candlePromise.then((htmlElem: PlotlyHTMLElement) => {
+          this.candleElem = htmlElem;
+
+          this.candleElem.on('plotly_relayout', (eventdata) => {
+            console.log('relayout event!');
+            let timerId = 0;
+            let startDate , endDate;
+            if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
+              console.log('rangeslider event!!');
 
 
-          startDate = eventdata['xaxis.range'][0];
-          endDate = eventdata['xaxis.range'][1];
+              startDate = eventdata['xaxis.range'][0];
+              endDate = eventdata['xaxis.range'][1];
 
 
-          if(timerId>=0){
-            //timer is running: stop it
-            window.clearTimeout(timerId);
-          }
+              if(timerId>=0){
+                //timer is running: stop it
+                window.clearTimeout(timerId);
+              }
 
-          timerId = window.setTimeout(() => {
-            //fire end event
-            console.log('rangeslider event ENDS');
-            console.log('starts '  + startDate);
-            console.log('ends '  + endDate);
-            this.yRangeMin = this.yRangeMin - 0.005;
-            this.plotHistogram();
-            //reset timer to undefined
-            timerId = -1;
-          }, 800);
-        }
-      });
-    });
+              timerId = window.setTimeout(() => {
+                //fire end event
+                console.log('rangeslider event ENDS');
+                console.log('starts '  + startDate);
+                console.log('ends '  + endDate);
+                this.yRangeMin = this.yRangeMin - 0.005;
+
+                const newCandleLayout = {
+                  dragmode: 'zoom',
+                  width: 780,
+                  height: 500,
+                  margin: {
+                    r: 45,
+                    t: 25,
+                    b: 40,
+                    l: 60
+                  },
+                  showlegend: false,
+                  hovermode: 'closest',
+
+                  // yaxis: {
+                  //   autorange: true,
+                  //   scaleratio: 1,
+                  //   domain: [0, 1],
+                  //   range: [114.609999778, 137.410004222],
+                  //   type: 'linear'
+                  // },
+                  yaxis: {
+                    autotick: false,
+                    showspikes : true,
+                    spikemode: 'toaxis+across+marker',
+                    spikesnap: 'cursor',
+                    spikethickness: 1,
+                    spikedash: 'solid',
+                    side: 'right',
+                    ticks: 'outside',
+                    tick0: this.yRangeMin,
+                    dtick: this.yInterval,
+                    ticklen: 4,
+                    tickwidth: 2,
+                    tickcolor: '#000',
+                    range: [this.yRangeMin, this.yRangeMax],
+                  },
+                };
+
+                Plotly.relayout('candleDiv' , newCandleLayout);
+
+                this.plotHistogram();
+                const yAxis = Array.from(document.getElementsByClassName( "yaxislayer-above" ));
+                let delta = yAxis[2].getBoundingClientRect().height - yAxis[0].getBoundingClientRect().height;
+
+
+                this.layoutRight = {
+                  autosize: false,
+                  yaxis: {
+                    autotick: false,
+                    ticks: 'outside',
+                    tick0: this.yRangeMin,
+                    dtick: this.yInterval,
+                    ticklen: 8,
+                    tickwidth: 2,
+                    tickcolor: '#000',
+                    range: [this.yRangeMin, this.yRangeMax],
+                  },
+                  width: 200,
+                  height: 500,
+                  margin: {
+                    r: 40,
+                    t: 25,
+                    b: 152 + delta,
+                    l: 60,
+                    pad: 4
+                  },
+                  // paper_bgcolor: '#7f7f7f',
+                  // plot_bgcolor: '#c7c7c7'
+                };
+
+                Plotly.relayout('histoDiv' , this.layoutRight);
+
+                //reset timer to undefined
+                timerId = -1;
+              }, 800);
+            }
+          });
+        })
+
+    } , 1000)
+
+
+    // Plotly.newPlot('candleDiv', candledata, candlelayout).then( (htmlElem: PlotlyHTMLElement) => {
+    //    this.candleElem = htmlElem;
+    //
+    //    this.candleElem.on('plotly_relayout', (eventdata) => {
+    //     console.log('relayout event!');
+    //      let timerId = 0;
+    //      let startDate , endDate;
+    //     if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
+    //       console.log('rangeslider event!!');
+    //
+    //
+    //       startDate = eventdata['xaxis.range'][0];
+    //       endDate = eventdata['xaxis.range'][1];
+    //
+    //
+    //       if(timerId>=0){
+    //         //timer is running: stop it
+    //         window.clearTimeout(timerId);
+    //       }
+    //
+    //       timerId = window.setTimeout(() => {
+    //         //fire end event
+    //         console.log('rangeslider event ENDS');
+    //         console.log('starts '  + startDate);
+    //         console.log('ends '  + endDate);
+    //         this.yRangeMin = this.yRangeMin - 0.005;
+    //         this.plotHistogram();
+    //         //reset timer to undefined
+    //         timerId = -1;
+    //       }, 800);
+    //     }
+    //   });
+    // });
 
   }
 
@@ -340,7 +462,7 @@ export class SubplotComponent implements OnInit {
       margin: {
         r: 40,
         t: 25,
-        b: 164,
+        b: 152,
         l: 60,
         pad: 4
       },
@@ -380,13 +502,15 @@ export class SubplotComponent implements OnInit {
         if ( price >= bin['min'] && price < bin['max']) {
               const vol = this.intradayObject[price];
               const normalizeVol = vol / Math.pow(10, minZeros);
-              console.log('price is ' + price + '.bin mid is ' + bin['mid']);
+              // console.log('price is ' + price + '.bin mid is ' + bin['mid']);
             for ( let cnt=0 ; cnt < normalizeVol ; cnt++) {
               prices.push(bin['mid']);
             }
          }
       }
     }
+
+    console.log('min ' + this.yRangeMin + '. max = ' + this.yRangeMax + '. interval ' + this.yInterval)
 
     this.histoData = [
       {

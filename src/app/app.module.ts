@@ -5,8 +5,8 @@ import { AppComponent } from './app.component';
 import {
   MatButtonModule,
   MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule,
-  MatProgressSpinnerModule, MatSelectModule,
-  MatSidenavModule,
+  MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
+  MatSidenavModule, MatSliderModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -30,6 +30,7 @@ import { CoolchartComponent } from './coolchart/coolchart.component';
 import { SubplotComponent } from './subplot/subplot.component';
 import { IndicatorsComponent } from './indicators/indicators.component';
 import { HighstockComponent } from './highstock/highstock.component';
+import { ExperimentComponent } from './experiment/experiment.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
   {path: 'shareholdings' , component: ShareholdingsComponent},
   {path: 'coolchart' , component: CoolchartComponent},
   {path: 'subplot' , component: SubplotComponent},
-  {path: 'highstock' , component: HighstockComponent}
+  {path: 'highstock' , component: HighstockComponent},
+  {path: 'experiment' , component: ExperimentComponent}
 
 
 ];
@@ -55,13 +57,16 @@ const appRoutes: Routes = [
     CoolchartComponent,
     SubplotComponent,
     IndicatorsComponent,
-    HighstockComponent
+    HighstockComponent,
+    ExperimentComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     MatButtonModule,
+    MatRadioModule,
+    MatSliderModule,
     MatDividerModule,
     MatSidenavModule,
     MatListModule,
