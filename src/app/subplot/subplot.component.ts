@@ -116,9 +116,20 @@ export class SubplotComponent implements OnInit {
       yaxis: 'y'
     };
 
+    const voltrace = {
+      x: dateList,
+      y: volumeList,
+      type: 'bar',
+      yaxis: 'y2',
+    }
 
 
-    const candledata = [candletrace];
+
+    const candledata = [candletrace, voltrace];
+    const minVol = Math.min(...volumeList);
+    const maxVol = Math.max(...volumeList);
+
+    console.log('min vol is ' + minVol + '.max vol ' + maxVol);
 
     const candlelayout = {
       dragmode: 'zoom',
@@ -169,6 +180,25 @@ export class SubplotComponent implements OnInit {
         tickcolor: '#000',
         range: [this.yRangeMin, this.yRangeMax],
       },
+      yaxis2: {
+        title: 'Volume',
+        overlaying: 'y',
+        autotick: true,
+        showspikes : true,
+        showgrid: false,
+        spikemode: 'toaxis+across+marker',
+        spikesnap: 'cursor',
+        spikethickness: 1,
+        spikedash: 'solid',
+        side: 'left',
+        ticks: 'outside',
+        ticklen: 4,
+        tickwidth: 2,
+        tickcolor: '#000',
+        range: [minVol , 10*maxVol],
+        tick0: minVol
+
+      },
     };
 
     console.log('candle y range min ' + this.yRangeMin);
@@ -184,11 +214,11 @@ export class SubplotComponent implements OnInit {
           this.candleElem = htmlElem;
 
           this.candleElem.on('plotly_relayout', (eventdata) => {
-            console.log('relayout event!');
+            // console.log('relayout event!');
             let timerId = 0;
             let startDate , endDate;
             if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
-              console.log('rangeslider event!!');
+              // console.log('rangeslider event!!');
 
 
               startDate = eventdata['xaxis.range'][0];
@@ -202,9 +232,9 @@ export class SubplotComponent implements OnInit {
 
               timerId = window.setTimeout(() => {
                 //fire end event
-                console.log('rangeslider event ENDS');
-                console.log('starts '  + startDate);
-                console.log('ends '  + endDate);
+                // console.log('rangeslider event ENDS');
+                // console.log('starts '  + startDate);
+                // console.log('ends '  + endDate);
                 this.yRangeMin = this.yRangeMin - 0.005;
 
                 const newCandleLayout = {
