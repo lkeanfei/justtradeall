@@ -282,8 +282,10 @@ export class SubplotComponent implements OnInit {
                 Plotly.relayout('candleDiv' , newCandleLayout);
 
                 this.plotHistogram();
+
                 const yAxis = Array.from(document.getElementsByClassName( "yaxislayer-above" ));
                 let delta = yAxis[2].getBoundingClientRect().height - yAxis[0].getBoundingClientRect().height;
+
 
 
                 this.layoutRight = {

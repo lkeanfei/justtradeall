@@ -272,7 +272,8 @@ export class HighstockComponent implements OnInit {
     yAxis: {
       min: 0,
       minTickInterval: 10,
-      tickPixelInterval: 10,
+      tickPixelInterval: 5,
+      tickLength: 20,
 
       title: {
         text: 'Population (millions)',
@@ -287,7 +288,11 @@ export class HighstockComponent implements OnInit {
   },
   plotOptions: {
     bar: {
-      pointWidth: 10,
+      pointWidth: 25,
+      pointPadding: 0,
+      groupPadding: 0,
+      borderWidth: 0,
+      shadow: false,
       dataLabels: {
         enabled: true
       }

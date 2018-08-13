@@ -3,6 +3,18 @@
   flex-direction: column;
   min-width: 300px;
 }
+.klsechart {
+  width: 40vw;
+}
+
+.newhigh {
+  width: 20vw;
+}
+
+
+.toppadding {
+  padding-top: 25px;
+}
 
 
 .home-container {
