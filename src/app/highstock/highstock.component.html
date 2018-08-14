@@ -1,29 +1,34 @@
-<div id="container" style="height: 400px; min-width: 310px"></div>
 
-<highcharts-chart
-  [Highcharts]="Highcharts"
+<div fxLayout="row">
+  <div><button mat-button (click)="adjust()">Plus</button></div>
+  <div><button mat-button (click)="minus()">Minus</button></div>
+  <div><button mat-button (click)="getTickIntervals()">Get Order Flow Tick Intervals</button></div>
+  <div><button mat-button (click)="adjustStockTickInterval()">Adjust Stock Tick Intervals</button></div>
+</div>
+<!--<div fxLayout="column" fxLayoutAlign="center center">-->
+  <!--<div id="myDiv">&lt;!&ndash; Plotly chart will be drawn inside this DIV &ndash;&gt;</div>-->
+  <!--&lt;!&ndash;<div fxLayout="center">&ndash;&gt;-->
+  <!--&lt;!&ndash;<div id="leftDiv"  style="width: 100%; height: 500px;"></div>&ndash;&gt;-->
+  <!--&lt;!&ndash;&lt;!&ndash;<div id="rightDiv"  style="width: 100%; height: 500px;"></div>&ndash;&gt;&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--<div>-->
+    <!--&lt;!&ndash;<button mat-button (click)="clickButton()">Click me!</button>&ndash;&gt;-->
 
-  [constructorType]="chartConstructor"
-  [options]="chartOptions"
-
-  [(update)]="updateFlag"
-  [oneToOne]="oneToOneFlag"
-
-  style="width: 100%; height: 400px; display: block;"
-></highcharts-chart>
-
-<div fxLayout="column" fxLayoutAlign="center center">
-  <div id="myDiv"><!-- Plotly chart will be drawn inside this DIV --></div>
-  <!--<div fxLayout="center">-->
-  <!--<div id="leftDiv"  style="width: 100%; height: 500px;"></div>-->
-  <!--&lt;!&ndash;<div id="rightDiv"  style="width: 100%; height: 500px;"></div>&ndash;&gt;-->
   <!--</div>-->
-  <div>
-    <!--<button mat-button (click)="clickButton()">Click me!</button>-->
+  <div fxLayout="row">
+    <div id="candleDiv" >
+      <highcharts-chart
+        [Highcharts]="Highstocks"
 
-  </div>
-  <div fxLayout="center">
-    <div id="candleDiv" style="width: 100%; height: 500px;"></div>
+        [constructorType]="chartConstructor"
+        [options]="chartOptions"
+
+        [(update)]="updateFlag"
+        [oneToOne]="stockOneToOneFlag"
+
+        style="width: 100%; height: 400px; display: block;"
+      ></highcharts-chart>
+    </div>
     <div id="histoDiv">
       <highcharts-chart
         [Highcharts]="Highcharts"
@@ -39,4 +44,4 @@
     </div>
   </div>
 
-</div>
+

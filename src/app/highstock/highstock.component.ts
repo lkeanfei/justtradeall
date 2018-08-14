@@ -13,12 +13,18 @@ import {HttpService} from '../shared/httpservice.service';
 export class HighstockComponent implements OnInit {
 
   updateFlag = false; // optional boolean
-  oneToOneFlag = true; // optional boolean, defaults to false
+  orderFlowUpdateFlag = false;
+  oneToOneFlag = false; // optional boolean, defaults to false
+  stockOneToOneFlag = false;
   yInterval: number;
   intradayObject: any;
+  Highstocks = Highcharts;
   Highcharts = Highcharts; // required
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
-  histoConstructor = 'chart'
+  histoConstructor = 'chart';
+  stockTickPixelInterval = 49;
+  newTickPixelInterval = 46;
+  marginBottom = 110;
   data = [
     [
       1468243800000,
@@ -238,6 +244,9 @@ export class HighstockComponent implements OnInit {
       108.51
     ]];
   chartOptions = {
+    chart : {
+      width: 750,
+    },
     series: [{
       type : 'candlestick',
       data: this.data
@@ -256,66 +265,7 @@ export class HighstockComponent implements OnInit {
   }
 };
 
-  histoChartOptions = {
-    chart: {
-      type: 'bar'
-    },
-    title: {
-      text: 'Historic World Population by Region'
-    },
-    xAxis: {
-      type: 'linear',
-      minTickInterval: 10,
-      tickPixelInterval: 10,
-
-    },
-    yAxis: {
-      min: 0,
-      minTickInterval: 10,
-      tickPixelInterval: 5,
-      tickLength: 20,
-
-      title: {
-        text: 'Population (millions)',
-        align: 'high'
-      },
-      labels: {
-        overflow: 'justify'
-      }
-    },
-  tooltip: {
-    valueSuffix: ' millions'
-  },
-  plotOptions: {
-    bar: {
-      pointWidth: 25,
-      pointPadding: 0,
-      groupPadding: 0,
-      borderWidth: 0,
-      shadow: false,
-      dataLabels: {
-        enabled: true
-      }
-    }
-  },
-  legend: {
-    layout: 'vertical',
-    align: 'right',
-    verticalAlign: 'top',
-    x: -40,
-    y: 80,
-    floating: true,
-    borderWidth: 1,
-    shadow: true
-  },
-  credits: {
-    enabled: false
-  },
-  series: [{
-    name: 'Year 1800',
-    data: [ [0.1 , 107] , [0.2 , 31], [0.3 ,635], [0.4,203], [0.5,2] ,
-      [0.6 , 107] , [0.7 , 31], [0.8 ,635], [0.9,203], [1.0,2] ]
-  }]}
+  histoChartOptions:any;
   // chartCallback = function (chart) { ... } // optional function, defaults to null
 
 
@@ -553,6 +503,179 @@ export class HighstockComponent implements OnInit {
 
   }
 
+  adjust() {
+
+    this.marginBottom = this.marginBottom + 3;
+    this.histoChartOptions = {
+      chart: {
+        type: 'bar',
+        marginBottom: this.marginBottom
+      },
+      title: {
+        text: 'Historic World Population by Region'
+      },
+      xAxis: {
+        categories: ['0.1', '0.2', '0.3', '0.4', '0.5'],
+        tickmarkPlacement: 'between',
+
+      },
+      yAxis: {
+        min: 0,
+        minTickInterval: 10,
+        tickPixelInterval: 5,
+        tickLength: 20,
+
+        title: {
+          text: 'Population (millions)',
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      tooltip: {
+        valueSuffix: ' millions'
+      },
+      plotOptions: {
+        bar: {
+          pointWidth: 25,
+          pointPadding: 0,
+          groupPadding: 0,
+          borderWidth: 0,
+          shadow: false,
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        shadow: true
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Year 1800',
+        data: [ 100,200,400,900,1000 ]
+      }]}
+    console.log('Adjuested! ' + this.marginBottom);
+
+    this.orderFlowUpdateFlag = true;
+  }
+
+
+  minus() {
+
+    this.marginBottom = this.marginBottom - 3;
+    this.histoChartOptions = {
+      chart: {
+        type: 'bar',
+        marginBottom: this.marginBottom
+      },
+      title: {
+        text: 'Historic World Population by Region'
+      },
+      xAxis: {
+        categories: ['0.1', '0.2', '0.3', '0.4', '0.5'],
+        tickmarkPlacement: 'between',
+
+      },
+      yAxis: {
+        min: 0,
+        minTickInterval: 10,
+        tickPixelInterval: 5,
+        tickLength: 20,
+
+        title: {
+          text: 'Population (millions)',
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      tooltip: {
+        valueSuffix: ' millions'
+      },
+      plotOptions: {
+        bar: {
+          pointWidth: 25,
+          pointPadding: 0,
+          groupPadding: 0,
+          borderWidth: 0,
+          shadow: false,
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        shadow: true
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Year 1800',
+        data: [ 100,200,400,900,1000 ]
+      }]}
+    console.log('Adjuested! ' + this.marginBottom);
+
+    this.orderFlowUpdateFlag = true;
+  }
+
+  getTickIntervals() {
+    const yAxis = Array.from(document.getElementsByClassName( "highcharts-plot-border" ));
+    console.log('Height ' + yAxis[1].getBoundingClientRect().height)
+    const newTickPixelInterval = yAxis[1].getBoundingClientRect().height / 5;
+    console.log('Tick pixel interval ' + newTickPixelInterval);
+
+    this.stockTickPixelInterval = this.stockTickPixelInterval - 3;
+    console.log('Stock tick pixel ' + this.stockTickPixelInterval)
+
+    this.chartOptions = {
+      chart : {
+        width: 750,
+      },
+      series: [{
+        type : 'candlestick',
+        data: this.data
+      }],
+      yAxis: {
+        crosshair: true,
+        tickPixelInterval: newTickPixelInterval,
+      },
+      xAxis: {
+        crosshair: true,
+        events: {
+          setExtremes:(evt) => {
+            let minDate = new Date(evt.min);
+            console.log('x axis ' + minDate + ' ' + evt.max);
+          }},
+      }
+    };
+
+    this.updateFlag = true;
+    // const numTicks = yAxis[1].getElementsByClassName("highcharts-tick");
+    // console.log('Number of yAxis ' + yAxis.length + ' .Num ticks ' + yAxis[1].childNodes.length);
+    // console.log('Tick 0 ' + numTicks[0].getBoundingClientRect().top);
+    // console.log('Tick 1 ' + numTicks[1].getBoundingClientRect().top);
+  }
+
 
   calculateOptimalBinWidth() {
 
@@ -622,6 +745,39 @@ export class HighstockComponent implements OnInit {
     // const index = C.Select((c, ix) => new { Value = c, Index = ix })
     //   .Where(c => c.Value == minC).First().Index;
     // const optimalBinWidth = D[index];
+  }
+
+  adjustStockTickInterval() {
+
+
+    console.log('Adjust stock tick ' + this.stockTickPixelInterval)
+
+    this.chartOptions = {
+      chart : {
+        width: 750,
+      },
+      series: [{
+        type : 'candlestick',
+        data: this.data
+      }],
+      yAxis: {
+        crosshair: true,
+        tickPixelInterval: this.stockTickPixelInterval,
+      },
+      xAxis: {
+        crosshair: true,
+        events: {
+          setExtremes:(evt) => {
+            let minDate = new Date(evt.min);
+            console.log('x axis ' + minDate + ' ' + evt.max);
+          }},
+      }
+    };
+
+    this.Highstocks.charts[0].redraw();
+
+    this.stockTickPixelInterval = this.stockTickPixelInterval + 5
+
   }
 
 
