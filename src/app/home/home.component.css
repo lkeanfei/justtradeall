@@ -11,6 +11,40 @@
   width: 20vw;
 }
 
+.topgainer {
+  width: 30vw
+}
+
+.topgainertable {
+
+  width: 25vw
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  font-size: 10px;
+  line-height: 2em;
+  padding: 4px 4px 4px 0;
+  font-weight: 900;
+}
+
+.mat-header-cell {
+  font-size: 10px;
+  line-height: 2em;
+  padding: 4px 4px 4px 0;
+  font-weight: 900;
+}
+
+.topgainerpct {
+  width: 30vw
+}
+
+.topgainerpcttable {
+  width: 25vw
+}
 
 .toppadding {
   padding-top: 25px;

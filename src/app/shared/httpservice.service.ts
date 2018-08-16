@@ -26,6 +26,12 @@ export class HttpService {
         return this.httpClient.post( url , body , this.httpOptions);
     }
 
+    getFrontPageView() {
+
+      const body = { 'name' : 'test' };
+      return this.httpClient.post( '/api/frontpage/' , body );
+    }
+
     searchCompany( companyName : string) {
 
         const prm = new HttpParams();
