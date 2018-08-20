@@ -31,6 +31,7 @@ import { SubplotComponent } from './subplot/subplot.component';
 import { IndicatorsComponent } from './indicators/indicators.component';
 import { HighstockComponent } from './highstock/highstock.component';
 import { ExperimentComponent } from './experiment/experiment.component';
+import { SecurityComponent } from './security/security.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -41,7 +42,9 @@ const appRoutes: Routes = [
   {path: 'coolchart' , component: CoolchartComponent},
   {path: 'subplot' , component: SubplotComponent},
   {path: 'highstock' , component: HighstockComponent},
-  {path: 'experiment' , component: ExperimentComponent}
+  {path: 'experiment' , component: ExperimentComponent},
+  {path: 'security/:fullid' , component: SecurityComponent}
+
 
 
 ];
@@ -58,7 +61,8 @@ const appRoutes: Routes = [
     SubplotComponent,
     IndicatorsComponent,
     HighstockComponent,
-    ExperimentComponent
+    ExperimentComponent,
+    SecurityComponent
   ],
   imports: [
     BrowserModule,

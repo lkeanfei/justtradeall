@@ -26,6 +26,11 @@ export class HttpService {
         return this.httpClient.post( url , body , this.httpOptions);
     }
 
+    getSecurityView(fullid: string) {
+      const body = { 'fullid' : fullid };
+      return this.httpClient.post( '/api/security/' , body );
+    }
+
     getFrontPageView() {
 
       const body = { 'name' : 'test' };

@@ -40,7 +40,14 @@ export class HomeComponent implements OnInit {
 
   topGainersDateSource = [];
   topGainersPctDateSource = [];
+  topLosersDateSource = [];
+  topLosersPctDateSource = [];
+  newHighDataSource = [];
+  newLowDataSource = [];
+  unusualVolumeDataSource = [];
   topGainersColumns: string[] = ['stock', 'last', 'change'];
+  newHighLowColumns: string[] = ['stock' , 'weeks'];
+  unusualVolumeColumns: string[] = ['stock' , 'ratio'];
   displayedColumns = ['userId', 'userName', 'progress', 'color'];
   dataSource = new MatTableDataSource();
   exampleDatabase = new ExampleDatabase();
@@ -69,7 +76,12 @@ export class HomeComponent implements OnInit {
         console.log('Get frong page' )
         console.log(frontPageData);
         this.topGainersDateSource = frontPageData["topgainers"];
-        this.topGainersPctDateSource = frontPageData["topgainerspct"]
+        this.topGainersPctDateSource = frontPageData["topgainerspct"];
+        this.topLosersDateSource = frontPageData["toplosers"];
+        this.topLosersPctDateSource = frontPageData["toploserspct"];
+        this.newHighDataSource = frontPageData['newhigh'];
+        this.newLowDataSource = frontPageData['newlow'];
+        this.unusualVolumeDataSource = frontPageData['unusualvolume']
 
     })
 

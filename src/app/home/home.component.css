@@ -7,6 +7,31 @@
   width: 40vw;
 }
 
+.mytooltip {outline:none; }
+.mytooltip strong {line-height:30px;}
+.mytooltip:hover {text-decoration:none;}
+.mytooltip span {
+  z-index:10;display:none; padding:14px 20px;
+  margin-top:60px; margin-left:-160px;
+  width:300px; line-height:16px;
+}
+.mytooltip:hover span{
+  display:inline; position:absolute;
+  border:2px solid #FFF;  color:#EEE;
+  background:#333 url(https://i.kym-cdn.com/entries/icons/original/000/023/987/overcome.jpg) repeat-x 0 0;
+}
+
+.callout {z-index:20;position:absolute;border:0;top:-14px;left:120px;}
+
+/*CSS3 extras*/
+.mytooltip span
+{
+  border-radius:2px;
+  box-shadow: 0px 0px 8px 4px #666;
+  /*opacity: 0.8;*/
+}
+
+
 .newhigh {
   width: 20vw;
 }
@@ -15,9 +40,45 @@
   width: 30vw
 }
 
+.row1 {
+  padding-top: 25px;
+}
+
+.row1column1 {
+  width: 15vw
+}
+.row1column2 {
+  width: 15vw
+}
+
+.row1column3 {
+  width: 15vw
+}
+
+.row2 {
+  padding-top: 25px;
+}
+
+.row2column1 {
+  width: 15vw
+}
+.row2column2 {
+  width: 15vw
+}
+.row2column3 {
+  width: 15vw
+}
+
+
+.row3 {
+  padding-top: 25px;
+}
+
+
+
 .topgainertable {
 
-  width: 25vw
+  width: 15vw
 }
 
 .mat-row {
@@ -43,7 +104,7 @@
 }
 
 .topgainerpcttable {
-  width: 25vw
+  width: 15vw
 }
 
 .toppadding {
