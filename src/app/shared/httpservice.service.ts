@@ -26,8 +26,8 @@ export class HttpService {
         return this.httpClient.post( url , body , this.httpOptions);
     }
 
-    getSecurityView(fullid: string) {
-      const body = { 'fullid' : fullid };
+    getSecurityView(fullid: string ,dateStr: string) {
+      const body = { 'fullid' : fullid , 'date' : dateStr };
       return this.httpClient.post( '/api/security/' , body );
     }
 
