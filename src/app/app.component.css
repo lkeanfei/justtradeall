@@ -1,6 +1,28 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 
 
+.primaryrow {
+   height: 48x;
+  color: white;
+  background-color: rgb(33, 150, 243);
+ }
+
+.secrow {
+  height: 32px;
+  color: white;
+  background-color: rgb(118, 183, 239);
+}
+
+.mainTitle {
+  font-size: 16px;
+}
+
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
 .signals {
   padding-top: 25px;
 }
