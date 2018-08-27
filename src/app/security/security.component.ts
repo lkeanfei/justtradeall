@@ -20,6 +20,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   securitySummaryDataSource =  new MatTableDataSource<any>();
   securitySummaryColumns: string[] = ['label' , 'value'];
   Highstocks = Highcharts;
+  tableMap = {};
   data = [
     [
       1468243800000,
@@ -239,9 +240,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       108.51
     ]];
   chartOptions = {
-    chart : {
-      width: 750,
-    },
+
     series: [{
       type : 'candlestick',
       data: []
@@ -271,6 +270,12 @@ export class SecurityComponent implements OnInit, OnDestroy {
     // );
 
     const dateStr = '2018-08-21'
+    this.tableMap['rsi'] = 'RSI';
+    this.tableMap['wkhigh52'] = '52-week High';
+    this.tableMap['wklow52'] = '52-week Low';
+    this.tableMap['averagevol'] = 'Average Volume'
+
+
 
     const newSub = this.route.params.pipe(
        concatMap(prms =>  this.httpService.getSecurityView(prms['fullid'] ,dateStr) ),
@@ -282,24 +287,21 @@ export class SecurityComponent implements OnInit, OnDestroy {
       // console.log(res["daily"]);
       // console.log("volume");
       // console.log(this.data)
-      console.log('Summary')
-      console.log(res['summary'])
+
       const dataList = []
       const keys = Object.keys(res['summary']);
 
       for (const key of keys) {
          const value = res['summary'][key];
          console.log('key and value ' + value + ". " + key)
-         dataList.push({ 'label' : 'The label' , 'value' : value})
+         dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
          this.securitySummaryDataSource.data = dataList;
 
 
       }
 
       this.chartOptions = {
-        chart : {
-          width: 750,
-        },
+
         series: [{
           type : 'candlestick',
           data: res["daily"]
@@ -328,7 +330,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+
   }
 
 }

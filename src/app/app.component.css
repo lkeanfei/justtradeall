@@ -17,6 +17,13 @@
   font-size: 16px;
 }
 
+.input-width {
+  width: 300px;
+}
+
+.full-width {
+  width: 80vw
+}
 .example-fill-remaining-space {
   /* This fills the remaining space, by using flexbox.
      Every toolbar row uses a flexbox row layout. */
@@ -25,6 +32,10 @@
 
 .signals {
   padding-top: 25px;
+}
+
+.full-width {
+  width: 100vw
 }
 
 

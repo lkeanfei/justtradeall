@@ -1,5 +1,9 @@
-<div fxLayout="row">
-  <div id="candleDiv" >
+<!--<div fxLayout="row">-->
+  <!--<div class="div1" fxFlex="60"></div>-->
+  <!--<div class="div2" fxFlex></div>-->
+<!--</div>-->
+<div fxLayout="row" fxLayoutGap="10px">
+  <div id="candleDiv" fxFlex="75">
     <highcharts-chart
       [Highcharts]="Highstocks"
 
@@ -12,8 +16,8 @@
       style="width: 100%; height: 400px; display: block;"
     ></highcharts-chart>
   </div>
-  <div>
-    <table mat-table [dataSource]="securitySummaryDataSource" >
+  <div fxFlex>
+    <table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >
 
       <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
@@ -26,7 +30,7 @@
 
       <!-- Last Column -->
       <ng-container matColumnDef="value">
-        <th mat-header-cell *matHeaderCellDef> Value </th>
+        <th mat-header-cell *matHeaderCellDef> </th>
         <td align="right" mat-cell *matCellDef="let element"> {{element['value']}} </td>
       </ng-container>
 

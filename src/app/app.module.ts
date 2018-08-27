@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { AppComponent } from './app.component';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule,
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
@@ -35,6 +36,7 @@ import { SecurityComponent } from './security/security.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
+  {path: 'home' , component: HomeComponent} ,
   {path: 'login' , component: LoginComponent} ,
   {path: 'register' , component: RegisterComponent} ,
   {path: 'reset' , component: ResetComponent} ,
@@ -68,6 +70,7 @@ const appRoutes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatRadioModule,
     MatSliderModule,

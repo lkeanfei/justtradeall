@@ -31,6 +31,11 @@ export class HttpService {
       return this.httpClient.post( '/api/security/' , body );
     }
 
+    getAllCounters() {
+      const body = { };
+      return this.httpClient.post( '/api/counters/' , body );
+    }
+
     getFrontPageView() {
 
       const body = { 'name' : 'test' };

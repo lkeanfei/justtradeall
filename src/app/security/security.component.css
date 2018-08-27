@@ -1,0 +1,13 @@
+.div1 {
+  background-color: blue;
+  height: 5vh;
+}
+
+.div2 {
+  background-color: black;
+  height: 5vh
+}
+
+.tableClass {
+  width: 100% !important;
+}
