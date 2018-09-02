@@ -11,3 +11,7 @@
 .tableClass {
   width: 100% !important;
 }
+
+.divider {
+  height : 5vh;
+}

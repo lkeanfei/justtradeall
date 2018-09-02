@@ -2,6 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
+import * as HC_indic from 'highcharts/indicators/indicators';
+import * as HC_BB from 'highcharts/indicators/bollinger-bands';
+import * as HC_RSI from 'highcharts/indicators/rsi';
+HC_indic(Highcharts); // loads core and enables sma
+HC_BB(Highcharts);
+HC_RSI(Highcharts);
+
 import {concatMap, map, switchMap, take, tap} from 'rxjs/internal/operators';
 import {MatTableDataSource} from "@angular/material";
 
@@ -10,7 +17,7 @@ import {MatTableDataSource} from "@angular/material";
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.css']
 })
-export class SecurityComponent implements OnInit, OnDestroy {
+export class SecurityComponent implements OnInit {
 
   private sub: any;
   fullid: string;

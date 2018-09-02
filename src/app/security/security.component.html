@@ -2,43 +2,50 @@
   <!--<div class="div1" fxFlex="60"></div>-->
   <!--<div class="div2" fxFlex></div>-->
 <!--</div>-->
-<div fxLayout="row" fxLayoutGap="10px">
-  <div id="candleDiv" fxFlex="75">
-    <highcharts-chart
-      [Highcharts]="Highstocks"
-
-      [constructorType]="chartConstructor"
-      [options]="chartOptions"
-
-      [(update)]="updateFlag"
-      [oneToOne]="stockOneToOneFlag"
-
-      style="width: 100%; height: 400px; display: block;"
-    ></highcharts-chart>
+<div fxLayout="column" fxLayoutGap="10px">
+  <div class="divider" fxLayout="row">
+    <div fxFlex="50"> Static </div>
+    <div fxFlex> Interactive </div>
   </div>
-  <div fxFlex>
-    <table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >
+  <div fxLayout="row">
+    <div id="candleDiv" fxFlex="75">
+      <highcharts-chart
+        [Highcharts]="Highstocks"
 
-      <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+        [constructorType]="chartConstructor"
+        [options]="chartOptions"
 
-      <!-- Stock Column -->
-      <ng-container matColumnDef="label">
-        <th mat-header-cell *matHeaderCellDef>  </th>
-        <td mat-cell *matCellDef="let element"> {{element['label']}} </td>
-      </ng-container>
+        [(update)]="updateFlag"
+        [oneToOne]="stockOneToOneFlag"
 
-      <!-- Last Column -->
-      <ng-container matColumnDef="value">
-        <th mat-header-cell *matHeaderCellDef> </th>
-        <td align="right" mat-cell *matCellDef="let element"> {{element['value']}} </td>
-      </ng-container>
+        style="width: 100%; height: 400px; display: block;"
+      ></highcharts-chart>
+    </div>
+    <div fxFlex>
+      <table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Stock Column -->
+        <ng-container matColumnDef="label">
+          <th mat-header-cell *matHeaderCellDef>  </th>
+          <td mat-cell *matCellDef="let element"> {{element['label']}} </td>
+        </ng-container>
+
+        <!-- Last Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td align="right" mat-cell *matCellDef="let element"> {{element['value']}} </td>
+        </ng-container>
 
 
 
-      <tr mat-header-row *matHeaderRowDef="securitySummaryColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: securitySummaryColumns;"></tr>
-    </table>
+        <tr mat-header-row *matHeaderRowDef="securitySummaryColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: securitySummaryColumns;"></tr>
+      </table>
+    </div>
   </div>
+
 </div>
 

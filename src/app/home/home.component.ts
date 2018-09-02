@@ -234,6 +234,12 @@ export class HomeComponent implements OnInit {
         type : 'candlestick',
         data: this.klseData
       }],
+      title : {
+        text : 'FBMKLCI'
+      },
+      subtitle : {
+        text :'21 Aug 2018'
+      },
       yAxis: {
         crosshair: true,
         tickPixelInterval: 10,
