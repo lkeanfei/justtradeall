@@ -8,6 +8,31 @@
   height: 5vh
 }
 
+.static {
+  text-align: right;
+  cursor: pointer;
+}
+
+.staticChart {
+  width : 750px
+}
+
+.interactiveChart {
+  width : 750px
+}
+
+.my-centered-dialog {
+  max-width: 80vw;
+
+.mat-dialog-container {
+  max-width: none;
+}
+}
+
+.interactive {
+  cursor: pointer;
+}
+
 .tableClass {
   width: 100% !important;
 }

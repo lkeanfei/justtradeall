@@ -11,6 +11,7 @@ HC_RSI(Highcharts);
 
 import {concatMap, map, switchMap, take, tap} from 'rxjs/internal/operators';
 import {MatTableDataSource} from "@angular/material";
+import {LoginService} from "../shared/loginservice.service";
 
 @Component({
   selector: 'app-security',
@@ -21,9 +22,21 @@ export class SecurityComponent implements OnInit {
 
   private sub: any;
   fullid: string;
-  updateFlag = false; // optional boolean
-  oneToOneFlag = false; // optional boolean, defaults to false
-  stockOneToOneFlag = false;
+  showStatic = true;
+  showLogin = false;
+  fxFlexValue = 75;
+
+  dailyData = [];
+  chartWidth: number;
+
+  staticUpdateFlag = false; // optional boolean
+  staticOneToOneFlag = false; // optional boolean, defaults to false
+  staticChartOptions : any;
+
+  interactiveUpdateFlag = false;
+  interactiveOneToOneFlag = false;
+  interactiveChartOptions : any;
+
   securitySummaryDataSource =  new MatTableDataSource<any>();
   securitySummaryColumns: string[] = ['label' , 'value'];
   Highstocks = Highcharts;
@@ -246,32 +259,12 @@ export class SecurityComponent implements OnInit {
       107.85,
       108.51
     ]];
-  chartOptions = {
 
-    series: [{
-      type : 'candlestick',
-      data: []
-    }],
-    yAxis: {
-      crosshair: true,
-      tickPixelInterval: 10,
-    },
-    xAxis: {
-      crosshair: true,
-      events: {
-        setExtremes:(evt) => {
-          let minDate = new Date(evt.min);
-          console.log('x axis ' + minDate + ' ' + evt.max);
-        }},
-    }
-  };
+
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
 
 
-  constructor(private route: ActivatedRoute , private httpService: HttpService) { }
-
-  ngOnInit() {
-
+  constructor(private route: ActivatedRoute , private httpService: HttpService , private loginService: LoginService) {
     // const httpSub = this.httpService.getSecurityView('12345').pipe(
     //   map(prms => prms['fullid'])
     // );
@@ -282,10 +275,126 @@ export class SecurityComponent implements OnInit {
     this.tableMap['wklow52'] = '52-week Low';
     this.tableMap['averagevol'] = 'Average Volume'
 
+    const chartWidth = window.screen.width * 0.60;
+
+    this.staticChartOptions = {
+      chart : {
+        width : chartWidth
+      },
+      navigator: {
+        enabled: false
+      },
+      tooltip : {
+        animation: false,
+        crosshairs: false,
+        enabled: false
+      },
+      scrollbar : {
+        enabled: false
+      },
+      rangeSelector: {
+        enabled: false,
+        inputEnabled: false,
+        buttonTheme: {
+          visibility: 'hidden'
+        },
+        labelStyle: {
+          visibility: 'hidden'
+        }
+      },
+      series: [{
+        type : 'candlestick',
+        states: {
+          hover: {
+            enabled: false
+          }
+        },
+        data: []
+      }],
+      yAxis: {
+        crosshair: true,
+        tickPixelInterval: 10,
+      },
+      xAxis: {
+        crosshair: true,
+        events: {
+          setExtremes:(evt) => {
+            let minDate = new Date(evt.min);
+            console.log('x axis ' + minDate + ' ' + evt.max);
+          }},
+      }
+    };
+
+    this.interactiveChartOptions  = {
+      chart : {
+        width : chartWidth
+      },
+
+      series: [{
+        type : 'candlestick',
+        id : 'candlestick',
+        data: []
+      }
+        ,{
+          type: 'column',
+          name: 'Volume',
+          data: [],
+          yAxis: 1,
+        }
+        , {
+          type: 'bb',
+          linkedTo: 'candlestick'
+        }
+        , {
+          yAxis: 2,
+          type: 'rsi',
+          linkedTo: 'candlestick'
+        }],
+      yAxis:[{
+        crosshair: true,
+        height: '50%',
+        tickPixelInterval: 10,
+      },
+        {
+          labels: {
+            align: 'right',
+            x: -3
+          },
+          title: {
+            text: 'Volume'
+          },
+          top: '50%',
+          height: '25%',
+          offset: 0,
+          lineWidth: 2
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3
+          },
+          title: {
+            text: 'RSI'
+          },
+          top: '75%',
+          height: '25%',
+          offset: 0,
+          lineWidth: 2
+        }],
+      xAxis: {
+        crosshair: true,
+        events: {
+          setExtremes:(evt) => {
+            let minDate = new Date(evt.min);
+            console.log('x axis ' + minDate + ' ' + evt.max);
+          }},
+      }
+    };
+
 
 
     const newSub = this.route.params.pipe(
-       concatMap(prms =>  this.httpService.getSecurityView(prms['fullid'] ,dateStr) ),
+      concatMap(prms =>  this.httpService.getSecurityView(prms['fullid'] ,dateStr) ),
     );
 
     newSub.subscribe( res => {
@@ -299,41 +408,61 @@ export class SecurityComponent implements OnInit {
       const keys = Object.keys(res['summary']);
 
       for (const key of keys) {
-         const value = res['summary'][key];
-         console.log('key and value ' + value + ". " + key)
-         dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
-         this.securitySummaryDataSource.data = dataList;
+        const value = res['summary'][key];
+        console.log('key and value ' + value + ". " + key)
+        dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
+        this.securitySummaryDataSource.data = dataList;
 
 
       }
 
-      this.chartOptions = {
+      this.dailyData = res['daily'];
 
-        series: [{
-          type : 'candlestick',
-          data: res["daily"]
-        }],
-        yAxis: {
-          crosshair: true,
-          tickPixelInterval: 10,
-        },
-        xAxis: {
-          crosshair: true,
-          events: {
-            setExtremes:(evt) => {
-              let minDate = new Date(evt.min);
-              console.log('x axis ' + minDate + ' ' + evt.max);
-            }},
-        }
-      };
+      this.staticChartOptions['series'][0]['data'] = this.dailyData;
+      this.interactiveChartOptions['series'][0]['data'] = this.dailyData;
+      this.interactiveChartOptions['series'][1]['data'] = res['volume']
 
-      this.updateFlag = true;
+      this.staticUpdateFlag = true;
+      this.interactiveUpdateFlag = true;
       this.Highstocks.charts[0].redraw();
 
     });
 
 
+  }
 
+  ngOnInit() {
+
+    const chartWidth = window.screen.width * 0.60;
+    this.staticChartOptions['series'][0]['data'] = this.dailyData
+    this.interactiveChartOptions['series'][0]['data'] = this.dailyData
+    this.staticUpdateFlag = true;
+    this.interactiveUpdateFlag = true;
+    this.Highstocks.charts[0].redraw();
+
+  }
+
+  switchToStatic() {
+    this.showStatic = true;
+    this.fxFlexValue = 75;
+    this.ngOnInit();
+  }
+
+  switchToInteractive() {
+
+    const id = localStorage.getItem('id');
+    console.log('id is ' + id);
+    this.showStatic = false;
+    if (id === null) {
+      this.showLogin = true;
+    }
+    this.fxFlexValue = 75;
+    console.log('To Interactive');
+    this.ngOnInit();
+  }
+
+  openDialog() {
+    this.loginService.openDialog()
   }
 
   ngOnDestroy() {

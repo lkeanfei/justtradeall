@@ -4,7 +4,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { AppComponent } from './app.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule,
+  MatButtonModule, MatDialogModule,
   MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule,
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule,
@@ -33,6 +33,7 @@ import { IndicatorsComponent } from './indicators/indicators.component';
 import { HighstockComponent } from './highstock/highstock.component';
 import { ExperimentComponent } from './experiment/experiment.component';
 import { SecurityComponent } from './security/security.component';
+import {DialogContentExampleDialog, LoginService} from "./shared/loginservice.service";
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -64,12 +65,14 @@ const appRoutes: Routes = [
     IndicatorsComponent,
     HighstockComponent,
     ExperimentComponent,
-    SecurityComponent
+    SecurityComponent,
+    DialogContentExampleDialog
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatDialogModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatRadioModule,
@@ -94,7 +97,9 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     HighchartsChartModule
   ],
-  providers: [AuthService, HttpService],
+  entryComponents: [ DialogContentExampleDialog],
+
+  providers: [AuthService, HttpService , LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
