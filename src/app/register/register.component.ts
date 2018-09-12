@@ -73,15 +73,15 @@ export class RegisterComponent implements OnInit {
   loginFacebook() {
 
     this.authService.loginFacebook()
-      .subscribe(
-        () => {
-          console.log('Facebook login successful!');
-        }
-        ,
-        () => {
-          console.log('Facebook login failed!');
-        }
-      );
+      // .subscribe(
+      //   () => {
+      //     console.log('Facebook login successful!');
+      //   }
+      //   ,
+      //   () => {
+      //     console.log('Facebook login failed!');
+      //   }
+      // );
 
   }
 

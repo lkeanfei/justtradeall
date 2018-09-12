@@ -4,6 +4,7 @@ import {FormControl} from "@angular/forms";
 import {map, startWith} from 'rxjs/operators';
 import {HttpService} from "./shared/httpservice.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {LoginService} from "./shared/loginservice.service";
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
   options: string[] = [];
   filteredOptions: Observable<string[]>;
 
-  constructor(private httpService : HttpService , private route: ActivatedRoute , private router: Router) {}
+  constructor(private loginService: LoginService,private httpService : HttpService , private route: ActivatedRoute , private router: Router) {}
 
   ngOnInit() {
 
@@ -57,6 +58,10 @@ export class AppComponent implements OnInit {
       this.secondaryTitles.push(data);
     }
 
+  }
+
+  openDialog() {
+    this.loginService.openDialog();
   }
 
   activateAnalysis() {

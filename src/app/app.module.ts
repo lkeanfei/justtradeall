@@ -34,6 +34,7 @@ import { HighstockComponent } from './highstock/highstock.component';
 import { ExperimentComponent } from './experiment/experiment.component';
 import { SecurityComponent } from './security/security.component';
 import {DialogContentExampleDialog, LoginService} from "./shared/loginservice.service";
+import {AngularFirestoreModule} from "@angular/fire/firestore";
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -92,9 +93,10 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     FormsModule,
     RouterModule.forRoot(appRoutes , {useHash: true}),
-    AngularFireModule.initializeApp(  environment.firebase),
+    AngularFireModule.initializeApp(  environment.firebase , 'angular-auth-firebase'),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFirestoreModule,
     HighchartsChartModule
   ],
   entryComponents: [ DialogContentExampleDialog],

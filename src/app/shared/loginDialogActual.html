@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Welcome to JustTradeAll. Please Login </h2>
+<mat-dialog-content class="mat-typography">
+  <div fxLayout="row" fxLayoutGap="10px">
+    <div fxFlex="1 1 52%" >
+      <div  fxLayoutAlign="space-evenly center" fxLayout="column" fxLayoutGap="10px">
+        <mat-form-field class="classicinput">
+          <input matInput type="email" placeholder="Email" [formControl]="emailFormControl" >
+          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+
+        </mat-form-field>
+        <mat-form-field class="classicinput">
+          <input matInput id="password" placeholder="Password" type="password" [formControl]="passwordFormControl" >
+        </mat-form-field>
+        <button mat-raised-button color="primary">Login</button>
+        <div  fxLayoutAlign="center" >
+          <a routerLink="/reset">Forgot your password?</a>
+        </div>
+      </div>
+      </div>
+
+    <div fxFlex fxLayout="column" fxLayoutAlign="space-evenly center"  fxLayoutGap="10px">
+        <div class="socialinput" >
+          <!--<button class="btn-facebook" fxFlex (click)="loginFacebook()"><i class="fab fa-facebook" style="font-size:16px;"></i>  |  Sign in with Facebook</button>-->
+          <button class="facebook-class socialinput" mat-button (click)="loginFacebook()"><i class="fab fa-facebook" style="font-size:16px;"></i> |  Sign in with Facebook</button>
+        </div>
+        <div class="socialinput"  >
+          <button class="google-class socialinput" mat-button (click)="loginGoogle()"><i class="fab fa-google-plus" style="font-size:16px;"></i> |  Sign in with Google</button>
+        </div>
+
+
+
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

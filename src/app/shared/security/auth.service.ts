@@ -11,6 +11,7 @@ import {HttpService} from '../httpservice.service';
 import {HttpParams} from '@angular/common/http';
 import {ObjectUnsubscribedError} from 'rxjs/index';
 import { switchMap } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
   authSubject: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>( AuthService.UNKNOWN_USER);
 
   constructor(private db: AngularFireDatabase ,
+              private firestore: AngularFirestore,
               private firebaseAuth: AngularFireAuth ,
               private httpService: HttpService) {
 
@@ -68,25 +70,14 @@ export class AuthService {
 
   }
 
-  private updateUser(authData) {
-    const userData = new User(authData);
-
-    // grab any existing users including roles
-    const angularFireObject = this.db.object('users/' + authData.uid);
-    angularFireObject.update(userData);
-    // const ref = angularFireObject.valueChanges()
-    // ref.take(1)
-    //   .subscribe(
-    //     user => {
-    //
-    //       console.log(user);
-    //       if(!user.roles) {
-    //         console.log('update user without roles');
-    //         angularFireObject.update(userData);
-    //       }
-    //     }
-    //   );
-  }
+  // private updateUser(authData) {
+  //   const userData = new User(authData);
+  //
+  //   // grab any existing users including roles
+  //   const angularFireObject = this.firestore.collection('users/').add(authData.uid);
+  //   // angularFireObject.update(userData);
+  //
+  // }
 
   //Toggle login change
     toggleLoginChange( val: Boolean) {
@@ -182,7 +173,7 @@ export class AuthService {
     return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup( new firebase.auth.GoogleAuthProvider()));
   }
 
-  loginFacebook(): Observable<any> {
+  loginFacebook(): Observable<any>  {
     return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()));
   }
 
@@ -194,28 +185,28 @@ export class AuthService {
     const subject = new Subject<any>();
     promise
       .then( res => {
+
+         // console.log('*******Successful login!');
+         // console.log(res);
+         //  console.log('*******Current User!');
+          console.log(this.firebaseAuth.auth.currentUser);
           const authInfo = new AuthInfo(this.firebaseAuth.auth.currentUser.uid , null);
           this.authSubject.next(authInfo);
+          // console.log('id token')
+          // this.firebaseAuth.auth.currentUser.getIdToken(true).then( (idToken) => {
+          //         localStorage.setItem('id' , idToken);
+          //            console.log('****' + idToken);
+          //         const body = new HttpParams()
+          //             .set('token' , idToken);
+          //
+          //
+          //         this.httpService.post('/api/hello-view/' , body.toString()).subscribe(
+          //             data => { console.log('post data ' + data); },
+          //             err => { console.log('err ' + err);},
+          //             ()  => { console.log('finished!');}
+          //         );
+          //     });
 
-          // console.log('Before update user');
-          // console.log(res);
-
-          // console.log('id token ' + res.credential.idToken)
-              console.log('id token')
-              this.firebaseAuth.auth.currentUser.getIdToken(true).then( (idToken) => {
-                  localStorage.setItem('id' , idToken);
-                     console.log('****' + idToken);
-                  const body = new HttpParams()
-                      .set('token' , idToken);
-
-
-                  this.httpService.post('/api/hello-view/' , body.toString()).subscribe(
-                      data => { console.log('post data ' + data); },
-                      err => { console.log('err ' + err);},
-                      ()  => { console.log('finished!');}
-                  );
-              });
-              this.updateUser(res.user);
           this.loginChanged.next(true);
 
 
@@ -225,6 +216,7 @@ export class AuthService {
         err => {
           this.loginChanged.next(false);
           localStorage.removeItem('id');
+          console.log('Error is ' + err);
           this.authSubject.error(err);
           subject.error(err);
           subject.complete();

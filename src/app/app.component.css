@@ -21,6 +21,15 @@
   width: 300px;
 }
 
+.my-centered-dialog {
+  max-width: 80vw;
+
+.mat-dialog-container {
+  max-width: none;
+}
+}
+
+
 .full-width {
   width: 80vw
 }

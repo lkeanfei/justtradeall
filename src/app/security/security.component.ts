@@ -23,7 +23,7 @@ export class SecurityComponent implements OnInit {
   private sub: any;
   fullid: string;
   showStatic = true;
-  showLogin = false;
+  showLogin = true;
   fxFlexValue = 75;
 
   dailyData = [];
@@ -453,9 +453,10 @@ export class SecurityComponent implements OnInit {
     const id = localStorage.getItem('id');
     console.log('id is ' + id);
     this.showStatic = false;
-    if (id === null) {
-      this.showLogin = true;
-    }
+    this.showLogin = true;
+    // if (id === null) {
+    //   this.showLogin = true;
+    // }
     this.fxFlexValue = 75;
     console.log('To Interactive');
     this.ngOnInit();
