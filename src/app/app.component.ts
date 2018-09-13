@@ -75,11 +75,11 @@ export class AppComponent implements OnInit {
   }
 
   testClick(param: string) {
-    console.log('param is ' + param);
+
   }
 
   selectCounter(counter: string) {
-    console.log('Selected counter is ' + counter);
+
     // this.myControl.setValue(counter);
   }
 
@@ -87,7 +87,6 @@ export class AppComponent implements OnInit {
      // console.log('Security is ' + this.myControl.value);
     const fullSecStr = this.myControl.value;
     const tokens = fullSecStr.split(' ');
-    console.log('Navigating to ' + tokens[0]);
     this.router.navigate(['/security' , tokens[0] + '.MY'] );
   }
 

@@ -37,11 +37,11 @@ export class DialogContentExampleDialog {
     this.authService.loginGoogle()
       .subscribe(
         () => {
-          console.log('Google login successful!');
+
         }
         ,
         () => {
-          console.log('Error Google login!');
+
         });
   }
 
@@ -51,7 +51,7 @@ export class DialogContentExampleDialog {
     this.authService.loginFacebook()
       .subscribe(
         () => {
-          console.log('Facebook login successful!');
+
         }
         ,
         () => {

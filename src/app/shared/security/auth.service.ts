@@ -36,7 +36,7 @@ export class AuthService {
       } else {
           this.loginChanged.next(true);
       }
-      console.log('constructing AuthService ' + localStorage.getItem('id'));
+
 
     this.user = this.firebaseAuth.authState;
     this.firebaseAuth.authState.pipe(switchMap( auth => {
@@ -49,7 +49,7 @@ export class AuthService {
       }
     })).subscribe(user => {
       if (user !== null) {
-        console.log(user);
+
         const authInfo = new AuthInfo(user.$key , user.roles);
         this.authSubject.next(authInfo);
         this.userSubject.next(user);
@@ -92,16 +92,10 @@ export class AuthService {
     this.firebaseAuth.auth.sendPasswordResetEmail(email)
       .then(
         res => {
-
-          console.log("On ok");
-          console.log(res);
-
           subject.next(res);
           subject.complete();
         },
         err => {
-           console.log("On rejected");
-           console.log(err);
           subject.error(err);
           subject.complete();
         }
@@ -159,8 +153,7 @@ export class AuthService {
      this.db.list('/users').valueChanges()
        .subscribe(
          (usersList) => {
-           console.log("Users ");
-           console.log(usersList);
+
          }
        );
 
@@ -186,16 +179,13 @@ export class AuthService {
     promise
       .then( res => {
 
-         // console.log('*******Successful login!');
-         // console.log(res);
-         //  console.log('*******Current User!');
-          console.log(this.firebaseAuth.auth.currentUser);
+
           const authInfo = new AuthInfo(this.firebaseAuth.auth.currentUser.uid , null);
           this.authSubject.next(authInfo);
-          // console.log('id token')
+
           // this.firebaseAuth.auth.currentUser.getIdToken(true).then( (idToken) => {
           //         localStorage.setItem('id' , idToken);
-          //            console.log('****' + idToken);
+
           //         const body = new HttpParams()
           //             .set('token' , idToken);
           //

@@ -44,13 +44,12 @@ export class RegisterComponent implements OnInit {
     this.authService.signUp( this.emailFormControl.value , this.passwordFormControl.value)
       .subscribe(
         () => {
-          console.log("Signup success!") ;
+
           this.signupFailed = false;
           this.signupFailedMessage = ""
         } ,
         (err: Error) => {
-          console.log("Error");
-          console.log(err.message);
+
           this.signupFailed = true;
           this.signupFailedMessage = err.message;
         }
