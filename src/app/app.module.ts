@@ -35,6 +35,7 @@ import { ExperimentComponent } from './experiment/experiment.component';
 import { SecurityComponent } from './security/security.component';
 import {DialogContentExampleDialog, LoginService} from "./shared/loginservice.service";
 import {AngularFirestoreModule} from "@angular/fire/firestore";
+import {PreviousRouteServiceService} from "./shared/previous-route-service.service";
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -101,7 +102,7 @@ const appRoutes: Routes = [
   ],
   entryComponents: [ DialogContentExampleDialog],
 
-  providers: [AuthService, HttpService , LoginService],
+  providers: [AuthService, HttpService , LoginService , PreviousRouteServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

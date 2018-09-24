@@ -26,7 +26,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     this.httpService.getAllCounters().subscribe( (counterList: Array<any> )=> {
+
+
        for(const counter of counterList) {
+
 
           this.options.push( counter['symbol'] + ' ' + counter['name']);
        }

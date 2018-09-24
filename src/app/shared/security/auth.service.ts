@@ -13,6 +13,8 @@ import {ObjectUnsubscribedError} from 'rxjs/index';
 import { switchMap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
+import { from } from 'rxjs';
+
 @Injectable()
 export class AuthService {
 
@@ -38,23 +40,25 @@ export class AuthService {
       }
 
 
+
     this.user = this.firebaseAuth.authState;
-    this.firebaseAuth.authState.pipe(switchMap( auth => {
-
-      if (auth) {
-        // successfully signed in
-        return this.db.object('users/' + auth.uid).valueChanges();
-      } else {
-        return of(null);
-      }
-    })).subscribe(user => {
-      if (user !== null) {
-
-        const authInfo = new AuthInfo(user.$key , user.roles);
-        this.authSubject.next(authInfo);
-        this.userSubject.next(user);
-      }
-    });
+    // this.firebaseAuth.authState.pipe(switchMap( auth => {
+    //
+    //   if (auth) {
+    //     // successfully signed in
+    //     console.log('Successufl signed at auth service')
+    //     return this.db.object('users/' + auth.uid).valueChanges();
+    //   } else {
+    //     return of(null);
+    //   }
+    // })).subscribe(user => {
+    //   if (user !== null) {
+    //
+    //     const authInfo = new AuthInfo(user.$key , user.roles);
+    //     this.authSubject.next(authInfo);
+    //     this.userSubject.next(user);
+    //   }
+    // });
     // this.firebaseAuth.authState.switchMap( auth => {
     //
     //   if(auth)
@@ -114,6 +118,11 @@ export class AuthService {
     // return Observable.fromPromise(this.auth.auth.signInWithEmailAndPassword( email , password))
     return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithEmailAndPassword(email, password));
 
+  }
+
+  getIdToken() : Observable<string> {
+    const idTokenObservable  = from(this.firebaseAuth.auth.currentUser.getIdToken(true));
+    return idTokenObservable;
   }
 
   signUp(email, password) : Observable<any>

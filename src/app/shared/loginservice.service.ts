@@ -2,6 +2,7 @@ import {Component, Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {AuthService} from "./security/auth.service";
 import {FormControl, Validators} from "@angular/forms";
+import {PreviousRouteServiceService} from "./previous-route-service.service";
 
 @Injectable()
 export class LoginService {
@@ -31,7 +32,11 @@ export class DialogContentExampleDialog {
 
   passwordFormControl = new FormControl('');
 
-  constructor (private authService: AuthService) {}
+  constructor (private authService: AuthService , private prevRouteService : PreviousRouteServiceService) {
+     console.log('Previous route is ' + this.prevRouteService.getPreviousUrl())
+  }
+
+
   loginGoogle() {
 
     this.authService.loginGoogle()

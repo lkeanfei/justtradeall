@@ -91,11 +91,11 @@ export class HomeComponent implements OnInit {
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new Rx.BehaviorSubject(this.data.selectedDate);
 
-    this.authService.loginChanged.subscribe(
-      (isLoggedIn: Boolean) => {
-
-      }
-    );
+    // this.authService.loginChanged.subscribe(
+    //   (isLoggedIn: Boolean) => {
+    //
+    //   }
+    // );
 
     this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
 

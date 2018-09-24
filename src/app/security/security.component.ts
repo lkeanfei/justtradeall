@@ -9,9 +9,10 @@ HC_indic(Highcharts); // loads core and enables sma
 HC_BB(Highcharts);
 HC_RSI(Highcharts);
 
-import {concatMap, map, switchMap, take, tap} from 'rxjs/internal/operators';
+import {concatMap, map, switchMap, take, tap} from 'rxjs/operators';
 import {MatTableDataSource} from "@angular/material";
 import {LoginService} from "../shared/loginservice.service";
+import {Observable, of} from "rxjs/index";
 
 @Component({
   selector: 'app-security',
@@ -392,24 +393,21 @@ export class SecurityComponent implements OnInit {
     };
 
 
+    console.log('Constructing security!!')
 
-    const newSub = this.route.params.pipe(
-      concatMap(prms =>  this.httpService.getSecurityView(prms['fullid'] ,dateStr) ),
+
+    const theSub = this.route.params.pipe(
+      concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
     );
 
-    newSub.subscribe( res => {
-
-      // console.log('daily');
-      // console.log(res["daily"]);
-      // console.log("volume");
-      // console.log(this.data)
+    theSub.subscribe( res => {
 
       const dataList = []
       const keys = Object.keys(res['summary']);
 
       for (const key of keys) {
         const value = res['summary'][key];
-        console.log('key and value ' + value + ". " + key)
+        // console.log('key and value ' + value + ". " + key)
         dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
         this.securitySummaryDataSource.data = dataList;
 
