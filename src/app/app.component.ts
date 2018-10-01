@@ -5,6 +5,8 @@ import {map, startWith} from 'rxjs/operators';
 import {HttpService} from "./shared/httpservice.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "./shared/loginservice.service";
+import {AuthService} from "./shared/security/auth.service";
+import {User} from "./shared/security/user";
 
 @Component({
   selector: 'app-root',
@@ -19,18 +21,35 @@ export class AppComponent implements OnInit {
   secondaryTitles = [];
   myControl = new FormControl();
   options: string[] = [];
+  isLoggedIn: boolean;
+  photourl: string;
+  userName: string;
   filteredOptions: Observable<string[]>;
 
-  constructor(private loginService: LoginService,private httpService : HttpService , private route: ActivatedRoute , private router: Router) {}
+  constructor(private loginService: LoginService,private httpService : HttpService ,
+              private route: ActivatedRoute , private authService: AuthService,
+              private router: Router) {}
 
   ngOnInit() {
+
+    this.authService.verifyUser().subscribe( (user:User) => {
+       if (user === AuthService.UNKNOWN_USER ) {
+          this.isLoggedIn = false;
+       } else {
+         this.isLoggedIn = true;
+         this.userName = user['name']
+         this.photourl = user['photourl']
+          // console.log('**** known user ' + user['name']);
+          // console.log('**** known user ' + user['email']);
+          // console.log('**** know user ' + user['photourl']);
+
+       }
+    });
 
     this.httpService.getAllCounters().subscribe( (counterList: Array<any> )=> {
 
 
        for(const counter of counterList) {
-
-
           this.options.push( counter['symbol'] + ' ' + counter['name']);
        }
 

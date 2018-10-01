@@ -21,10 +21,12 @@ export class AuthService {
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
   userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+  // authSubject: BehaviorSubject<User> = new BehaviorSubject(null);
   isAdmin = false;
   loginChanged = new Subject<Boolean>();
-  static UNKNOWN_USER = new AuthInfo(null , null);
-  authSubject: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>( AuthService.UNKNOWN_USER);
+
+  static UNKNOWN_USER = new User(null , null, null);
+  authSubject: BehaviorSubject<User> = new BehaviorSubject<User>( AuthService.UNKNOWN_USER);
 
   constructor(private db: AngularFireDatabase ,
               private firestore: AngularFirestore,
@@ -88,6 +90,31 @@ export class AuthService {
         this.loginChanged.next(val);
     }
 
+  getAuthStatus(): Observable<User> {
+    return this.authSubject.asObservable();
+  }
+
+  verifyUser() : Observable<User> {
+
+     this.httpService.verifySession().subscribe( val => {
+     //
+
+       let user = AuthService.UNKNOWN_USER;
+        if ( val['status'] == 'ok') {
+           user = new User(val['name'], val['email'], val['photourl'])
+           // user.name = val['name'];
+           // user.email = val['email'];
+           // user.photourl = val['photourl'];
+           // console.log('Verify ' + user.name + ' ' + user.email + ' '  + user.photourl)
+        }
+
+        this.authSubject.next(user);
+
+     });
+
+     return this.authSubject.asObservable();
+  }
+
   resetPassword(email): Observable<any> {
 
 
@@ -124,6 +151,10 @@ export class AuthService {
     const idTokenObservable  = from(this.firebaseAuth.auth.currentUser.getIdToken(true));
     return idTokenObservable;
   }
+
+
+
+
 
   signUp(email, password) : Observable<any>
   {
@@ -189,23 +220,8 @@ export class AuthService {
       .then( res => {
 
 
-          const authInfo = new AuthInfo(this.firebaseAuth.auth.currentUser.uid , null);
-          this.authSubject.next(authInfo);
-
-          // this.firebaseAuth.auth.currentUser.getIdToken(true).then( (idToken) => {
-          //         localStorage.setItem('id' , idToken);
-
-          //         const body = new HttpParams()
-          //             .set('token' , idToken);
-          //
-          //
-          //         this.httpService.post('/api/hello-view/' , body.toString()).subscribe(
-          //             data => { console.log('post data ' + data); },
-          //             err => { console.log('err ' + err);},
-          //             ()  => { console.log('finished!');}
-          //         );
-          //     });
-
+          // const authInfo = new AuthInfo(this.firebaseAuth.auth.currentUser.uid , null);
+          // this.authSubject.next(authInfo);
           this.loginChanged.next(true);
 
 

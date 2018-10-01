@@ -1,26 +1,38 @@
 <div fxLayout="column" fxLayoutGap="5px" class="topcontainer" style=" font-family: 'Lato', sans-serif;">
-  <!--<mat-toolbar  color="primary">-->
-    <!--<span>Just Trade All</span>-->
-    <!--<span fxFlex></span>-->
-    <!--<div>-->
-      <!--<mat-menu #appMenu="matMenu">-->
-        <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Shareholdings Analysis</button>-->
+  <mat-toolbar  color="primary">
 
-      <!--</mat-menu>-->
-      <!--<button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>-->
-      <!--<button mat-button >Blog</button>-->
-
-      <!--<mat-menu #userMenu="matMenu">-->
-        <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="login">Login</button>-->
-        <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="register">Register</button>-->
-
-      <!--</mat-menu>-->
-      <!--<button mat-button [matMenuTriggerFor]="userMenu"><i class="far fa-user" style="font-size:16px;"></i></button>-->
-
+    <div fxFlex="1 1 15%">Just Trade All</div>
+    <div fxFlex="1 1 75%" class="menuTitle">
+      <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
+    </div>
+    <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
+        <button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Shareholdings Analysis</button>
+    </mat-menu>
+    <!--<div fxFlex="0 1 10%" class="menuTitle">-->
+      <!--<button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>-->
     <!--</div>-->
+    <!--<div fxFlex="0 1 10%" class="menuTitle">-->
+      <!--<button mat-button routerLinkActive="menu-active" routerLink="register">Sign Up</button>-->
+    <!--</div>-->
+      <!--<button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>-->
+      <div fxFlex="1 1 10%" *ngIf="isLoggedIn; else templateName">
+        <img class="profileimg" title="{{userName}}" src="{{photourl}}"  height="35" width="35">
+        <button mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>
+
+      </div>
+    <mat-menu #userMenu="matMenu" [overlapTrigger]="false" >
+      <button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Logout</button>
+    </mat-menu>
+
+      <ng-template #templateName>
+        <button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>
+        <button mat-button routerLinkActive="menu-active" routerLink="register">Register</button>
+      </ng-template>
 
 
-  <!--</mat-toolbar>-->
+  </mat-toolbar>
+
+  <!--************************** Splits here-->
   <div  class="primaryrow" fxLayout="row">
 
     <button class="mainTitle" mat-button (click)="activateHome()">Home</button>

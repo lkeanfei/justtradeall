@@ -5,12 +5,18 @@ export interface Roles {
 }
 export class User {
   email: string;
-  photoURL: string;
-  roles: Roles;
+  photourl: string;
+  name: string;
 
-  constructor(authData) {
-    this.email = authData.email;
-    this.photoURL = authData.photoURL;
-    this.roles = { normal: true , vip: false, admin: false};
+  // constructor(authData) {
+  //   this.email = authData.email;
+  //   this.photoURL = authData.photoURL;
+  //   this.roles = { normal: true , vip: false, admin: false};
+  // }
+
+  constructor( name: string, email: string , photoURL: string) {
+    this.name = name
+    this.photourl = photoURL
+    this.email = email
   }
 }
