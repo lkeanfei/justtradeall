@@ -84,19 +84,19 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  loginTwitter() {
-
-    this.authService.loginTwitter()
-      .subscribe(
-        () => {
-          console.log('Twitter login successful!');
-        }
-        ,
-        () => {
-          console.log('Twitter login failed!');
-        }
-      );
-
-  }
+  // loginTwitter() {
+  //
+  //   this.authService.loginTwitter()
+  //     .subscribe(
+  //       () => {
+  //         console.log('Twitter login successful!');
+  //       }
+  //       ,
+  //       () => {
+  //         console.log('Twitter login failed!');
+  //       }
+  //     );
+  //
+  // }
 
 }

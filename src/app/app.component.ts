@@ -86,6 +86,11 @@ export class AppComponent implements OnInit {
     this.loginService.openDialog();
   }
 
+  logout() {
+      // Set logged in to False
+    this.authService.logout();
+  }
+
   activateAnalysis() {
 
     this.secondaryTitles = [];

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
@@ -13,13 +13,15 @@ import {concatMap, map, switchMap, take, tap} from 'rxjs/operators';
 import {MatTableDataSource} from "@angular/material";
 import {LoginService} from "../shared/loginservice.service";
 import {Observable, of} from "rxjs/index";
+import {AuthService} from "../shared/security/auth.service";
+import {User} from "../shared/security/user";
 
 @Component({
   selector: 'app-security',
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.css']
 })
-export class SecurityComponent implements OnInit {
+export class SecurityComponent implements OnInit, AfterViewInit {
 
   private sub: any;
   fullid: string;
@@ -27,6 +29,7 @@ export class SecurityComponent implements OnInit {
   showLogin = true;
   fxFlexValue = 75;
 
+  startLoading = true;
   dailyData = [];
   chartWidth: number;
 
@@ -264,13 +267,17 @@ export class SecurityComponent implements OnInit {
 
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
 
+  // Styling for the loading spinner
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
 
-  constructor(private route: ActivatedRoute , private httpService: HttpService , private loginService: LoginService) {
-    // const httpSub = this.httpService.getSecurityView('12345').pipe(
-    //   map(prms => prms['fullid'])
-    // );
 
-    const dateStr = '2018-08-21'
+  constructor(private route: ActivatedRoute , private httpService: HttpService ,
+              private authService: AuthService, private loginService: LoginService) {
+
+    const dateStr = '2018-08-21';
+    this.startLoading = true;
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
     this.tableMap['wklow52'] = '52-week Low';
@@ -392,10 +399,13 @@ export class SecurityComponent implements OnInit {
       }
     };
 
-
-    console.log('Constructing security!!')
-
-
+    this.authService.getAuthStatus().subscribe( (user:User) => {
+        if( user == AuthService.UNKNOWN_USER) {
+           this.showLogin = true;
+        } else {
+          this.showLogin = false;
+        }
+    });
     const theSub = this.route.params.pipe(
       concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
     );
@@ -403,26 +413,35 @@ export class SecurityComponent implements OnInit {
     theSub.subscribe( res => {
 
       const dataList = []
+      let status =  res['status']
+      console.log('Status is ' + status);
+
+      if(status == 'login') {
+        this.showLogin = true;
+      } else {
+        this.showLogin = false;
+      }
       const keys = Object.keys(res['summary']);
+      this.startLoading = false;
 
       for (const key of keys) {
         const value = res['summary'][key];
         // console.log('key and value ' + value + ". " + key)
         dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
         this.securitySummaryDataSource.data = dataList;
-
-
       }
 
       this.dailyData = res['daily'];
-
       this.staticChartOptions['series'][0]['data'] = this.dailyData;
       this.interactiveChartOptions['series'][0]['data'] = this.dailyData;
       this.interactiveChartOptions['series'][1]['data'] = res['volume']
 
       this.staticUpdateFlag = true;
       this.interactiveUpdateFlag = true;
-      this.Highstocks.charts[0].redraw();
+
+      // Temporary disable
+      // this.Highstocks.charts[0].redraw();
+
 
     });
 
@@ -440,6 +459,10 @@ export class SecurityComponent implements OnInit {
 
   }
 
+  ngAfterViewInit() {
+
+  }
+
   switchToStatic() {
     this.showStatic = true;
     this.fxFlexValue = 75;
@@ -448,15 +471,13 @@ export class SecurityComponent implements OnInit {
 
   switchToInteractive() {
 
-    const id = localStorage.getItem('id');
-    console.log('id is ' + id);
     this.showStatic = false;
-    this.showLogin = true;
+    // this.showLogin = true;
     // if (id === null) {
     //   this.showLogin = true;
     // }
     this.fxFlexValue = 75;
-    console.log('To Interactive');
+
     this.ngOnInit();
   }
 

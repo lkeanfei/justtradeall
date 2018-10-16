@@ -1,13 +1,21 @@
-<!--<div fxLayout="row">-->
-  <!--<div class="div1" fxFlex="60"></div>-->
-  <!--<div class="div2" fxFlex></div>-->
-<!--</div>-->
-<div fxLayout="column" fxLayoutGap="10px">
-  <div id="selection" class="divider" fxLayout="row" fxLayoutGap="10px">
-    <div class="static" fxFlex="32"  > <a (click)="switchToStatic()"> <small>Static </small> </a> </div>
+
+<div *ngIf="startLoading">
+  <mat-progress-spinner
+    class="example-margin"
+    [color]="color"
+    [mode]="mode"
+    [value]="value">
+  </mat-progress-spinner>
+</div>
+
+
+<div *ngIf="!startLoading" fxLayout="column" fxLayoutGap="10px">
+  <div  id="selection" class="divider" fxFlex="0 0 100%" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <div class="static" > <a (click)="switchToStatic()"> <small>Static </small> </a> </div>
     <div>|</div>
     <div class="interactive" > <a  (click)="switchToInteractive()"> <small> Interactive </small> </a> </div>
   </div>
+
   <div fxLayout="row">
     <div *ngIf="showStatic"  id="candleDiv" fxFlex="{{fxFlexValue}}" >
       <highcharts-chart fxFlex
@@ -24,8 +32,11 @@
     </div>
     <div *ngIf="!showStatic" fxFlex="{{fxFlexValue}}"  >
       <div *ngIf="showLogin; else templateName" fxFlexAlign="center">
-           Sign in or Register
-        <button mat-button (click)="openDialog()">Sign In</button>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button mat-button (click)="openDialog()">Sign In</button> or Register for FREE to view interactive charts!
+        </div>
+
       </div>
 
       <ng-template #templateName>

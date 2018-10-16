@@ -85,11 +85,6 @@ export class AuthService {
   //
   // }
 
-  //Toggle login change
-    toggleLoginChange( val: Boolean) {
-        this.loginChanged.next(val);
-    }
-
   getAuthStatus(): Observable<User> {
     return this.authSubject.asObservable();
   }
@@ -117,9 +112,7 @@ export class AuthService {
 
   resetPassword(email): Observable<any> {
 
-
     const subject = new Subject<any>();
-
     this.firebaseAuth.auth.sendPasswordResetEmail(email)
       .then(
         res => {
@@ -132,11 +125,7 @@ export class AuthService {
         }
 
       )
-
-
-
     return subject.asObservable();
-
 
   }
 
@@ -147,19 +136,15 @@ export class AuthService {
 
   }
 
+  // Gets the ID Token of the authenticated user
   getIdToken() : Observable<string> {
     const idTokenObservable  = from(this.firebaseAuth.auth.currentUser.getIdToken(true));
     return idTokenObservable;
   }
 
-
-
-
-
   signUp(email, password) : Observable<any>
   {
     const subject = new Subject<any>();
-
     this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(
         res => {
@@ -180,10 +165,25 @@ export class AuthService {
 
   // logout
   logout() {
-    this.firebaseAuth.auth.signOut();
-    this.loginChanged.next(false);
-    this.authSubject.next(AuthService.UNKNOWN_USER);
-    localStorage.removeItem('id');
+
+    // have to notify the header after successful
+    //
+    this.httpService.logout().subscribe( res => {
+      console.log('logout')
+    })
+    this.firebaseAuth.auth.signOut()
+      .then( res => {
+      //     Successfully sign out
+          console.log('Sign out OK!')
+        // this.loginChanged.next(false);
+        this.authSubject.next(AuthService.UNKNOWN_USER);
+      } , err => {
+          // Failed to sign out
+          console.log('Sign out Failed!')
+          console.log(err);
+      })
+
+
 
   }
 
@@ -230,7 +230,7 @@ export class AuthService {
         },
         err => {
           this.loginChanged.next(false);
-          localStorage.removeItem('id');
+
           console.log('Error is ' + err);
           this.authSubject.error(err);
           subject.error(err);

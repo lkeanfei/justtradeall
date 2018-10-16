@@ -34,7 +34,7 @@ export class HttpService {
 
     logout() {
       const data = {};
-      return this.httpClient.post( '/api/logout/' , data);
+      return this.httpClient.post( '/api/sessionlogout/' , data);
     }
 
     postIdToSessionLogin(idToken: string) {

@@ -2,6 +2,9 @@
   <mat-toolbar  color="primary">
 
     <div fxFlex="1 1 15%">Just Trade All</div>
+    <div fxFlex="1 1 8%" class="menuTitle">
+      <button mat-button routerLinkActive="menu-active" routerLink="home">Home</button>
+    </div>
     <div fxFlex="1 1 75%" class="menuTitle">
       <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
     </div>
@@ -21,7 +24,7 @@
 
       </div>
     <mat-menu #userMenu="matMenu" [overlapTrigger]="false" >
-      <button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Logout</button>
+      <button mat-menu-item (click)="logout()">Logout</button>
     </mat-menu>
 
       <ng-template #templateName>
@@ -33,25 +36,25 @@
   </mat-toolbar>
 
   <!--************************** Splits here-->
-  <div  class="primaryrow" fxLayout="row">
+  <!--<div  class="primaryrow" fxLayout="row">-->
 
-    <button class="mainTitle" mat-button (click)="activateHome()">Home</button>
-    <button class="mainTitle" mat-button (click)="activateMarket()">Market</button>
-    <button class="mainTitle" mat-button (click)="activateAnalysis()">Analysis</button>
+    <!--<button class="mainTitle" mat-button (click)="activateHome()">Home</button>-->
+    <!--<button class="mainTitle" mat-button (click)="activateMarket()">Market</button>-->
+    <!--<button class="mainTitle" mat-button (click)="activateAnalysis()">Analysis</button>-->
 
-        <!-- This fills the remaining space of the current row -->
-        <span class="example-fill-remaining-space"></span>
+        <!--&lt;!&ndash; This fills the remaining space of the current row &ndash;&gt;-->
+        <!--<span class="example-fill-remaining-space"></span>-->
 
 
-    <!--<button class="mainTitle" mat-button (click)="openDialog()">Login</button>-->
-    <button mat-menu-item routerLinkActive="menu-active" routerLink="login">Login</button>
+    <!--&lt;!&ndash;<button class="mainTitle" mat-button (click)="openDialog()">Login</button>&ndash;&gt;-->
+    <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="login">Login</button>-->
 
-  </div>
-  <div fxLayout="row" fxLayoutGap="10px"  class="secrow">
-    <div fxLayout="row" *ngFor="let data of secondaryTitles">
-      <button mat-button (click)="testClick(data)">{{data}} </button>
-    </div>
-  </div>
+  <!--</div>-->
+  <!--<div fxLayout="row" fxLayoutGap="10px"  class="secrow">-->
+    <!--<div fxLayout="row" *ngFor="let data of secondaryTitles">-->
+      <!--<button mat-button (click)="testClick(data)">{{data}} </button>-->
+    <!--</div>-->
+  <!--</div>-->
   <div class="full-width">
   <mat-form-field style="width:400px !important">
     <input class="input-width" [formControl]="myControl"  matInput placeholder="Search Symbol or Code" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" >

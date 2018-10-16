@@ -8,6 +8,7 @@ import {concat} from 'rxjs/operators';
 import {Observable} from "rxjs/index";
 import {concatMap} from 'rxjs/operators';
 import {HttpService} from "../shared/httpservice.service";
+import {User} from "../shared/security/user";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -37,7 +38,15 @@ export class LoginComponent implements OnInit {
     Validators.email,
   ]);
 
-  passwordFormControl = new FormControl('');
+  passwordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8)
+  ]);
+
+  usernameFormControl = new FormControl('' , [
+    Validators.required,
+    Validators.minLength(8)
+  ]);
   bLoginFailed = false;
 
   matcher = new MyErrorStateMatcher();
@@ -102,13 +111,18 @@ export class LoginComponent implements OnInit {
       concatMap(  (idToken : string) => this.httpService.postIdToSessionLogin(idToken))
     );
 
+    let user = AuthService.UNKNOWN_USER;
+
     obs.subscribe(
       (val: string) => {
         console.log('Google login successful!');
+        user = new User(val['user'] , val['email'] , val['photourl']);
+        this.authService.userSubject.next(user);
         console.log(val);
       },
       (err) => {
         console.log('Error login google!');
+        this.authService.userSubject.next(user);
         console.log(err);
       }
     )

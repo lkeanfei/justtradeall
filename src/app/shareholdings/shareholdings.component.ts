@@ -10,6 +10,14 @@ export interface CompanyData {
   percentage: number;
 }
 
+export interface HoldersData {
+  id: string;
+  name: string;
+  holder: string;
+  shares: number;
+  percentage: number;
+}
+
 @Component({
   selector: 'app-shareholdings',
   templateUrl: './shareholdings.component.html',
@@ -28,13 +36,22 @@ export class ShareholdingsComponent implements OnInit {
   companyDataSource: any;
   holdersDataSource: any;
   companyColumns = ['id', 'name', 'shares', 'percentage'];
+  holderColumns = ['id', 'holder' , 'name' ,  'shares' , 'percentage']
   options: FormGroup;
-  idColumnWidth = 10;
-  nameColumnWidth = 45;
+  idColumnWidth = 5;
+  holderColumnWidth = 20;
+  nameColumnWidth = 30;
   sharesColumnWidth = 25;
   percentageColumnWidth = 20;
   companySelectedYear = '2017';
   shareHolderSelectedYear = '2017';
+  shareHolderTableLoading: boolean;
+  startSearchingShareHolders: boolean;
+
+  // Styling for the loading spinner
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
 
 
 
@@ -43,11 +60,12 @@ export class ShareholdingsComponent implements OnInit {
     this.hasCompanyResults = false;
     this.hasHolderResults = false;
     this.startSearch = false;
-    this.showByStock = true;
+    this.showByStock = false;
+    this.startSearchingShareHolders = false;
     this.selStyles.push('aqua');
     this.selStyles.push('white');
     this.companyDataSource = new MatTableDataSource<CompanyData>( );
-    this.holdersDataSource = new MatTableDataSource<CompanyData>();
+    this.holdersDataSource = new MatTableDataSource<HoldersData>();
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -90,11 +108,14 @@ export class ShareholdingsComponent implements OnInit {
 
   onSearchShareholders() {
     console.log('Search share holder ' + this.shareholderField.value);
+    this.startSearchingShareHolders = true;
+    this.hasHolderResults = false;
 
     this.httpService.searchShareHolders(this.shareholderField.value).subscribe( (data:any) => {
 
       this.holdersDataSource.data = data['results'];
       this.hasHolderResults = true;
+      this.startSearchingShareHolders = false;
     });
   }
 
