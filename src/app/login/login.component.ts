@@ -117,49 +117,41 @@ export class LoginComponent implements OnInit {
       (val: string) => {
         console.log('Google login successful!');
         user = new User(val['user'] , val['email'] , val['photourl']);
-        this.authService.userSubject.next(user);
+        this.authService.triggerAuthEvent(user);
         console.log(val);
       },
       (err) => {
         console.log('Error login google!');
-        this.authService.userSubject.next(user);
+        this.authService.triggerAuthEvent(user);
         console.log(err);
       }
     )
-
-    // this.authService.loginGoogle().pipe( concat(this.authService.getIdToken())).subscribe(
-    //   (val : string) => {
-    //       console.log('***** Google login success!');
-    //       console.log(val);
-    //
-    //   },
-    //   (err) => {
-    //      console.log('Error login Google');
-    //   })
-
-    // this.authService.loginGoogle()
-    //   .subscribe(
-    //     () => {
-    //
-    //     }
-    //     ,
-    //     () => {
-    //       console.log('Error Google login!');
-    //     });
   }
 
   loginFacebook() {
 
-    this.authService.loginFacebook()
-      // .subscribe(
-      //   () => {
-      //     console.log('Facebook login successful!');
-      //   }
-      //   ,
-      //   () => {
-      //     console.log('Facebook login failed!');
-      //   }
-      // );
+    const obs = this.authService.loginFacebook().pipe(
+      concatMap( () => this.authService.getIdToken() ),
+      concatMap(  (idToken : string) => this.httpService.postIdToSessionLogin(idToken))
+    );
+
+    let user = AuthService.UNKNOWN_USER;
+
+    obs.subscribe(
+      (val: string) => {
+        console.log('Facebook login successful!');
+        user = new User(val['user'] , val['email'] , val['photourl']);
+        this.authService.triggerAuthEvent(user);
+        console.log(val);
+      },
+      (err) => {
+        console.log('Error login facebook!');
+        this.authService.triggerAuthEvent(user);
+        console.log(err);
+      }
+    )
+
+
 
   }
 

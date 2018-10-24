@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
 
     this.authService.verifyUser().subscribe( (user:User) => {
        if (user === AuthService.UNKNOWN_USER ) {
+           console.log('App unknown user!!')
           this.isLoggedIn = false;
        } else {
          this.isLoggedIn = true;
@@ -45,6 +46,21 @@ export class AppComponent implements OnInit {
 
        }
     });
+
+    this.authService.getAuthStatus().subscribe( (user: User) => {
+      if (user === AuthService.UNKNOWN_USER ) {
+        console.log('App observable! unknown user!!')
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+        this.userName = user['name']
+        this.photourl = user['photourl']
+        // console.log('**** known user ' + user['name']);
+        // console.log('**** known user ' + user['email']);
+        // console.log('**** know user ' + user['photourl']);
+
+      }
+    })
 
     this.httpService.getAllCounters().subscribe( (counterList: Array<any> )=> {
 
@@ -107,11 +123,13 @@ export class AppComponent implements OnInit {
 
   selectCounter(counter: string) {
 
-    // this.myControl.setValue(counter);
+    this.myControl.setValue(counter);
+    // console.log('Selected the counter ' + counter)
+    this.navigateSecurity();
   }
 
   navigateSecurity() {
-     // console.log('Security is ' + this.myControl.value);
+    // console.log('Navigate Security is ' + this.myControl.value);
     const fullSecStr = this.myControl.value;
     const tokens = fullSecStr.split(' ');
     this.router.navigate(['/security' , tokens[0] + '.MY'] );

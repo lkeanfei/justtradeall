@@ -20,7 +20,7 @@ export class AuthService {
 
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
-  userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+  // userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
   // authSubject: BehaviorSubject<User> = new BehaviorSubject(null);
   isAdmin = false;
   loginChanged = new Subject<Boolean>();
@@ -84,6 +84,10 @@ export class AuthService {
   //   // angularFireObject.update(userData);
   //
   // }
+
+  triggerAuthEvent( user: User ) {
+     this.authSubject.next(user);
+  }
 
   getAuthStatus(): Observable<User> {
     return this.authSubject.asObservable();

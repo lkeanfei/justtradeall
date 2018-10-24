@@ -57,13 +57,14 @@
       <div *ngIf="!showByStock" fxLayout="column"  fxLayoutGap="15px">
 
 
-        <div class="div-center" fxFlexAlign="center" fxLayout="row">
-          Shareholder's search
-          <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
+        <div class="div-center" fxFlexAlign="center" fxLayout="column">
+          <div>Shareholder's search</div>
+          <div><mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
 
             <mat-label>Shareholder's name</mat-label>
             <input type="search"  [formControl]="shareholderField" (keyup.enter)="onSearchShareholders()" matInput placeholder="Search">
-          </mat-form-field>
+          </mat-form-field></div>
+
         </div>
         <div fxLayout="row" fxLayoutAlign="center center">
           <div *ngIf="startSearchingShareHolders">

@@ -5,6 +5,31 @@
  * Licensed under the Apache License v2.0
  * http://www.apache.org/licenses/LICENSE-2.0
  */
+.loginclass {
+  background-color: #d9d9d9;
+  padding: 25px;
+  margin: 25px;
+}
+
+.classicinput {
+  width : 75%;
+}
+
+.socialinput {
+  width : 75%;
+}
+
+.facebook-class {
+  background-color: #133783 ;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  color: white !important;
+}
+
+.google-class {
+  background-color: #dd4b39 ;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  color: white !important;
+}
 
 .btn-facebook {
   color: #ffffff;
