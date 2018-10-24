@@ -18,7 +18,7 @@
       <!--<button mat-button routerLinkActive="menu-active" routerLink="register">Sign Up</button>-->
     <!--</div>-->
       <!--<button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>-->
-      <div fxFlex="1 1 10%" *ngIf="isLoggedIn; else templateName">
+      <div fxFlex="1 1 10%" *ngIf="(isLoggedIn | async); else templateName">
         <img class="profileimg" title="{{userName}}" src="{{photourl}}"  height="35" width="35">
         <button mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>
 

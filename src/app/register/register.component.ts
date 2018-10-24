@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {AuthService} from '../shared/security/auth.service';
+import {concatMap} from 'rxjs/operators';
+import {PreviousRouteServiceService} from "../shared/previous-route-service.service";
+import {Router} from "@angular/router";
+import {HttpService} from "../shared/httpservice.service";
+import {User} from "../shared/security/user";
+import {Observable} from "rxjs/index";
 
 @Component({
   selector: 'app-register',
@@ -30,7 +36,10 @@ export class RegisterComponent implements OnInit {
 
 
 
-  constructor(private authService:AuthService ) { }
+  constructor(private fb:FormBuilder , private authService: AuthService ,
+              private httpService: HttpService,
+              private router : Router, private prevRouteService: PreviousRouteServiceService) {}
+
 
   ngOnInit() {
   }
@@ -56,31 +65,49 @@ export class RegisterComponent implements OnInit {
       );
   }
 
+  processLoginObservables( obs: Observable<Object> ) {
+
+    let user = AuthService.UNKNOWN_USER;
+    obs.subscribe(
+      (val: string) => {
+
+        user = new User(val['user'] , val['email'] , val['photourl']);
+        this.authService.triggerAuthEvent(user);
+        let prevUrl = this.prevRouteService.getPreviousUrl()
+
+        if(prevUrl.includes('login') || prevUrl.includes('register')) {
+          prevUrl = '/home';
+        }
+        console.log('Navigating to ' + prevUrl);
+        this.router.navigate([prevUrl]);
+      },
+      (err) => {
+        console.log('Error login google!');
+        this.authService.triggerAuthEvent(user);
+        console.log(err);
+      }
+    )
+
+  }
+
   loginGoogle() {
 
-    this.authService.loginGoogle()
-      .subscribe(
-        () => {
-          console.log('Google login successful!');
-        }
-        ,
-        () => {
-          console.log('Error Google login!');
-        });
+    const obs = this.authService.loginGoogle().pipe(
+      concatMap( () => this.authService.getIdToken() ),
+      concatMap(  (idToken : string) => this.httpService.postIdToSessionLogin(idToken))
+    );
+
+    this.processLoginObservables(obs);
   }
 
   loginFacebook() {
 
-    this.authService.loginFacebook()
-      // .subscribe(
-      //   () => {
-      //     console.log('Facebook login successful!');
-      //   }
-      //   ,
-      //   () => {
-      //     console.log('Facebook login failed!');
-      //   }
-      // );
+    const obs = this.authService.loginFacebook().pipe(
+      concatMap( () => this.authService.getIdToken() ),
+      concatMap(  (idToken : string) => this.httpService.postIdToSessionLogin(idToken))
+    );
+
+    this.processLoginObservables(obs);
 
   }
 

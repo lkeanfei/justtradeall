@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs/index";
+import {BehaviorSubject, Observable} from "rxjs/index";
 import {FormControl} from "@angular/forms";
 import {map, startWith} from 'rxjs/operators';
 import {HttpService} from "./shared/httpservice.service";
@@ -21,23 +21,27 @@ export class AppComponent implements OnInit {
   secondaryTitles = [];
   myControl = new FormControl();
   options: string[] = [];
-  isLoggedIn: boolean;
+  isLoggedIn: Observable<boolean>;
+  loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
   photourl: string;
   userName: string;
   filteredOptions: Observable<string[]>;
 
   constructor(private loginService: LoginService,private httpService : HttpService ,
               private route: ActivatedRoute , private authService: AuthService,
-              private router: Router) {}
+              private router: Router) {
+
+    this.isLoggedIn = this.loginSubject.asObservable();
+  }
 
   ngOnInit() {
 
     this.authService.verifyUser().subscribe( (user:User) => {
        if (user === AuthService.UNKNOWN_USER ) {
            console.log('App unknown user!!')
-          this.isLoggedIn = false;
+          this.loginSubject.next(false)
        } else {
-         this.isLoggedIn = true;
+         this.loginSubject.next(true)
          this.userName = user['name']
          this.photourl = user['photourl']
           // console.log('**** known user ' + user['name']);
@@ -49,10 +53,11 @@ export class AppComponent implements OnInit {
 
     this.authService.getAuthStatus().subscribe( (user: User) => {
       if (user === AuthService.UNKNOWN_USER ) {
-        console.log('App observable! unknown user!!')
-        this.isLoggedIn = false;
+        console.log('Auth Status App observable! unknown user!!')
+        this.loginSubject.next(false)
       } else {
-        this.isLoggedIn = true;
+
+        this.loginSubject.next(true)
         this.userName = user['name']
         this.photourl = user['photourl']
         // console.log('**** known user ' + user['name']);

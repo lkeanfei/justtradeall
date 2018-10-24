@@ -14,7 +14,7 @@ export class PreviousRouteServiceService {
       if (event instanceof NavigationEnd) {
         // console.log('Previous url ' + this.previousUrl);
         // console.log('Current url ' + this.currentUrl);
-        // this.previousUrl = this.currentUrl;
+        this.previousUrl = this.currentUrl;
         this.currentUrl = event.url;
       }
       ;
@@ -22,6 +22,6 @@ export class PreviousRouteServiceService {
   }
 
     public getPreviousUrl() {
-      return this.currentUrl;
+      return this.previousUrl;
     }
 }

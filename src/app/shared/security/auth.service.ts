@@ -76,14 +76,6 @@ export class AuthService {
 
   }
 
-  // private updateUser(authData) {
-  //   const userData = new User(authData);
-  //
-  //   // grab any existing users including roles
-  //   const angularFireObject = this.firestore.collection('users/').add(authData.uid);
-  //   // angularFireObject.update(userData);
-  //
-  // }
 
   triggerAuthEvent( user: User ) {
      this.authSubject.next(user);
