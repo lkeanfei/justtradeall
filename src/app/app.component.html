@@ -18,6 +18,13 @@
       <!--<button mat-button routerLinkActive="menu-active" routerLink="register">Sign Up</button>-->
     <!--</div>-->
       <!--<button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>-->
+      <div fxFlex="1 1 6%" *ngIf="showSearchButton; else showSearchInputTemplate">
+        <button mat-button (click)="activateSearchInput()"><i class="fas fa-search"></i>Search</button>
+      </div>
+    <ng-template #showSearchInputTemplate>
+      <input matInput placeholder="Search Symbol or Name" (focusout)="focusOutSearchInput()" autofocus>
+    </ng-template>
+
       <div fxFlex="1 1 10%" *ngIf="(isLoggedIn | async); else templateName">
         <img class="profileimg" title="{{userName}}" src="{{photourl}}"  height="35" width="35">
         <button mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>

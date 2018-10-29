@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
   loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
   photourl: string;
   userName: string;
+  showSearchButton = true;
+
   filteredOptions: Observable<string[]>;
 
   constructor(private loginService: LoginService,private httpService : HttpService ,
@@ -101,6 +103,14 @@ export class AppComponent implements OnInit {
       this.secondaryTitles.push(data);
     }
 
+  }
+
+  activateSearchInput() {
+    this.showSearchButton = false;
+  }
+
+  focusOutSearchInput() {
+    this.showSearchButton = true;
   }
 
   openDialog() {
