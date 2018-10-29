@@ -55,7 +55,7 @@
       <!--<button mat-button (click)="testClick(data)">{{data}} </button>-->
     <!--</div>-->
   <!--</div>-->
-  <div class="full-width">
+  <div fxFlex="1 1 80%">
   <mat-form-field style="width:400px !important">
     <input class="input-width" [formControl]="myControl"  matInput placeholder="Search Symbol or Code" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" >
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >

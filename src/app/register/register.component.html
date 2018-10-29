@@ -2,18 +2,40 @@
   <div fxFlex="50%" >
     <div fxLayout="row" fxLayoutGap="90px">
       <div fxFlex="1 1 50%" >
-        <div  fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="10px">
-          <mat-form-field class="classicinput">
-            <input matInput type="email" placeholder="Email" [formControl]="emailFormControl" >
-            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-              Please enter a valid email address
+        <div  fxLayoutAlign="center center" fxLayout="column" >
+          <form [formGroup]="regForm" fxLayoutGap="15px">
+            <mat-form-field class="classicinput">
+            <input matInput type="email" placeholder="Email" formControlName="email" >
+            <mat-error *ngIf="regForm.hasError('required' , 'email') || regForm.hasError('email' , 'email') ">
+            Please enter a valid email address
             </mat-error>
 
-          </mat-form-field>
-          <mat-form-field class="classicinput">
-            <input matInput id="password" placeholder="Password" type="password" [formControl]="passwordFormControl" >
-          </mat-form-field>
-          <button mat-raised-button color="primary">Sign Up</button>
+            </mat-form-field>
+            <mat-form-field class="classicinput">
+              <input  matInput type="password" placeholder="New password" formControlName="password" required>
+              <mat-error *ngIf="regForm.hasError('required', 'password')">
+                Please enter your new password
+              </mat-error>
+              <mat-error *ngIf="regForm.hasError('minlength', 'password')">
+                Minimum 8 characters
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="classicinput">
+              <input  matInput type="password"  placeholder="Confirm password" formControlName="confirmPassword" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="regForm.hasError('notSame')">
+                Passwords do not match
+              </mat-error>
+            </mat-form-field>
+          </form>
+
+
+
+
+          <!--<mat-form-field class="classicinput">-->
+            <!--<input matInput id="password" placeholder="Password" type="password" [formControl]="passwordFormControl" >-->
+          <!--</mat-form-field>-->
+          <button mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
         </div>
       </div>
 

@@ -129,6 +129,23 @@ export class LoginComponent implements OnInit {
 
   }
 
+  /*Login with username and password*/
+  loginWithUsernamePassword() {
+    let email = this.emailFormControl.value;
+    let password = this.passwordFormControl.value;
+    console.log("email: " + email);
+    console.log("password: " + password);
+
+    const obs = this.authService.login(email, password).pipe(
+      concatMap( () => this.authService.getIdToken() ),
+      concatMap(  (idToken : string) => this.httpService.postIdToSessionLogin(idToken))
+    );
+
+    this.processLoginObservables(obs);
+
+  }
+
+
   loginGoogle() {
 
     const obs = this.authService.loginGoogle().pipe(

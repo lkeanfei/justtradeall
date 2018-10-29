@@ -76,6 +76,10 @@ export class AuthService {
 
   }
 
+  sendResetPassword(email: string) : Observable<void> {
+    return from(this.firebaseAuth.auth.sendPasswordResetEmail(email));
+  }
+
 
   triggerAuthEvent( user: User ) {
      this.authSubject.next(user);
@@ -125,12 +129,7 @@ export class AuthService {
 
   }
 
-  login(email, password): Observable<any> {
 
-    // return Observable.fromPromise(this.auth.auth.signInWithEmailAndPassword( email , password))
-    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithEmailAndPassword(email, password));
-
-  }
 
   // Gets the ID Token of the authenticated user
   getIdToken() : Observable<string> {
@@ -192,6 +191,13 @@ export class AuthService {
 
          }
        );
+
+  }
+
+  login(email, password): Observable<any> {
+
+    // return Observable.fromPromise(this.auth.auth.signInWithEmailAndPassword( email , password))
+    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithEmailAndPassword(email, password));
 
   }
 

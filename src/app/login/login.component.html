@@ -13,7 +13,7 @@
         <mat-form-field class="classicinput">
           <input matInput id="password" placeholder="Password" type="password" [formControl]="passwordFormControl" >
         </mat-form-field>
-        <button mat-raised-button color="primary">Login</button>
+        <button mat-raised-button color="primary" (click)="loginWithUsernamePassword()">Login</button>
         <div  fxLayoutAlign="center" >
           <a routerLink="/reset">Forgot your password?</a>
         </div>
