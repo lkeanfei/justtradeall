@@ -1,6 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 
 
+
+.searchinput {
+  width: 256px !important;
+  height: 16px !important;
+  color: white !important;
+  font-size: 65%;
+}
 .primaryrow {
    height: 48x;
   color: white;

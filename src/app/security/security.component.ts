@@ -277,18 +277,23 @@ export class SecurityComponent implements OnInit, AfterViewInit {
               private authService: AuthService, private loginService: LoginService) {
 
     const dateStr = '2018-08-21';
-    this.startLoading = true;
+
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
     this.tableMap['wklow52'] = '52-week Low';
     this.tableMap['averagevol'] = 'Average Volume'
 
     const chartWidth = window.screen.width * 0.60;
-
+    //
+    // chart : {
+    //   width : chartWidth
+    // },
     this.staticChartOptions = {
+
       chart : {
-        width : chartWidth
+           width : chartWidth
       },
+
       navigator: {
         enabled: false
       },
@@ -407,7 +412,8 @@ export class SecurityComponent implements OnInit, AfterViewInit {
         }
     });
     const theSub = this.route.params.pipe(
-      concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
+      // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
+      concatMap( prms => this.routeChangedDetected(prms))
     );
 
     theSub.subscribe( res => {
@@ -461,6 +467,12 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
 
+  }
+
+  routeChangedDetected( prms) : Observable<any> {
+    const dateStr = '2018-08-21';
+    this.startLoading = true;
+    return this.httpService.getSecurityView(prms['fullid'], dateStr)
   }
 
   switchToStatic() {

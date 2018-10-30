@@ -22,7 +22,15 @@
         <button mat-button (click)="activateSearchInput()"><i class="fas fa-search"></i>Search</button>
       </div>
     <ng-template #showSearchInputTemplate>
-      <input matInput placeholder="Search Symbol or Name" (focusout)="focusOutSearchInput()" autofocus>
+      <mat-form-field>
+        <input [formControl]="myControl"  class="searchinput" matInput placeholder="Search Symbol or Name" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
+          <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutSearchInput()" >
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
     </ng-template>
 
       <div fxFlex="1 1 10%" *ngIf="(isLoggedIn | async); else templateName">
@@ -62,16 +70,16 @@
       <!--<button mat-button (click)="testClick(data)">{{data}} </button>-->
     <!--</div>-->
   <!--</div>-->
-  <div fxFlex="1 1 80%">
-  <mat-form-field style="width:400px !important">
-    <input class="input-width" [formControl]="myControl"  matInput placeholder="Search Symbol or Code" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" >
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-</div>
+  <!--<div fxFlex="1 1 80%">-->
+  <!--<mat-form-field style="width:400px !important">-->
+    <!--&lt;!&ndash;<input class="input-width" [formControl]="myControl"  matInput placeholder="Search Symbol or Code"  >&ndash;&gt;-->
+    <!--&lt;!&ndash;<mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >&ndash;&gt;-->
+      <!--&lt;!&ndash;<mat-option *ngFor="let option of filteredOptions | async" [value]="option">&ndash;&gt;-->
+        <!--&lt;!&ndash;{{option}}&ndash;&gt;-->
+      <!--&lt;!&ndash;</mat-option>&ndash;&gt;-->
+    <!--&lt;!&ndash;</mat-autocomplete>&ndash;&gt;-->
+  <!--</mat-form-field>-->
+<!--</div>-->
 
 
 

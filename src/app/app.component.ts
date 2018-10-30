@@ -143,6 +143,7 @@ export class AppComponent implements OnInit {
     this.navigateSecurity();
   }
 
+
   navigateSecurity() {
     // console.log('Navigate Security is ' + this.myControl.value);
     const fullSecStr = this.myControl.value;
