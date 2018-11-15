@@ -39,7 +39,13 @@ export class HomeComponent implements OnInit {
   histoConstructor = 'chart';
   klseData = [];
   updateFlag = false;
+  isLoading = true;
 
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+
+  latestUpdateDate = '';
   topGainersDateSource = [];
   topGainersPctDateSource = [];
   topLosersDateSource = [];
@@ -91,12 +97,6 @@ export class HomeComponent implements OnInit {
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new Rx.BehaviorSubject(this.data.selectedDate);
 
-    // this.authService.loginChanged.subscribe(
-    //   (isLoggedIn: Boolean) => {
-    //
-    //   }
-    // );
-
     this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
 
         this.topGainersDateSource = frontPageData["topgainers"];
@@ -106,6 +106,8 @@ export class HomeComponent implements OnInit {
         this.newHighDataSource = frontPageData['newhigh'];
         this.newLowDataSource = frontPageData['newlow'];
         this.unusualVolumeDataSource = frontPageData['unusualvolume'];
+
+        this.isLoading = false;
 
     })
 
@@ -202,10 +204,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.searchField = new FormControl();
-    const input = { 'id' : '0200I.MY', 'fromDate' : '2010-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
-    this.httpService.getPriceVolume(input).subscribe((data:any) => {
+    const input = { 'id' : '0200I.MY', 'fromDate' : '2018-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
+    // this.httpService.getPriceVolume(input).subscribe((data:any) => {
+    //
+    //      this.plotKLSEChart(data);
+    // });
 
-         this.plotKLSEChart(data);
+    this.httpService.getBursaPriceVolume().subscribe( (data:any) => {
+      this.plotKLSEChart(data);
     });
   }
 
@@ -239,6 +245,10 @@ export class HomeComponent implements OnInit {
 
     this.klseData = klseCandles;
     this.chartOptions['series'][0]['data'] = this.klseData;
+
+    this.latestUpdateDate = data['todate']
+    this.chartOptions['subtitle']['text'] = data['todate'];
+
     this.updateFlag = true;
     // this.chartOptions = {
     //   series: [{

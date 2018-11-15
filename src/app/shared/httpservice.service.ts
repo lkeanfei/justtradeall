@@ -86,6 +86,13 @@ export class HttpService {
       return this.httpClient.post( '/api/price/' , body );
     }
 
+    getBursaPriceVolume() {
+
+      const body = {};
+      return this.httpClient.post( '/api/bursapricevol/' , body);
+
+    }
+
 
 
 
