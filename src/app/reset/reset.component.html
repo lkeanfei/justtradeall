@@ -1,3 +1,29 @@
-<p>
-  reset works!
-</p>
+
+
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div fxFlex="1 1 50%">
+    <mat-card >
+      <mat-card-title>Forgot your password?</mat-card-title>
+      <mat-card-subtitle>Please enter the account that you want to reset the password.</mat-card-subtitle>
+      <mat-card-content>
+        <div fxLayout="column" fxLayoutGap="5px">
+          <mat-form-field>
+            <input matInput placeholder="Email" [formControl]="resetControl" >
+            <mat-error *ngIf="resetControl.hasError('email') || resetControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+          <div class="notfound" *ngIf="bUserNotFound">
+            Email is not found
+          </div>
+
+            <button class="submitclass" mat-raised-button color="primary" [formControl]="buttonControl" (click)="resetPassword()">SUBMIT</button>
+
+          <!--<button  [disabled] ]="resetControl.hasError('email') && !resetControl.hasError('required')" class="submitclass" mat-raised-button color="primary" [formControl]="buttonControl" (click)="resetPassword()">SUBMIT</button>-->
+
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

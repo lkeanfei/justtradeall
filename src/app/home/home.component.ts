@@ -15,6 +15,7 @@ import {Observable} from 'rxjs';
 import * as Plotly from 'plotly.js';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
+import {AngularFirestore} from "@angular/fire/firestore";
 
 
 @Component({
@@ -35,9 +36,16 @@ export class HomeComponent implements OnInit {
   dataPointsLength: number;
   Highcharts = Highcharts; // required
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
-  histoConstructor = 'chart'
+  histoConstructor = 'chart';
   klseData = [];
+  updateFlag = false;
+  isLoading = true;
 
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+
+  latestUpdateDate = '';
   topGainersDateSource = [];
   topGainersPctDateSource = [];
   topLosersDateSource = [];
@@ -55,39 +63,57 @@ export class HomeComponent implements OnInit {
   searchField: FormControl;
   subject: BehaviorSubject<string>;
   marketList: Array<string>;
-  chartOptions: any;
+  chartOptions = {
+    series: [{
+      type : 'candlestick',
+      data: []
+    }],
+    title : {
+      text : 'FBMKLCI'
+    },
+    subtitle : {
+      text :'21 Aug 2018'
+    },
+    yAxis: {
+      crosshair: true,
+      tickPixelInterval: 10,
+    },
+    xAxis: {
+      crosshair: true,
+      events: {
+        setExtremes:(evt) => {
+          let minDate = new Date(evt.min);
+
+        }},
+    }
+  };
 
 
 
-  constructor(db: AngularFireDatabase ,private httpService: HttpService, private authService: AuthService) {
+  constructor(private firestore: AngularFirestore,private httpService: HttpService, private authService: AuthService) {
 
     this.marketList = new Array();
     this.marketList.push("Bursa");
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new Rx.BehaviorSubject(this.data.selectedDate);
 
-    this.authService.loginChanged.subscribe(
-      (isLoggedIn: Boolean) => {
-        console.log('Inside home component ' + isLoggedIn);
-      }
-    );
-
     this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
-        console.log('Get frong page' )
-        console.log(frontPageData);
+
         this.topGainersDateSource = frontPageData["topgainers"];
         this.topGainersPctDateSource = frontPageData["topgainerspct"];
         this.topLosersDateSource = frontPageData["toplosers"];
         this.topLosersPctDateSource = frontPageData["toploserspct"];
         this.newHighDataSource = frontPageData['newhigh'];
         this.newLowDataSource = frontPageData['newlow'];
-        this.unusualVolumeDataSource = frontPageData['unusualvolume']
+        this.unusualVolumeDataSource = frontPageData['unusualvolume'];
+
+        this.isLoading = false;
 
     })
 
     const subscription = this.subject.subscribe(
       (dateSelected:string ) => {
-        console.log('Next date selected: ' + dateSelected);
+
 
         // const momentSelected: moment.Moment = moment(dateSelected , 'DD-MMM-YYYY');
         //
@@ -115,48 +141,33 @@ export class HomeComponent implements OnInit {
 
       } ,
       (err) => {} ,
-      () => { console.log('Completed'); }
+      () => { }
     );
 
     // subscribe to the trading day
-    db.list('/tradingdays').valueChanges().subscribe((data: Array<Object>) => {
-      const itemList: Array<Object> = new Array();
-
+    this.firestore.collection('/tradingdays').valueChanges().subscribe( (data: Array<Object>) => {
       for ( const tradingDayObj of data) {
-        console.log(tradingDayObj);
-        itemList.push(tradingDayObj);
-      }
 
-      const maxDate =  _.maxBy(itemList);
-      this.data.selectedDate = maxDate;
-      // to watch for changes in date or country selection
-
-      console.log('max date ' + maxDate);
-      const myMoment: moment.Moment =  moment(maxDate , 'YYYY-MM-DD');
-      this.subject.next(myMoment.format('DD-MMM-YYYY'));
+        // itemList.push(tradingDayObj);
+        }
     });
-    // map(db.list('/tradingdays').valueChanges())
-    // this.data.dateList = db.list('/tradingdays').valueChanges().(
-    //   (data: Array<Object>) => {
-    //     const itemList: Array<Object> = new Array();
+    // this.firestore.collection().list('/tradingdays').valueChanges().subscribe((data: Array<Object>) => {
+    //   const itemList: Array<Object> = new Array();
     //
-    //     for ( let tradingDayObj of data) {
-    //       console.log(tradingDayObj);
-    //       itemList.push(tradingDayObj);
-    //     }
-    //
-    //     const maxDate =  _.maxBy(itemList);
-    //     this.data.selectedDate = maxDate;
-    //     // to watch for changes in date or country selection
-    //
-    //     console.log('max date ' + maxDate);
-    //     let myMoment : moment.Moment =  moment(maxDate , 'YYYY-MM-DD');
-    //     this.subject.next(myMoment.format('DD-MMM-YYYY'));
-    //
-    //     return itemList;
+    //   for ( const tradingDayObj of data) {
+
+    //     itemList.push(tradingDayObj);
     //   }
     //
-    // );
+    //   const maxDate =  _.maxBy(itemList);
+    //   this.data.selectedDate = maxDate;
+    //   // to watch for changes in date or country selection
+    //
+
+    //   const myMoment: moment.Moment =  moment(maxDate , 'YYYY-MM-DD');
+    //   this.subject.next(myMoment.format('DD-MMM-YYYY'));
+    // });
+
 
   }
   applyFilter(filterValue: string) {
@@ -173,7 +184,7 @@ export class HomeComponent implements OnInit {
   }
 
   onFormSubmit()  {
-    console.log('Submitted! ' + this.searchField.value);
+
   }
 
 
@@ -193,9 +204,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.searchField = new FormControl();
-    const input = { 'id' : '0200I.MY', 'fromDate' : '2010-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
-    this.httpService.getPriceVolume(input).subscribe((data:any) => {
-         this.plotKLSEChart(data);
+    const input = { 'id' : '0200I.MY', 'fromDate' : '2018-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
+    // this.httpService.getPriceVolume(input).subscribe((data:any) => {
+    //
+    //      this.plotKLSEChart(data);
+    // });
+
+    this.httpService.getBursaPriceVolume().subscribe( (data:any) => {
+      this.plotKLSEChart(data);
     });
   }
 
@@ -228,36 +244,41 @@ export class HomeComponent implements OnInit {
     }
 
     this.klseData = klseCandles;
+    this.chartOptions['series'][0]['data'] = this.klseData;
 
-    this.chartOptions = {
-      series: [{
-        type : 'candlestick',
-        data: this.klseData
-      }],
-      title : {
-        text : 'FBMKLCI'
-      },
-      subtitle : {
-        text :'21 Aug 2018'
-      },
-      yAxis: {
-        crosshair: true,
-        tickPixelInterval: 10,
-      },
-      xAxis: {
-        crosshair: true,
-        events: {
-          setExtremes:(evt) => {
-            let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
-          }},
-      }
-    };
+    this.latestUpdateDate = data['todate']
+    this.chartOptions['subtitle']['text'] = data['todate'];
+
+    this.updateFlag = true;
+    // this.chartOptions = {
+    //   series: [{
+    //     type : 'candlestick',
+    //     data: this.klseData
+    //   }],
+    //   title : {
+    //     text : 'FBMKLCI'
+    //   },
+    //   subtitle : {
+    //     text :'21 Aug 2018'
+    //   },
+    //   yAxis: {
+    //     crosshair: true,
+    //     tickPixelInterval: 10,
+    //   },
+    //   xAxis: {
+    //     crosshair: true,
+    //     events: {
+    //       setExtremes:(evt) => {
+    //         let minDate = new Date(evt.min);
+    //
+    //       }},
+    //   }
+    // };
 
 
     //
     // for( const arrayIndex of range(0,dataLength)) {
-    //     console.log('dateStr ' + dateStr + '. Timestamp ' + Date.parse(dateStr))
+
     // }
 
     // this.plotCandlesticks(dateList, openList, highList, lowList , closeList , volumeList);
@@ -267,7 +288,7 @@ export class HomeComponent implements OnInit {
 
   plotCandlesticks(dateList,openList, highList, lowList , closeList , volumeList) {
 
-    console.log("Plotting candlesticks")
+
     const candletrace = {
       x: dateList,
       close: closeList,
@@ -298,7 +319,7 @@ export class HomeComponent implements OnInit {
     const minVol = Math.min(...volumeList);
     const maxVol = Math.max(...volumeList);
 
-    console.log('min vol is ' + minVol + '.max vol ' + maxVol);
+
 
     const candlelayout = {
       dragmode: 'zoom',
@@ -370,8 +391,6 @@ export class HomeComponent implements OnInit {
       },
     };
 
-    console.log('candle y range min ' + this.yRangeMin);
-    console.log('candle y range max ' + this.yRangeMax);
 
     let candlePromise: any;
 

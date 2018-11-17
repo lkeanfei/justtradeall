@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
@@ -9,23 +9,27 @@ HC_indic(Highcharts); // loads core and enables sma
 HC_BB(Highcharts);
 HC_RSI(Highcharts);
 
-import {concatMap, map, switchMap, take, tap} from 'rxjs/internal/operators';
+import {concatMap, map, switchMap, take, tap} from 'rxjs/operators';
 import {MatTableDataSource} from "@angular/material";
 import {LoginService} from "../shared/loginservice.service";
+import {Observable, of} from "rxjs/index";
+import {AuthService} from "../shared/security/auth.service";
+import {User} from "../shared/security/user";
 
 @Component({
   selector: 'app-security',
   templateUrl: './security.component.html',
   styleUrls: ['./security.component.css']
 })
-export class SecurityComponent implements OnInit {
+export class SecurityComponent implements OnInit, AfterViewInit {
 
   private sub: any;
   fullid: string;
   showStatic = true;
-  showLogin = false;
+  showLogin = true;
   fxFlexValue = 75;
 
+  startLoading = true;
   dailyData = [];
   chartWidth: number;
 
@@ -263,24 +267,33 @@ export class SecurityComponent implements OnInit {
 
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
 
+  // Styling for the loading spinner
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
 
-  constructor(private route: ActivatedRoute , private httpService: HttpService , private loginService: LoginService) {
-    // const httpSub = this.httpService.getSecurityView('12345').pipe(
-    //   map(prms => prms['fullid'])
-    // );
 
-    const dateStr = '2018-08-21'
+  constructor(private route: ActivatedRoute , private httpService: HttpService ,
+              private authService: AuthService, private loginService: LoginService) {
+
+    const dateStr = '2018-08-21';
+
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
     this.tableMap['wklow52'] = '52-week Low';
     this.tableMap['averagevol'] = 'Average Volume'
 
     const chartWidth = window.screen.width * 0.60;
-
+    //
+    // chart : {
+    //   width : chartWidth
+    // },
     this.staticChartOptions = {
+
       chart : {
-        width : chartWidth
+           width : chartWidth
       },
+
       navigator: {
         enabled: false
       },
@@ -391,40 +404,50 @@ export class SecurityComponent implements OnInit {
       }
     };
 
-
-
-    const newSub = this.route.params.pipe(
-      concatMap(prms =>  this.httpService.getSecurityView(prms['fullid'] ,dateStr) ),
+    this.authService.getAuthStatus().subscribe( (user:User) => {
+        if( user == AuthService.UNKNOWN_USER) {
+           this.showLogin = true;
+        } else {
+          this.showLogin = false;
+        }
+    });
+    const theSub = this.route.params.pipe(
+      // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
+      concatMap( prms => this.routeChangedDetected(prms))
     );
 
-    newSub.subscribe( res => {
-
-      // console.log('daily');
-      // console.log(res["daily"]);
-      // console.log("volume");
-      // console.log(this.data)
+    theSub.subscribe( res => {
 
       const dataList = []
+      let status =  res['status']
+      console.log('Status is ' + status);
+
+      if(status == 'login') {
+        this.showLogin = true;
+      } else {
+        this.showLogin = false;
+      }
       const keys = Object.keys(res['summary']);
+      this.startLoading = false;
 
       for (const key of keys) {
         const value = res['summary'][key];
-        console.log('key and value ' + value + ". " + key)
+        // console.log('key and value ' + value + ". " + key)
         dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
         this.securitySummaryDataSource.data = dataList;
-
-
       }
 
       this.dailyData = res['daily'];
-
       this.staticChartOptions['series'][0]['data'] = this.dailyData;
       this.interactiveChartOptions['series'][0]['data'] = this.dailyData;
       this.interactiveChartOptions['series'][1]['data'] = res['volume']
 
       this.staticUpdateFlag = true;
       this.interactiveUpdateFlag = true;
-      this.Highstocks.charts[0].redraw();
+
+      // Temporary disable
+      // this.Highstocks.charts[0].redraw();
+
 
     });
 
@@ -442,6 +465,16 @@ export class SecurityComponent implements OnInit {
 
   }
 
+  ngAfterViewInit() {
+
+  }
+
+  routeChangedDetected( prms) : Observable<any> {
+    const dateStr = '2018-08-21';
+    this.startLoading = true;
+    return this.httpService.getSecurityView(prms['fullid'], dateStr)
+  }
+
   switchToStatic() {
     this.showStatic = true;
     this.fxFlexValue = 75;
@@ -450,14 +483,13 @@ export class SecurityComponent implements OnInit {
 
   switchToInteractive() {
 
-    const id = localStorage.getItem('id');
-    console.log('id is ' + id);
     this.showStatic = false;
-    if (id === null) {
-      this.showLogin = true;
-    }
+    // this.showLogin = true;
+    // if (id === null) {
+    //   this.showLogin = true;
+    // }
     this.fxFlexValue = 75;
-    console.log('To Interactive');
+
     this.ngOnInit();
   }
 

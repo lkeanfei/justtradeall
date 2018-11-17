@@ -9,7 +9,7 @@ import {
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule,
   MatTableModule,
-  MatToolbarModule
+  MatToolbarModule, MatTabsModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -34,6 +34,11 @@ import { HighstockComponent } from './highstock/highstock.component';
 import { ExperimentComponent } from './experiment/experiment.component';
 import { SecurityComponent } from './security/security.component';
 import {DialogContentExampleDialog, LoginService} from "./shared/loginservice.service";
+import {AngularFirestoreModule} from "@angular/fire/firestore";
+import {PreviousRouteServiceService} from "./shared/previous-route-service.service";
+import { OverviewComponent } from './security/sub/overview/overview.component';
+import { ChartsComponent } from './security/sub/charts/charts.component';
+import { SecshareholdingsComponent } from './security/sub/secshareholdings/secshareholdings.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -66,7 +71,10 @@ const appRoutes: Routes = [
     HighstockComponent,
     ExperimentComponent,
     SecurityComponent,
-    DialogContentExampleDialog
+    DialogContentExampleDialog,
+    OverviewComponent,
+    ChartsComponent,
+    SecshareholdingsComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +91,7 @@ const appRoutes: Routes = [
     MatMenuModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
+    MatTabsModule,
     MatSelectModule,
     MatCardModule,
     MatTableModule,
@@ -92,14 +101,15 @@ const appRoutes: Routes = [
     FlexLayoutModule,
     FormsModule,
     RouterModule.forRoot(appRoutes , {useHash: true}),
-    AngularFireModule.initializeApp(  environment.firebase),
+    AngularFireModule.initializeApp(  environment.firebase , 'angular-auth-firebase'),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFirestoreModule,
     HighchartsChartModule
   ],
   entryComponents: [ DialogContentExampleDialog],
 
-  providers: [AuthService, HttpService , LoginService],
+  providers: [AuthService, HttpService , LoginService , PreviousRouteServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

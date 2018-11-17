@@ -260,7 +260,7 @@ export class HighstockComponent implements OnInit {
       events: {
         setExtremes:(evt) => {
           let minDate = new Date(evt.min);
-          console.log('x axis ' + minDate + ' ' + evt.max);
+
   }},
   }
 };
@@ -565,7 +565,7 @@ export class HighstockComponent implements OnInit {
         name: 'Year 1800',
         data: [ 100,200,400,900,1000 ]
       }]}
-    console.log('Adjuested! ' + this.marginBottom);
+
 
     this.orderFlowUpdateFlag = true;
   }
@@ -633,19 +633,19 @@ export class HighstockComponent implements OnInit {
         name: 'Year 1800',
         data: [ 100,200,400,900,1000 ]
       }]}
-    console.log('Adjuested! ' + this.marginBottom);
+
 
     this.orderFlowUpdateFlag = true;
   }
 
   getTickIntervals() {
     const yAxis = Array.from(document.getElementsByClassName( "highcharts-plot-border" ));
-    console.log('Height ' + yAxis[1].getBoundingClientRect().height)
+
     const newTickPixelInterval = yAxis[1].getBoundingClientRect().height / 5;
-    console.log('Tick pixel interval ' + newTickPixelInterval);
+
 
     this.stockTickPixelInterval = this.stockTickPixelInterval - 3;
-    console.log('Stock tick pixel ' + this.stockTickPixelInterval)
+
 
     this.chartOptions = {
       chart : {
@@ -664,24 +664,21 @@ export class HighstockComponent implements OnInit {
         events: {
           setExtremes:(evt) => {
             let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
+
           }},
       }
     };
 
     this.updateFlag = true;
     // const numTicks = yAxis[1].getElementsByClassName("highcharts-tick");
-    // console.log('Number of yAxis ' + yAxis.length + ' .Num ticks ' + yAxis[1].childNodes.length);
-    // console.log('Tick 0 ' + numTicks[0].getBoundingClientRect().top);
-    // console.log('Tick 1 ' + numTicks[1].getBoundingClientRect().top);
+
   }
 
 
   calculateOptimalBinWidth() {
 
     let prices = Object.keys(this.intradayObject).map( v => parseFloat(v));
-    console.log('intArray ****' );
-    console.log(prices);
+
 
     // const intraDayPrices = Object.keys(this.intradayObject);
     // const histoPriceTransVol = [];
@@ -699,14 +696,13 @@ export class HighstockComponent implements OnInit {
     let xMax = Math.max(...prices), xMin = Math.min(...prices);
     const delta = (xMax - xMin);
     let interval = Math.ceil( delta/ (20 * 0.005)) * 0.005;
-    console.log('Diff ' + (xMax - xMin) + ' interval ' + interval );
+
     if( interval > 0.10 ) {
-      // refine it to a better interval
-      console.log('it is bigger than 0.10');
+
       const newInterval = Math.round(interval * 100);
       interval = (newInterval  + 5 - (newInterval % 5)) / 100
     }
-    console.log('Refined interval ' + interval);
+
     this.yInterval = interval;
 
     // const minBins = 4, maxBins = 50;
@@ -769,7 +765,7 @@ export class HighstockComponent implements OnInit {
         events: {
           setExtremes:(evt) => {
             let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
+
           }},
       }
     };

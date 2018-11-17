@@ -1,6 +1,7 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable} from "rxjs/index";
 
 interface PriceRequestInput {
   id: string,
@@ -26,7 +27,28 @@ export class HttpService {
         return this.httpClient.post( url , body , this.httpOptions);
     }
 
-    getSecurityView(fullid: string ,dateStr: string) {
+    verifySession() {
+      const data = {};
+      return this.httpClient.post('/api/sessionverify/' , data);
+    }
+
+    logout() {
+      const data = {};
+      return this.httpClient.post( '/api/sessionlogout/' , data);
+    }
+
+    postIdToSessionLogin(idToken: string) {
+      const name = 'csrfToken';
+      const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+      const csrfToken = v ? v[2] : null;
+      console.log('idToken is ' + idToken)
+      console.log('csrf token ' + csrfToken);
+
+      const data = {idToken: idToken, csrfToken: csrfToken}
+      return this.httpClient.post( '/api/sessionlogin/' , data )
+    }
+
+    getSecurityView(fullid: string ,dateStr: string) : Observable<any> {
       const body = { 'fullid' : fullid , 'date' : dateStr };
       return this.httpClient.post( '/api/security/' , body );
     }
@@ -62,6 +84,13 @@ export class HttpService {
       'to' : input.toDate,
       'intra' : input.intra };
       return this.httpClient.post( '/api/price/' , body );
+    }
+
+    getBursaPriceVolume() {
+
+      const body = {};
+      return this.httpClient.post( '/api/bursapricevol/' , body);
+
     }
 
 

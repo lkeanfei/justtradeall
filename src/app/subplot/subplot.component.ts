@@ -30,13 +30,13 @@ export class SubplotComponent implements OnInit {
   value = 50;
 
   constructor(private httpService: HttpService) {
-    console.log('on construct triggered!');
+
     this.bOrderFlowLoading = true;
   }
 
   ngOnInit() {
 
-    console.log('on init triggered!');
+
 
     const input = { 'id' : '4707.MY', 'fromDate' : '2018-04-01' , 'toDate' : '2018-04-20' , 'intra' : true};
     this.httpService.getPriceVolume(input).subscribe((data:any) => {
@@ -49,9 +49,9 @@ export class SubplotComponent implements OnInit {
 
     //
     // candleDiv.on('plotly_relayout', (eventdata) => {
-    //   console.log('relayout event!');
+
     //   if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
-    //     console.log('rangeslider event!!');
+
     //
     //
     //     startDate = eventdata['xaxis.range'][0];
@@ -65,9 +65,7 @@ export class SubplotComponent implements OnInit {
     //
     //     timerId = window.setTimeout(function(){
     //       //fire end event
-    //       console.log('rangeslider event ENDS');
-    //       console.log('starts '  + startDate);
-    //       console.log('ends '  + endDate);
+
     //       this.yRangeMin = this.yRangeMin - 0.005;
     //       this.plotHistogram();
     //
@@ -133,7 +131,7 @@ export class SubplotComponent implements OnInit {
     const minVol = Math.min(...volumeList);
     const maxVol = Math.max(...volumeList);
 
-    console.log('min vol is ' + minVol + '.max vol ' + maxVol);
+
 
     const candlelayout = {
       dragmode: 'zoom',
@@ -205,24 +203,23 @@ export class SubplotComponent implements OnInit {
       },
     };
 
-    console.log('candle y range min ' + this.yRangeMin);
-    console.log('candle y range max ' + this.yRangeMax);
+
 
     let candlePromise: any;
 
       setTimeout(() => {
         const node = document.getElementById('candleDiv');
-        console.log('Node ' + node);
+
         candlePromise = Plotly.newPlot('candleDiv', candledata, candlelayout);
         candlePromise.then((htmlElem: PlotlyHTMLElement) => {
           this.candleElem = htmlElem;
 
           this.candleElem.on('plotly_relayout', (eventdata) => {
-            // console.log('relayout event!');
+
             let timerId = 0;
             let startDate , endDate;
             if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
-              // console.log('rangeslider event!!');
+
 
 
               startDate = eventdata['xaxis.range'][0];
@@ -236,9 +233,7 @@ export class SubplotComponent implements OnInit {
 
               timerId = window.setTimeout(() => {
                 //fire end event
-                // console.log('rangeslider event ENDS');
-                // console.log('starts '  + startDate);
-                // console.log('ends '  + endDate);
+
                 this.yRangeMin = this.yRangeMin - 0.005;
 
                 const newCandleLayout = {
@@ -331,12 +326,11 @@ export class SubplotComponent implements OnInit {
     //    this.candleElem = htmlElem;
     //
     //    this.candleElem.on('plotly_relayout', (eventdata) => {
-    //     console.log('relayout event!');
+
     //      let timerId = 0;
     //      let startDate , endDate;
     //     if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
-    //       console.log('rangeslider event!!');
-    //
+
     //
     //       startDate = eventdata['xaxis.range'][0];
     //       endDate = eventdata['xaxis.range'][1];
@@ -349,9 +343,7 @@ export class SubplotComponent implements OnInit {
     //
     //       timerId = window.setTimeout(() => {
     //         //fire end event
-    //         console.log('rangeslider event ENDS');
-    //         console.log('starts '  + startDate);
-    //         console.log('ends '  + endDate);
+
     //         this.yRangeMin = this.yRangeMin - 0.005;
     //         this.plotHistogram();
     //         //reset timer to undefined
@@ -366,8 +358,7 @@ export class SubplotComponent implements OnInit {
   calculateOptimalBinWidth() {
 
     let prices = Object.keys(this.intradayObject).map( v => parseFloat(v));
-    console.log('intArray ****' );
-    console.log(prices);
+
 
       // const intraDayPrices = Object.keys(this.intradayObject);
     // const histoPriceTransVol = [];
@@ -385,14 +376,14 @@ export class SubplotComponent implements OnInit {
     let xMax = Math.max(...prices), xMin = Math.min(...prices);
     const delta = (xMax - xMin);
     let interval = Math.ceil( delta/ (20 * 0.005)) * 0.005;
-    console.log('Diff ' + (xMax - xMin) + ' interval ' + interval );
+
     if( interval > 0.10 ) {
       // refine it to a better interval
-      console.log('it is bigger than 0.10');
+
       const newInterval = Math.round(interval * 100);
       interval = (newInterval  + 5 - (newInterval % 5)) / 100
     }
-    console.log('Refined interval ' + interval);
+
     this.yInterval = interval;
 
     // const minBins = 4, maxBins = 50;
@@ -413,7 +404,7 @@ export class SubplotComponent implements OnInit {
     //
     //   const mean = this.calcAverage(kiOut);
     //   const variance = this.calcVariance(kiOut , mean , N[i]);
-    //   console.log('D[i] is ' + D[i]);
+
     //
     //   C[i] = (2 * mean - variance) / (Math.pow(D[i], 2));
     // }
@@ -421,13 +412,12 @@ export class SubplotComponent implements OnInit {
     // const minC = Math.min(...C);
     // const minCArray = [];
     // C.forEach( (value,idx) => {
-    //    console.log('index is ' + idx + '.Value ' + value + ' minC = ' + minC );
+
     //    if( Math.abs(value - minC ) < 0.000001) {
     //      minCArray.push({'value' : value , 'index' : idx})
     //    }
     // })
-    // console.log('minArray ** ');
-    // console.log(minCArray);
+
     // const index = C.Select((c, ix) => new { Value = c, Index = ix })
     //   .Where(c => c.Value == minC).First().Index;
     // const optimalBinWidth = D[index];
@@ -477,9 +467,7 @@ export class SubplotComponent implements OnInit {
     plotHistogram() {
 
     let bins = this.generateHistogramBins();
-    console.log('****** bins ');
-    console.log(bins);
-    const minZeros = this.calcNormalizeVol();
+     const minZeros = this.calcNormalizeVol();
 
 
 
@@ -540,7 +528,7 @@ export class SubplotComponent implements OnInit {
         if ( price >= bin['min'] && price < bin['max']) {
               const vol = this.intradayObject[price];
               const normalizeVol = vol / Math.pow(10, minZeros);
-              // console.log('price is ' + price + '.bin mid is ' + bin['mid']);
+
             for ( let cnt=0 ; cnt < normalizeVol ; cnt++) {
               prices.push(bin['mid']);
             }
@@ -548,7 +536,7 @@ export class SubplotComponent implements OnInit {
       }
     }
 
-    console.log('min ' + this.yRangeMin + '. max = ' + this.yRangeMax + '. interval ' + this.yInterval)
+
 
     this.histoData = [
       {
@@ -596,7 +584,7 @@ export class SubplotComponent implements OnInit {
 
   clickButton() {
     this.rangeStart = this.rangeStart - 2;
-    console.log('Rage start ' + this.rangeStart);
+
     this.y = [];
     for (let i = 0; i < 500; i ++) {
       this.y[i] = Math.random() * 30 + 116;

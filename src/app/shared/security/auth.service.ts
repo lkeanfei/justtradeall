@@ -11,19 +11,25 @@ import {HttpService} from '../httpservice.service';
 import {HttpParams} from '@angular/common/http';
 import {ObjectUnsubscribedError} from 'rxjs/index';
 import { switchMap } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { of } from 'rxjs';
+import { from } from 'rxjs';
+
 @Injectable()
 export class AuthService {
 
   private user: Observable<firebase.User>;
   private userDetails: firebase.User = null;
-  userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+  // userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
+  // authSubject: BehaviorSubject<User> = new BehaviorSubject(null);
   isAdmin = false;
   loginChanged = new Subject<Boolean>();
-  static UNKNOWN_USER = new AuthInfo(null , null);
-  authSubject: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>( AuthService.UNKNOWN_USER);
+
+  static UNKNOWN_USER = new User(null , null, null);
+  authSubject: BehaviorSubject<User> = new BehaviorSubject<User>( AuthService.UNKNOWN_USER);
 
   constructor(private db: AngularFireDatabase ,
+              private firestore: AngularFirestore,
               private firebaseAuth: AngularFireAuth ,
               private httpService: HttpService) {
 
@@ -34,25 +40,27 @@ export class AuthService {
       } else {
           this.loginChanged.next(true);
       }
-      console.log('constructing AuthService ' + localStorage.getItem('id'));
+
+
 
     this.user = this.firebaseAuth.authState;
-    this.firebaseAuth.authState.pipe(switchMap( auth => {
-
-      if (auth) {
-        // successfully signed in
-        return this.db.object('users/' + auth.uid).valueChanges();
-      } else {
-        return of(null);
-      }
-    })).subscribe(user => {
-      if (user !== null) {
-        console.log(user);
-        const authInfo = new AuthInfo(user.$key , user.roles);
-        this.authSubject.next(authInfo);
-        this.userSubject.next(user);
-      }
-    });
+    // this.firebaseAuth.authState.pipe(switchMap( auth => {
+    //
+    //   if (auth) {
+    //     // successfully signed in
+    //     console.log('Successufl signed at auth service')
+    //     return this.db.object('users/' + auth.uid).valueChanges();
+    //   } else {
+    //     return of(null);
+    //   }
+    // })).subscribe(user => {
+    //   if (user !== null) {
+    //
+    //     const authInfo = new AuthInfo(user.$key , user.roles);
+    //     this.authSubject.next(authInfo);
+    //     this.userSubject.next(user);
+    //   }
+    // });
     // this.firebaseAuth.authState.switchMap( auth => {
     //
     //   if(auth)
@@ -68,73 +76,70 @@ export class AuthService {
 
   }
 
-  private updateUser(authData) {
-    const userData = new User(authData);
-
-    // grab any existing users including roles
-    const angularFireObject = this.db.object('users/' + authData.uid);
-    angularFireObject.update(userData);
-    // const ref = angularFireObject.valueChanges()
-    // ref.take(1)
-    //   .subscribe(
-    //     user => {
-    //
-    //       console.log(user);
-    //       if(!user.roles) {
-    //         console.log('update user without roles');
-    //         angularFireObject.update(userData);
-    //       }
-    //     }
-    //   );
+  sendResetPassword(email: string) : Observable<void> {
+    return from(this.firebaseAuth.auth.sendPasswordResetEmail(email));
   }
 
-  //Toggle login change
-    toggleLoginChange( val: Boolean) {
-        this.loginChanged.next(val);
-    }
+
+  triggerAuthEvent( user: User ) {
+     this.authSubject.next(user);
+  }
+
+  getAuthStatus(): Observable<User> {
+    return this.authSubject.asObservable();
+  }
+
+  verifyUser() : Observable<User> {
+
+     this.httpService.verifySession().subscribe( val => {
+     //
+
+       let user = AuthService.UNKNOWN_USER;
+        if ( val['status'] == 'ok') {
+           user = new User(val['name'], val['email'], val['photourl'])
+           // user.name = val['name'];
+           // user.email = val['email'];
+           // user.photourl = val['photourl'];
+           // console.log('Verify ' + user.name + ' ' + user.email + ' '  + user.photourl)
+        }
+
+        this.authSubject.next(user);
+
+     });
+
+     return this.authSubject.asObservable();
+  }
 
   resetPassword(email): Observable<any> {
 
-
     const subject = new Subject<any>();
-
     this.firebaseAuth.auth.sendPasswordResetEmail(email)
       .then(
         res => {
-
-          console.log("On ok");
-          console.log(res);
-
           subject.next(res);
           subject.complete();
         },
         err => {
-           console.log("On rejected");
-           console.log(err);
           subject.error(err);
           subject.complete();
         }
 
       )
-
-
-
     return subject.asObservable();
-
 
   }
 
-  login(email, password): Observable<any> {
 
-    // return Observable.fromPromise(this.auth.auth.signInWithEmailAndPassword( email , password))
-    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithEmailAndPassword(email, password));
 
+  // Gets the ID Token of the authenticated user
+  getIdToken() : Observable<string> {
+    const idTokenObservable  = from(this.firebaseAuth.auth.currentUser.getIdToken(true));
+    return idTokenObservable;
   }
 
   signUp(email, password) : Observable<any>
   {
     const subject = new Subject<any>();
-
     this.firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(
         res => {
@@ -155,10 +160,25 @@ export class AuthService {
 
   // logout
   logout() {
-    this.firebaseAuth.auth.signOut();
-    this.loginChanged.next(false);
-    this.authSubject.next(AuthService.UNKNOWN_USER);
-    localStorage.removeItem('id');
+
+    // have to notify the header after successful
+    //
+    this.httpService.logout().subscribe( res => {
+      console.log('logout')
+    })
+    this.firebaseAuth.auth.signOut()
+      .then( res => {
+      //     Successfully sign out
+          console.log('Sign out OK!')
+        // this.loginChanged.next(false);
+        this.authSubject.next(AuthService.UNKNOWN_USER);
+      } , err => {
+          // Failed to sign out
+          console.log('Sign out Failed!')
+          console.log(err);
+      })
+
+
 
   }
 
@@ -168,10 +188,16 @@ export class AuthService {
      this.db.list('/users').valueChanges()
        .subscribe(
          (usersList) => {
-           console.log("Users ");
-           console.log(usersList);
+
          }
        );
+
+  }
+
+  login(email, password): Observable<any> {
+
+    // return Observable.fromPromise(this.auth.auth.signInWithEmailAndPassword( email , password))
+    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithEmailAndPassword(email, password));
 
   }
 
@@ -182,7 +208,7 @@ export class AuthService {
     return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup( new firebase.auth.GoogleAuthProvider()));
   }
 
-  loginFacebook(): Observable<any> {
+  loginFacebook(): Observable<any>  {
     return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()));
   }
 
@@ -194,28 +220,10 @@ export class AuthService {
     const subject = new Subject<any>();
     promise
       .then( res => {
-          const authInfo = new AuthInfo(this.firebaseAuth.auth.currentUser.uid , null);
-          this.authSubject.next(authInfo);
-
-          // console.log('Before update user');
-          // console.log(res);
-
-          // console.log('id token ' + res.credential.idToken)
-              console.log('id token')
-              this.firebaseAuth.auth.currentUser.getIdToken(true).then( (idToken) => {
-                  localStorage.setItem('id' , idToken);
-                     console.log('****' + idToken);
-                  const body = new HttpParams()
-                      .set('token' , idToken);
 
 
-                  this.httpService.post('/api/hello-view/' , body.toString()).subscribe(
-                      data => { console.log('post data ' + data); },
-                      err => { console.log('err ' + err);},
-                      ()  => { console.log('finished!');}
-                  );
-              });
-              this.updateUser(res.user);
+          // const authInfo = new AuthInfo(this.firebaseAuth.auth.currentUser.uid , null);
+          // this.authSubject.next(authInfo);
           this.loginChanged.next(true);
 
 
@@ -224,7 +232,8 @@ export class AuthService {
         },
         err => {
           this.loginChanged.next(false);
-          localStorage.removeItem('id');
+
+          console.log('Error is ' + err);
           this.authSubject.error(err);
           subject.error(err);
           subject.complete();

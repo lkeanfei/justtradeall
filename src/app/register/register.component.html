@@ -1,77 +1,55 @@
-<div fxLayout="column" fxLayoutAlign="center"  fxLayoutGap="10px">
-  <div >
-
-  </div>
-  <div >
-
-  </div>
-
-</div>
-<div fxLayout="row"  fxLayoutAlign="center">
-  <div   fxFlex="40%" >
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title fxLayoutAlign="center">Register</mat-card-title>
-
-      </mat-card-header>
-      <mat-card-content>
-
-        <div fxLayout="column"  fxLayoutGap="10px">
-
-          <mat-form-field>
-            <input matInput type="email" placeholder="Email" [formControl]="emailFormControl">
-            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-              Please enter a valid email address
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field>
-            <input matInput type="password" placeholder="Password" [formControl]="passwordFormControl">
-            <mat-error *ngIf="passwordFormControl.hasError('minlength') && !passwordFormControl.hasError('required')">
-              Minimum 8 characters for password
+<div class="loginclass" fxLayoutAlign="center center">
+  <div fxFlex="50%" >
+    <div fxLayout="row" fxLayoutGap="90px">
+      <div fxFlex="1 1 50%" >
+        <div  fxLayoutAlign="center center" fxLayout="column" >
+          <form [formGroup]="regForm" fxLayoutGap="15px">
+            <mat-form-field class="classicinput">
+            <input matInput type="email" placeholder="Email" formControlName="email" >
+            <mat-error *ngIf="regForm.hasError('required' , 'email') || regForm.hasError('email' , 'email') ">
+            Please enter a valid email address
             </mat-error>
 
-          </mat-form-field>
-          <div *ngIf="signupFailed">
-            {{ signupFailedMessage }}
-          </div>
-          <div fxLayoutAlign="center">
-            <button mat-raised-button color="primary"  (click)="signUp()">Sign Up Now!</button>
-          </div>
-          <div  fxLayoutAlign="center" >
-            OR
-          </div>
+            </mat-form-field>
+            <mat-form-field class="classicinput">
+              <input  matInput type="password" placeholder="New password" formControlName="password" required>
+              <mat-error *ngIf="regForm.hasError('required', 'password')">
+                Please enter your new password
+              </mat-error>
+              <mat-error *ngIf="regForm.hasError('minlength', 'password')">
+                Minimum 8 characters
+              </mat-error>
+            </mat-form-field>
 
-          <div fxLayout="column"   fxFlex="20%" fxLayoutGap="10px" >
-            <div  class="spanFB" >
-
-              <button class="btn btn-facebook" fxFlex (click)="loginFacebook()"><i class="fab fa-facebook" style="font-size:16px;"></i>  |  Sign up with Facebook</button>
-
-            </div>
-            <div class="spanGoogle">
-
-              <button class="btn btn-google-plus" fxFlex (click)="loginGoogle()"><i class="fab fa-google-plus" style="font-size:16px;"></i>  |  Sign up with Google</button>
-            </div>
-            <div class="spanTwitter">
-
-              <button class="btn btn-twitter"  fxFlex (click)="loginTwitter()"><i class="fab fa-twitter" style="font-size:16px;"></i>  |  Sign up with Twitter</button>
-            </div>
-          </div>
+            <mat-form-field class="classicinput">
+              <input  matInput type="password"  placeholder="Confirm password" formControlName="confirmPassword" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="regForm.hasError('notSame')">
+                Passwords do not match
+              </mat-error>
+            </mat-form-field>
+          </form>
 
 
 
+
+          <!--<mat-form-field class="classicinput">-->
+            <!--<input matInput id="password" placeholder="Password" type="password" [formControl]="passwordFormControl" >-->
+          <!--</mat-form-field>-->
+          <button mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+
+      <div fxFlex fxLayout="column" fxLayoutAlign="center center"  fxLayoutGap="55px">
+
+        <button class="facebook-class" mat-button (click)="loginFacebook()"><i class="fab fa-facebook" style="font-size:16px;"></i> |  Sign up with Facebook</button>
+
+        <button class="google-class" mat-button (click)="loginGoogle()"><i class="fab fa-google-plus" style="font-size:16px;"></i>  |  Sign up with Google</button>
+
+
+
+
+      </div>
+    </div>
 
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-

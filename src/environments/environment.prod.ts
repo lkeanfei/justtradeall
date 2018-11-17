@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
   firebase : {
-    apiKey: 'AIzaSyBLIT2K89e_UJBCdDMt3AfKmcg39Hq4VHA',
-    authDomain: 'jovial-trilogy-162903.firebaseapp.com',
-    databaseURL: 'https://jovial-trilogy-162903.firebaseio.com',
-    projectId: 'jovial-trilogy-162903',
-    storageBucket: 'jovial-trilogy-162903.appspot.com',
-    messagingSenderId: '943595274511'
+    apiKey: "AIzaSyBAnNt1TYYvnjQv4lcN29z1sp0l8rSRJkk",
+    authDomain: "justtradeallproduction.firebaseapp.com",
+    databaseURL: "https://justtradeallproduction.firebaseio.com",
+    projectId: "justtradeallproduction",
+    storageBucket: "justtradeallproduction.appspot.com",
+    messagingSenderId: "1037655417356"
   }
 };
 

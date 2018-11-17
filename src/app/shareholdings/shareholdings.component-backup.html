@@ -1,9 +1,26 @@
+<div class="full-height">
+  <mat-sidenav-container class="full-height">
+    <mat-sidenav mode="side" opened class="full-height">
+
+      <mat-list>
+        <mat-list-item class="list-pointer"(click)="searchBy(0)" [style.background-color]="selStyles[0]" > Search By Stock
+          <mat-divider></mat-divider>
+        </mat-list-item>
+        <mat-list-item class="list-pointer" (click)="searchBy(1)" [style.background-color]="selStyles[1]" > Search By Shareholder
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+
+
+
+    </mat-sidenav>
+    <mat-sidenav-content >
 
       <div *ngIf="showByStock" fxLayout="column" fxLayoutGap="15px">
         <div></div>
         <div class="div-center" fxFlexAlign="center" fxLayout="row">
           <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
-            <mat-label>Shareholder's Name</mat-label>
+            <mat-label>Stock Symbol, Code or Name</mat-label>
             <input type="search"  [formControl]="companyField" (keyup.enter)="onSearchCompany()" matInput placeholder="Search">
           </mat-form-field>
         </div>
@@ -56,27 +73,13 @@
 
       <div *ngIf="!showByStock" fxLayout="column"  fxLayoutGap="15px">
 
-
-        <div class="div-center" fxFlexAlign="center" fxLayout="column">
-          <div>Shareholder's search</div>
-          <div><mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
-
+        <div></div>
+        <div class="div-center" fxFlexAlign="center" fxLayout="row">
+          <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
             <mat-label>Shareholder's name</mat-label>
             <input type="search"  [formControl]="shareholderField" (keyup.enter)="onSearchShareholders()" matInput placeholder="Search">
-          </mat-form-field></div>
-
+          </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center">
-          <div *ngIf="startSearchingShareHolders">
-            <mat-progress-spinner
-              class="example-margin"
-              [color]="color"
-              [mode]="mode"
-              [value]="value">
-            </mat-progress-spinner>
-          </div>
-        </div>
-
 
 
 
@@ -89,15 +92,9 @@
               <mat-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matCellDef="let element"> {{element.id}} </mat-cell>
             </ng-container>
 
-            <!-- Holder Column -->
-            <ng-container matColumnDef="holder">
-              <mat-header-cell class="cell-class"  fxFlex="{{ holderColumnWidth }}" *matHeaderCellDef> Holder </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ holderColumnWidth }}" *matCellDef="let element"> {{element.holder}} </mat-cell>
-            </ng-container>
-
             <!-- Name Column -->
             <ng-container matColumnDef="name">
-              <mat-header-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matHeaderCellDef> Counter </mat-header-cell>
+              <mat-header-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matHeaderCellDef> Name </mat-header-cell>
               <mat-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matCellDef="let element"> {{ element.name}} </mat-cell>
             </ng-container>
 
@@ -113,8 +110,8 @@
               <mat-cell class="cell-class"  fxFlex="{{ percentageColumnWidth }}" *matCellDef="let element"> {{element.percentage }} </mat-cell>
             </ng-container>
 
-            <mat-header-row  class="my-mat-row" *matHeaderRowDef="holderColumns"></mat-header-row>
-            <mat-row class="my-mat-row" *matRowDef="let row; columns: holderColumns;"></mat-row>
+            <mat-header-row  class="my-mat-row" *matHeaderRowDef="companyColumns"></mat-header-row>
+            <mat-row class="my-mat-row" *matRowDef="let row; columns: companyColumns;"></mat-row>
           </mat-table>
 
 
@@ -122,6 +119,8 @@
 
       </div>
 
-
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
 
 
