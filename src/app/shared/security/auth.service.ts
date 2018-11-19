@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth  } from 'angularfire2/auth';
-import {Observable} from 'rxjs/index';
+import {Observable, ReplaySubject} from 'rxjs/index';
 import {Subject} from 'rxjs/index';
 import {AuthInfo} from './authInfo';
 import {BehaviorSubject} from 'rxjs/index';
@@ -27,6 +27,7 @@ export class AuthService {
 
   static UNKNOWN_USER = new User(null , null, null);
   authSubject: BehaviorSubject<User> = new BehaviorSubject<User>( AuthService.UNKNOWN_USER);
+  authReplaySubject: ReplaySubject<User> = new ReplaySubject<User> (1);
 
   constructor(private db: AngularFireDatabase ,
               private firestore: AngularFirestore,
@@ -85,8 +86,16 @@ export class AuthService {
      this.authSubject.next(user);
   }
 
+  triggerAuthReplayEvent(user: User) {
+    this.authReplaySubject.next(user);
+  }
+
   getAuthStatus(): Observable<User> {
     return this.authSubject.asObservable();
+  }
+
+  getAuthReplayObservable(): Observable<User> {
+    return this.authReplaySubject.asObservable();
   }
 
   verifyUser() : Observable<User> {

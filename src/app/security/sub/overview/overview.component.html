@@ -1,3 +1,38 @@
-<p>
-  overview works!
-</p>
+<div fxFlex="1 1 90%" >
+  <highcharts-chart
+    [Highcharts]="Highstocks"
+
+    [constructorType]="chartConstructor"
+    [options]="staticChartOptions"
+
+    [(update)]="staticUpdateFlag"
+    [oneToOne]="staticOneToOneFlag"
+
+
+  ></highcharts-chart>
+</div>
+
+<div fxFlex="1 1 20%">
+  <table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Stock Column -->
+    <ng-container matColumnDef="label">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <td mat-cell *matCellDef="let element"> {{element['label']}} </td>
+    </ng-container>
+
+    <!-- Last Column -->
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> </th>
+      <td align="right" mat-cell *matCellDef="let element"> {{element['value']}} </td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="securitySummaryColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: securitySummaryColumns;"></tr>
+  </table>
+</div>

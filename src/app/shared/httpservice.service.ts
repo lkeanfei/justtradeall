@@ -53,6 +53,11 @@ export class HttpService {
       return this.httpClient.post( '/api/security/' , body );
     }
 
+    getHoldingsDistAndTop30View(fullid: string) {
+      const body = { 'fullid' : fullid   };
+      return this.httpClient.post( '/api/securityholdings/' , body );
+    }
+
     getAllCounters() {
       const body = { };
       return this.httpClient.post( '/api/counters/' , body );
@@ -92,6 +97,8 @@ export class HttpService {
       return this.httpClient.post( '/api/bursapricevol/' , body);
 
     }
+
+
 
 
 
