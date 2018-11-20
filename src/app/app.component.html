@@ -22,7 +22,7 @@
         <button mat-button (click)="activateSearchInput()"><i class="fas fa-search"></i>Search</button>
       </div>
     <ng-template #showSearchInputTemplate>
-      <mat-form-field>
+      <mat-form-field [floatLabel]="'never'">
         <input [formControl]="myControl"  class="searchinput" matInput placeholder="Search Symbol or Name" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
           <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutSearchInput()" >
