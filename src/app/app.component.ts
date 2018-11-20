@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
+    // Verify the user
     this.authService.verifyUser().subscribe( (user:User) => {
        if (user === AuthService.UNKNOWN_USER ) {
            console.log('App unknown user!!')
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
        }
     });
 
-    this.authService.getAuthStatus().subscribe( (user: User) => {
+    this.authService.getAuthReplayObservable().subscribe( (user: User) => {
       if (user === AuthService.UNKNOWN_USER ) {
         console.log('Auth Status App observable! unknown user!!')
         this.loginSubject.next(false)

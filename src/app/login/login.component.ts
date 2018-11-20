@@ -111,7 +111,8 @@ export class LoginComponent implements OnInit {
       (val: string) => {
 
         user = new User(val['user'] , val['email'] , val['photourl']);
-        this.authService.triggerAuthEvent(user);
+        //this.authService.triggerAuthEvent(user);
+        this.authService.triggerAuthReplayEvent(user);
         let prevUrl = this.prevRouteService.getPreviousUrl()
 
         if(prevUrl.includes('login') || prevUrl.includes('register')) {
@@ -122,7 +123,8 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         console.log('Error login google!');
-        this.authService.triggerAuthEvent(user);
+        //this.authService.triggerAuthEvent(user);
+        this.authService.triggerAuthReplayEvent(user);
         console.log(err);
       }
     )

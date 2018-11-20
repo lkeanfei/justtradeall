@@ -10,7 +10,7 @@ HC_BB(Highcharts);
 HC_RSI(Highcharts);
 
 import {concatMap, map, switchMap, take, tap} from 'rxjs/operators';
-import {MatTableDataSource} from "@angular/material";
+import {MatTabChangeEvent, MatTableDataSource} from "@angular/material";
 import {LoginService} from "../shared/loginservice.service";
 import {Observable, of} from "rxjs/index";
 import {AuthService} from "../shared/security/auth.service";
@@ -26,10 +26,10 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   private sub: any;
   fullid: string;
   showStatic = true;
-  showLogin = true;
+
   fxFlexValue = 75;
 
-  startLoading = true;
+
   dailyData = [];
   chartWidth: number;
 
@@ -37,9 +37,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   staticOneToOneFlag = false; // optional boolean, defaults to false
   staticChartOptions : any;
 
-  interactiveUpdateFlag = false;
-  interactiveOneToOneFlag = false;
-  interactiveChartOptions : any;
+
 
   securitySummaryDataSource =  new MatTableDataSource<any>();
   securitySummaryColumns: string[] = ['label' , 'value'];
@@ -265,12 +263,17 @@ export class SecurityComponent implements OnInit, AfterViewInit {
     ]];
 
 
-  chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
+  // optional string, defaults to 'chart'
 
   // Styling for the loading spinner
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
+
+  tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
+    console.log('tabChangeEvent => ', tabChangeEvent);
+    console.log('Tab index => ', tabChangeEvent.index);
+  }
 
 
   constructor(private route: ActivatedRoute , private httpService: HttpService ,
@@ -338,6 +341,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       }
     };
 
+    /*
     this.interactiveChartOptions  = {
       chart : {
         width : chartWidth
@@ -403,7 +407,6 @@ export class SecurityComponent implements OnInit, AfterViewInit {
           }},
       }
     };
-
     this.authService.getAuthStatus().subscribe( (user:User) => {
         if( user == AuthService.UNKNOWN_USER) {
            this.showLogin = true;
@@ -415,7 +418,6 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
       concatMap( prms => this.routeChangedDetected(prms))
     );
-
     theSub.subscribe( res => {
 
       const dataList = []
@@ -451,17 +453,19 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
     });
 
-
+     */
   }
 
   ngOnInit() {
 
+    /*
     const chartWidth = window.screen.width * 0.60;
     this.staticChartOptions['series'][0]['data'] = this.dailyData
     this.interactiveChartOptions['series'][0]['data'] = this.dailyData
     this.staticUpdateFlag = true;
     this.interactiveUpdateFlag = true;
     this.Highstocks.charts[0].redraw();
+    */
 
   }
 
@@ -471,7 +475,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
   routeChangedDetected( prms) : Observable<any> {
     const dateStr = '2018-08-21';
-    this.startLoading = true;
+
     return this.httpService.getSecurityView(prms['fullid'], dateStr)
   }
 
