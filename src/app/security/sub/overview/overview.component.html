@@ -1,3 +1,13 @@
-<p>
-  overview works!
-</p>
+<div *ngIf="showStatic" fxFlex="1 1 90%" >
+  <highcharts-chart
+    [Highcharts]="Highstocks"
+
+    [constructorType]="chartConstructor"
+    [options]="staticChartOptions"
+
+    [(update)]="staticUpdateFlag"
+    [oneToOne]="staticOneToOneFlag"
+
+
+  ></highcharts-chart>
+</div>
