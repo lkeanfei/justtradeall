@@ -53,6 +53,13 @@ export class HttpService {
       return this.httpClient.post( '/api/security/' , body );
     }
 
+    getCounterDetailView(fullid: string)  : Observable<any> {
+      const body = { 'fullid' : fullid  };
+      return this.httpClient.post( '/api/counterdetail/' , body );
+
+    }
+
+
     getHoldingsDistAndTop30View(fullid: string) {
       const body = { 'fullid' : fullid   };
       return this.httpClient.post( '/api/securityholdings/' , body );

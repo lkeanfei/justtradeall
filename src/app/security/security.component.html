@@ -2,7 +2,13 @@
 
 
 
-<div fxLayout="column" fxLayoutGap="10px">
+<div fxLayout="column" fxLayoutGap="40px">
+  <div>
+    <div> <b> {{ symbol }}  {{ name }} </b> </div>
+    <div> Full name: <b> {{ fullname }} </b></div>
+    <div> Category: <b> {{ category }} </b></div>
+    <div> Sector : <b> {{ sector }} </b> </div>
+  </div>
   <div>
     <mat-tab-group (selectedTabChange)="tabChanged($event)">
       <mat-tab label="Overview"> <app-overview></app-overview></mat-tab>
@@ -10,16 +16,5 @@
       <mat-tab label="Shareholdings"> <app-secshareholdings></app-secshareholdings> </mat-tab>
     </mat-tab-group>
   </div>
-
-
-  <div fxLayout="row">
-
-    <div *ngIf="!showStatic" fxFlex="{{fxFlexValue}}"  >
-
-
-    </div>
-
-  </div>
-
 </div>
 

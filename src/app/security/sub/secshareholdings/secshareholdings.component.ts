@@ -33,6 +33,8 @@ export class SecshareholdingsComponent implements OnInit {
   Top30Columns =  ['id', 'detailname', 'shares', 'percentage'];
   distholdingsDataSource: any;
   top30DataSource: any;
+  yearDisplay: string;
+
 
   constructor(private route: ActivatedRoute ,private httpService: HttpService) {
 
@@ -53,6 +55,7 @@ export class SecshareholdingsComponent implements OnInit {
         this.showLogin = true;
       } else {
         this.showLogin = false;
+        this.yearDisplay = res['top30year'];
         console.log(res['top30year']);
         // console.log(res['distlist']);
         console.log(res['top30list']);

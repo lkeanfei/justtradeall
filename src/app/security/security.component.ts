@@ -262,6 +262,12 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       108.51
     ]];
 
+  symbol: string;
+  name: string;
+  fullname: string;
+  category: string;
+  sector: string;
+
 
   // optional string, defaults to 'chart'
 
@@ -279,193 +285,85 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute , private httpService: HttpService ,
               private authService: AuthService, private loginService: LoginService) {
 
-    const dateStr = '2018-08-21';
-
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
     this.tableMap['wklow52'] = '52-week Low';
-    this.tableMap['averagevol'] = 'Average Volume'
+    this.tableMap['averagevol'] = 'Average Volume';
 
-    const chartWidth = window.screen.width * 0.60;
-    //
-    // chart : {
-    //   width : chartWidth
-    // },
-    this.staticChartOptions = {
-
-      chart : {
-           width : chartWidth
-      },
-
-      navigator: {
-        enabled: false
-      },
-      tooltip : {
-        animation: false,
-        crosshairs: false,
-        enabled: false
-      },
-      scrollbar : {
-        enabled: false
-      },
-      rangeSelector: {
-        enabled: false,
-        inputEnabled: false,
-        buttonTheme: {
-          visibility: 'hidden'
-        },
-        labelStyle: {
-          visibility: 'hidden'
-        }
-      },
-      series: [{
-        type : 'candlestick',
-        states: {
-          hover: {
-            enabled: false
-          }
-        },
-        data: []
-      }],
-      yAxis: {
-        crosshair: true,
-        tickPixelInterval: 10,
-      },
-      xAxis: {
-        crosshair: true,
-        events: {
-          setExtremes:(evt) => {
-            let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
-          }},
-      }
-    };
-
-    /*
-    this.interactiveChartOptions  = {
-      chart : {
-        width : chartWidth
-      },
-
-      series: [{
-        type : 'candlestick',
-        id : 'candlestick',
-        data: []
-      }
-        ,{
-          type: 'column',
-          name: 'Volume',
-          data: [],
-          yAxis: 1,
-        }
-        , {
-          type: 'bb',
-          linkedTo: 'candlestick'
-        }
-        , {
-          yAxis: 2,
-          type: 'rsi',
-          linkedTo: 'candlestick'
-        }],
-      yAxis:[{
-        crosshair: true,
-        height: '50%',
-        tickPixelInterval: 10,
-      },
-        {
-          labels: {
-            align: 'right',
-            x: -3
-          },
-          title: {
-            text: 'Volume'
-          },
-          top: '50%',
-          height: '25%',
-          offset: 0,
-          lineWidth: 2
-        },
-        {
-          labels: {
-            align: 'right',
-            x: -3
-          },
-          title: {
-            text: 'RSI'
-          },
-          top: '75%',
-          height: '25%',
-          offset: 0,
-          lineWidth: 2
-        }],
-      xAxis: {
-        crosshair: true,
-        events: {
-          setExtremes:(evt) => {
-            let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
-          }},
-      }
-    };
-    this.authService.getAuthStatus().subscribe( (user:User) => {
-        if( user == AuthService.UNKNOWN_USER) {
-           this.showLogin = true;
-        } else {
-          this.showLogin = false;
-        }
-    });
     const theSub = this.route.params.pipe(
-      // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
       concatMap( prms => this.routeChangedDetected(prms))
     );
+
     theSub.subscribe( res => {
 
-      const dataList = []
-      let status =  res['status']
-      console.log('Status is ' + status);
+      let status = res['status'];
+      if (status == 'ok') {
+        this.symbol = res['symbol'];
+        this.name = res['name'];
+        this.fullname = res['fullname'];
+        this.category = res['category'];
+        this.sector = res['sector'];
 
-      if(status == 'login') {
-        this.showLogin = true;
       } else {
-        this.showLogin = false;
+         console.log("Status is ng");
       }
-      const keys = Object.keys(res['summary']);
-      this.startLoading = false;
+    })
 
-      for (const key of keys) {
-        const value = res['summary'][key];
-        // console.log('key and value ' + value + ". " + key)
-        dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
-        this.securitySummaryDataSource.data = dataList;
-      }
+    // const chartWidth = window.screen.width * 0.60;
+    // this.staticChartOptions = {
+    //
+    //   chart : {
+    //        width : chartWidth
+    //   },
+    //
+    //   navigator: {
+    //     enabled: false
+    //   },
+    //   tooltip : {
+    //     animation: false,
+    //     crosshairs: false,
+    //     enabled: false
+    //   },
+    //   scrollbar : {
+    //     enabled: false
+    //   },
+    //   rangeSelector: {
+    //     enabled: false,
+    //     inputEnabled: false,
+    //     buttonTheme: {
+    //       visibility: 'hidden'
+    //     },
+    //     labelStyle: {
+    //       visibility: 'hidden'
+    //     }
+    //   },
+    //   series: [{
+    //     type : 'candlestick',
+    //     states: {
+    //       hover: {
+    //         enabled: false
+    //       }
+    //     },
+    //     data: []
+    //   }],
+    //   yAxis: {
+    //     crosshair: true,
+    //     tickPixelInterval: 10,
+    //   },
+    //   xAxis: {
+    //     crosshair: true,
+    //     events: {
+    //       setExtremes:(evt) => {
+    //         let minDate = new Date(evt.min);
+    //         console.log('x axis ' + minDate + ' ' + evt.max);
+    //       }},
+    //   }
+    // };
 
-      this.dailyData = res['daily'];
-      this.staticChartOptions['series'][0]['data'] = this.dailyData;
-      this.interactiveChartOptions['series'][0]['data'] = this.dailyData;
-      this.interactiveChartOptions['series'][1]['data'] = res['volume']
-
-      this.staticUpdateFlag = true;
-      this.interactiveUpdateFlag = true;
-
-      // Temporary disable
-      // this.Highstocks.charts[0].redraw();
-
-
-    });
-
-     */
   }
 
   ngOnInit() {
 
-    /*
-    const chartWidth = window.screen.width * 0.60;
-    this.staticChartOptions['series'][0]['data'] = this.dailyData
-    this.interactiveChartOptions['series'][0]['data'] = this.dailyData
-    this.staticUpdateFlag = true;
-    this.interactiveUpdateFlag = true;
-    this.Highstocks.charts[0].redraw();
-    */
 
   }
 
@@ -474,9 +372,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   }
 
   routeChangedDetected( prms) : Observable<any> {
-    const dateStr = '2018-08-21';
-
-    return this.httpService.getSecurityView(prms['fullid'], dateStr)
+    return this.httpService.getCounterDetailView(prms['fullid']);
   }
 
   switchToStatic() {

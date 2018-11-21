@@ -1,0 +1,54 @@
+.mat-cell {
+  min-height: 48px;
+  border-right: 1px solid black;
+  align-self: stretch;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.topborder {
+  border-top: 1px solid black;
+}
+
+.bottomborder {
+  border-bottom: 1px solid black;
+}
+.leftborder {
+  border-left: 1px solid black;
+  align-self: stretch;
+}
+.mat-header-cell {
+  min-height: 48px;
+  border-right: 1px solid black;
+  align-self: stretch;
+  justify-content: center !important;
+}
+
+.mat-column-numshareholders
+{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-sharespercentage
+{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-shares
+{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-percentage
+{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mat-column-numshares {
+  display: flex;
+  justify-content: flex-end;
+}

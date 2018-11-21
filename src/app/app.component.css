@@ -1,6 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 
 
+.leftrightpadding {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 
 .searchinput {
   width: 256px !important;
