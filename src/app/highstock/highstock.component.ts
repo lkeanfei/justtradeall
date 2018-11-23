@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
-import { SeriesObject} from 'highcharts';
-import {chart} from 'highcharts';
 import {HttpService} from '../shared/httpservice.service';
 
 
@@ -746,7 +744,7 @@ export class HighstockComponent implements OnInit {
   adjustStockTickInterval() {
 
 
-    console.log('Adjust stock tick ' + this.stockTickPixelInterval)
+    //console.log('Adjust stock tick ' + this.stockTickPixelInterval)
 
     this.chartOptions = {
       chart : {

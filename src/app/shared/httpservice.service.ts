@@ -41,8 +41,6 @@ export class HttpService {
       const name = 'csrfToken';
       const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
       const csrfToken = v ? v[2] : null;
-      console.log('idToken is ' + idToken)
-      console.log('csrf token ' + csrfToken);
 
       const data = {idToken: idToken, csrfToken: csrfToken}
       return this.httpClient.post( '/api/sessionlogin/' , data )

@@ -4,7 +4,7 @@ import {Observable, ReplaySubject} from 'rxjs/index';
 import {Subject} from 'rxjs/index';
 import {AuthInfo} from './authInfo';
 import {BehaviorSubject} from 'rxjs/index';
-import * as firebase from 'firebase/app';
+import {User as FirebaseUser  ,auth}from 'firebase';
 import {User} from './user';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {HttpService} from '../httpservice.service';
@@ -18,8 +18,8 @@ import { from } from 'rxjs';
 @Injectable()
 export class AuthService {
 
-  private user: Observable<firebase.User>;
-  private userDetails: firebase.User = null;
+  private user: Observable<FirebaseUser>;
+  private userDetails: User = null;
   // userSubject: BehaviorSubject<User> = new BehaviorSubject(null);
   // authSubject: BehaviorSubject<User> = new BehaviorSubject(null);
   isAdmin = false;
@@ -173,18 +173,17 @@ export class AuthService {
     // have to notify the header after successful
     //
     this.httpService.logout().subscribe( res => {
-      console.log('logout')
+
     })
     this.firebaseAuth.auth.signOut()
       .then( res => {
       //     Successfully sign out
-          console.log('Sign out OK!')
+
         // this.loginChanged.next(false);
         this.authSubject.next(AuthService.UNKNOWN_USER);
       } , err => {
           // Failed to sign out
-          console.log('Sign out Failed!')
-          console.log(err);
+
       })
 
 
@@ -214,15 +213,15 @@ export class AuthService {
   // login with Google
   loginGoogle(): Observable<any> {
 
-    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup( new firebase.auth.GoogleAuthProvider()));
+    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup( new auth.GoogleAuthProvider()));
   }
 
   loginFacebook(): Observable<any>  {
-    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider()));
+    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup(new auth.FacebookAuthProvider()));
   }
 
   loginTwitter(): Observable<any> {
-    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider()));
+    return this.fromFirebaseAuthPromise(this.firebaseAuth.auth.signInWithPopup(new auth.TwitterAuthProvider()));
   }
 
   fromFirebaseAuthPromise(promise):Observable<any> {
@@ -242,7 +241,7 @@ export class AuthService {
         err => {
           this.loginChanged.next(false);
 
-          console.log('Error is ' + err);
+          //console.log('Error is ' + err);
           this.authSubject.error(err);
           subject.error(err);
           subject.complete();

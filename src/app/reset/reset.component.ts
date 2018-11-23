@@ -31,13 +31,13 @@ export class ResetComponent implements OnInit {
     this.bUserNotFound = false;
     // Only send reset password email
     if (this.resetControl.errors == null) {
-      console.log(this.resetControl.errors);
+      //console.log(this.resetControl.errors);
       this.authService.sendResetPassword( emailString).subscribe( () => {
 
-          console.log("email is sent!")
+
         },
         (err) => {
-           console.log('Not found is ' +  err['code'].includes('user-not-found'))
+
            if( err['code'].includes('user-not-found')) {
              this.bUserNotFound = true;
            } else {

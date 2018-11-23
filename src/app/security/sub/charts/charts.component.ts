@@ -94,21 +94,18 @@ export class ChartsComponent implements OnInit {
         events: {
           setExtremes:(evt) => {
             let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
+            //console.log('x axis ' + minDate + ' ' + evt.max);
           }},
       }
     };
 
     this.authService.getAuthReplayObservable().subscribe( (user: User) => {
-      console.log('Replay !!')
 
-      console.log(user);
-      console.log('*****');
       if( user == AuthService.UNKNOWN_USER) {
-        console.log('Unknown user in charts');
+
         this.showLogin = true;
       } else {
-        console.log('Known user in charts');
+
         this.showLogin = false;
       }
     });
@@ -133,7 +130,7 @@ export class ChartsComponent implements OnInit {
 
       const dataList = []
       let status =  res['status']
-      console.log('Status is ' + status);
+
 
       if(status == 'login') {
         this.showLogin = true;

@@ -49,16 +49,14 @@ export class SecshareholdingsComponent implements OnInit {
 
       const dataList = []
       let status = res['status']
-      console.log('Sec shareholdings Status is ' + status);
+
 
       if (status == 'login') {
         this.showLogin = true;
       } else {
         this.showLogin = false;
         this.yearDisplay = res['top30year'];
-        console.log(res['top30year']);
-        // console.log(res['distlist']);
-        console.log(res['top30list']);
+
 
 
 

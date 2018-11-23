@@ -8,9 +8,7 @@
       "plotly.js"
     ],
     "paths": {
-      "plotly.js": [
-        "../justtradeall/node_modules/plotly.js/dist/plotly.js"
-      ]}
+     }
   },
   "exclude": [
     "src/test.ts",

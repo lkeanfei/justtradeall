@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
     let id: string;
     id = localStorage.getItem('id');
     if(id == null){
-      console.log('User not yet loggd in. id is null la!');
     } else {
       // User already logged in
       // redirect to home page
@@ -76,8 +75,8 @@ export class LoginComponent implements OnInit {
   login() {
 
 
-    console.log("email: " + this.emailFormControl.value);
-    console.log("password: " + this.passwordFormControl.value);
+    //console.log("email: " + this.emailFormControl.value);
+    //console.log("password: " + this.passwordFormControl.value);
     this.authService.login(this.emailFormControl.value ,  this.passwordFormControl.value)
       .subscribe(
         () => {
@@ -88,7 +87,7 @@ export class LoginComponent implements OnInit {
         },
         () => {
           this.bLoginFailed = true;
-          console.log("error loging!");
+
           // login failed
           localStorage.removeItem('id');
         }
@@ -99,8 +98,7 @@ export class LoginComponent implements OnInit {
 
   test() {
     this.httpService.verifySession().subscribe( data=> {
-      console.log('Returned from verify!');
-      console.log(data);
+
     });
   }
 
@@ -118,14 +116,14 @@ export class LoginComponent implements OnInit {
         if(prevUrl.includes('login') || prevUrl.includes('register')) {
           prevUrl = '/home';
         }
-        console.log('Navigating to ' + prevUrl);
+
         this.router.navigate([prevUrl]);
       },
       (err) => {
-        console.log('Error login google!');
+
         //this.authService.triggerAuthEvent(user);
         this.authService.triggerAuthReplayEvent(user);
-        console.log(err);
+
       }
     )
 
@@ -135,8 +133,6 @@ export class LoginComponent implements OnInit {
   loginWithUsernamePassword() {
     let email = this.emailFormControl.value;
     let password = this.passwordFormControl.value;
-    console.log("email: " + email);
-    console.log("password: " + password);
 
     const obs = this.authService.login(email, password).pipe(
       concatMap( () => this.authService.getIdToken() ),

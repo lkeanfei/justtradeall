@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import * as Plotly from 'plotly.js';
-import {Config, Data, Layout, PlotlyHTMLElement, ScatterData} from 'plotly.js';
+//import * as Plotly from 'plotly.js';
+//import {Config, Data, Layout, PlotlyHTMLElement, ScatterData} from 'plotly.js';
 import {HttpService } from '../shared/httpservice.service';
-import '../../../node_modules/plotly.js/dist/plotly.js';
+//import '../../../node_modules/plotly.js/dist/plotly.js';
 
 
 @Component({
@@ -23,7 +23,7 @@ export class SubplotComponent implements OnInit {
   dataPointsLength: number;
   bOrderFlowLoading = true;
   intradayObject: any;
-  candleElem: PlotlyHTMLElement;
+ // candleElem: PlotlyHTMLElement;
 
   color = 'primary';
   mode = 'indeterminate';
@@ -207,119 +207,119 @@ export class SubplotComponent implements OnInit {
 
     let candlePromise: any;
 
-      setTimeout(() => {
-        const node = document.getElementById('candleDiv');
-
-        candlePromise = Plotly.newPlot('candleDiv', candledata, candlelayout);
-        candlePromise.then((htmlElem: PlotlyHTMLElement) => {
-          this.candleElem = htmlElem;
-
-          this.candleElem.on('plotly_relayout', (eventdata) => {
-
-            let timerId = 0;
-            let startDate , endDate;
-            if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
-
-
-
-              startDate = eventdata['xaxis.range'][0];
-              endDate = eventdata['xaxis.range'][1];
-
-
-              if(timerId>=0){
-                //timer is running: stop it
-                window.clearTimeout(timerId);
-              }
-
-              timerId = window.setTimeout(() => {
-                //fire end event
-
-                this.yRangeMin = this.yRangeMin - 0.005;
-
-                const newCandleLayout = {
-                  dragmode: 'zoom',
-                  width: 780,
-                  height: 500,
-                  margin: {
-                    r: 45,
-                    t: 25,
-                    b: 40,
-                    l: 60
-                  },
-                  showlegend: false,
-                  hovermode: 'closest',
-
-                  // yaxis: {
-                  //   autorange: true,
-                  //   scaleratio: 1,
-                  //   domain: [0, 1],
-                  //   range: [114.609999778, 137.410004222],
-                  //   type: 'linear'
-                  // },
-                  yaxis: {
-                    autotick: false,
-                    showspikes : true,
-                    spikemode: 'toaxis+across+marker',
-                    spikesnap: 'cursor',
-                    spikethickness: 1,
-                    spikedash: 'solid',
-                    side: 'right',
-                    ticks: 'outside',
-                    tick0: this.yRangeMin,
-                    dtick: this.yInterval,
-                    ticklen: 4,
-                    tickwidth: 2,
-                    tickcolor: '#000',
-                    range: [this.yRangeMin, this.yRangeMax],
-                  },
-                };
-
-                Plotly.relayout('candleDiv' , newCandleLayout);
-
-                this.plotHistogram();
-
-
-
-                const yAxis = Array.from(document.getElementsByClassName( "yaxislayer-above" ));
-                let delta = yAxis[2].getBoundingClientRect().height - yAxis[0].getBoundingClientRect().height;
-
-
-
-                this.layoutRight = {
-                  autosize: false,
-                  yaxis: {
-                    autotick: false,
-                    ticks: 'outside',
-                    tick0: this.yRangeMin,
-                    dtick: this.yInterval,
-                    ticklen: 8,
-                    tickwidth: 2,
-                    tickcolor: '#000',
-                    range: [this.yRangeMin, this.yRangeMax],
-                  },
-                  width: 200,
-                  height: 500,
-                  margin: {
-                    r: 40,
-                    t: 25,
-                    b: 152 + delta,
-                    l: 60,
-                    pad: 4
-                  },
-                  // paper_bgcolor: '#7f7f7f',
-                  // plot_bgcolor: '#c7c7c7'
-                };
-
-                Plotly.relayout('histoDiv' , this.layoutRight);
-
-                //reset timer to undefined
-                timerId = -1;
-              }, 800);
-            }
-          });
-        })
-
-    } , 1000)
+    //   setTimeout(() => {
+    //     const node = document.getElementById('candleDiv');
+    //
+    //     candlePromise = Plotly.newPlot('candleDiv', candledata, candlelayout);
+    //     candlePromise.then((htmlElem: PlotlyHTMLElement) => {
+    //       this.candleElem = htmlElem;
+    //
+    //       this.candleElem.on('plotly_relayout', (eventdata) => {
+    //
+    //         let timerId = 0;
+    //         let startDate , endDate;
+    //         if( Object.prototype.toString.call(eventdata['xaxis.range']) === '[object Array]' ) {
+    //
+    //
+    //
+    //           startDate = eventdata['xaxis.range'][0];
+    //           endDate = eventdata['xaxis.range'][1];
+    //
+    //
+    //           if(timerId>=0){
+    //             //timer is running: stop it
+    //             window.clearTimeout(timerId);
+    //           }
+    //
+    //           timerId = window.setTimeout(() => {
+    //             //fire end event
+    //
+    //             this.yRangeMin = this.yRangeMin - 0.005;
+    //
+    //             const newCandleLayout = {
+    //               dragmode: 'zoom',
+    //               width: 780,
+    //               height: 500,
+    //               margin: {
+    //                 r: 45,
+    //                 t: 25,
+    //                 b: 40,
+    //                 l: 60
+    //               },
+    //               showlegend: false,
+    //               hovermode: 'closest',
+    //
+    //               // yaxis: {
+    //               //   autorange: true,
+    //               //   scaleratio: 1,
+    //               //   domain: [0, 1],
+    //               //   range: [114.609999778, 137.410004222],
+    //               //   type: 'linear'
+    //               // },
+    //               yaxis: {
+    //                 autotick: false,
+    //                 showspikes : true,
+    //                 spikemode: 'toaxis+across+marker',
+    //                 spikesnap: 'cursor',
+    //                 spikethickness: 1,
+    //                 spikedash: 'solid',
+    //                 side: 'right',
+    //                 ticks: 'outside',
+    //                 tick0: this.yRangeMin,
+    //                 dtick: this.yInterval,
+    //                 ticklen: 4,
+    //                 tickwidth: 2,
+    //                 tickcolor: '#000',
+    //                 range: [this.yRangeMin, this.yRangeMax],
+    //               },
+    //             };
+    //
+    //             Plotly.relayout('candleDiv' , newCandleLayout);
+    //
+    //             this.plotHistogram();
+    //
+    //
+    //
+    //             const yAxis = Array.from(document.getElementsByClassName( "yaxislayer-above" ));
+    //             let delta = yAxis[2].getBoundingClientRect().height - yAxis[0].getBoundingClientRect().height;
+    //
+    //
+    //
+    //             this.layoutRight = {
+    //               autosize: false,
+    //               yaxis: {
+    //                 autotick: false,
+    //                 ticks: 'outside',
+    //                 tick0: this.yRangeMin,
+    //                 dtick: this.yInterval,
+    //                 ticklen: 8,
+    //                 tickwidth: 2,
+    //                 tickcolor: '#000',
+    //                 range: [this.yRangeMin, this.yRangeMax],
+    //               },
+    //               width: 200,
+    //               height: 500,
+    //               margin: {
+    //                 r: 40,
+    //                 t: 25,
+    //                 b: 152 + delta,
+    //                 l: 60,
+    //                 pad: 4
+    //               },
+    //               // paper_bgcolor: '#7f7f7f',
+    //               // plot_bgcolor: '#c7c7c7'
+    //             };
+    //
+    //             Plotly.relayout('histoDiv' , this.layoutRight);
+    //
+    //             //reset timer to undefined
+    //             timerId = -1;
+    //           }, 800);
+    //         }
+    //       });
+    //     })
+    //
+    // } , 1000)
 
 
     // Plotly.newPlot('candleDiv', candledata, candlelayout).then( (htmlElem: PlotlyHTMLElement) => {
@@ -554,7 +554,7 @@ export class SubplotComponent implements OnInit {
       }
     ];
 
-    Plotly.newPlot('histoDiv', this.histoData , this.layoutRight);
+  //  Plotly.newPlot('histoDiv', this.histoData , this.layoutRight);
 
   }
 
@@ -639,7 +639,7 @@ export class SubplotComponent implements OnInit {
       // paper_bgcolor: '#7f7f7f',
       // plot_bgcolor: '#c7c7c7'
     };
-    Plotly.newPlot('histoDiv', this.histoData, this.layoutRight);
+   // Plotly.newPlot('histoDiv', this.histoData, this.layoutRight);
   }
 
 }

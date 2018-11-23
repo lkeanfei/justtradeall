@@ -2,17 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
  import { BehaviorSubject} from 'rxjs/index';
 import { Market } from '../shared/market.model';
-import {AngularFireDatabase} from 'angularfire2/database';
-import _ from 'lodash';
-import * as Rx from 'rxjs';
-import * as moment from 'moment';
-import {merge} from 'rxjs';
-import {map } from 'rxjs/operators';
-import {DataSource} from '@angular/cdk/collections';
+// import {AngularFireDatabase} from 'angularfire2/database';
+// import _ from 'lodash';
+// import {DataSource} from '@angular/cdk/collections';
 import {AuthService} from '../shared/security/auth.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
-import * as Plotly from 'plotly.js';
+// import * as Plotly from 'plotly.js';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
 import {AngularFirestore} from "@angular/fire/firestore";
@@ -95,7 +91,7 @@ export class HomeComponent implements OnInit {
     this.marketList = new Array();
     this.marketList.push("Bursa");
     this.data = new Market( 'Bursa', '' , new Observable());
-    this.subject = new Rx.BehaviorSubject(this.data.selectedDate);
+    this.subject = new BehaviorSubject(this.data.selectedDate);
 
     this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
 
@@ -394,7 +390,7 @@ export class HomeComponent implements OnInit {
 
     let candlePromise: any;
 
-    Plotly.newPlot('klseDiv', candledata, candlelayout);
+    //Plotly.newPlot('klseDiv', candledata, candlelayout);
 
 
   }

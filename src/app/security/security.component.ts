@@ -277,8 +277,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   value = 50;
 
   tabChanged = (tabChangeEvent: MatTabChangeEvent): void => {
-    console.log('tabChangeEvent => ', tabChangeEvent);
-    console.log('Tab index => ', tabChangeEvent.index);
+
   }
 
 
@@ -305,7 +304,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
         this.sector = res['sector'];
 
       } else {
-         console.log("Status is ng");
+
       }
     })
 
@@ -397,8 +396,5 @@ export class SecurityComponent implements OnInit, AfterViewInit {
     this.loginService.openDialog()
   }
 
-  ngOnDestroy() {
-
-  }
 
 }

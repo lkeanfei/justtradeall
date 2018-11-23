@@ -83,7 +83,7 @@ export class OverviewComponent implements OnInit {
         events: {
           setExtremes:(evt) => {
             let minDate = new Date(evt.min);
-            console.log('x axis ' + minDate + ' ' + evt.max);
+            //console.log('x axis ' + minDate + ' ' + evt.max);
           }},
       }
     };
@@ -98,7 +98,7 @@ export class OverviewComponent implements OnInit {
 
       const dataList = [];
       let status =  res['status'];
-      console.log('Status is ' + status);
+
 
       const keys = Object.keys(res['summary']);
       this.startLoading = false;

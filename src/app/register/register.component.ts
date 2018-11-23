@@ -65,10 +65,6 @@ export class RegisterComponent implements OnInit {
     let userName = this.regForm.controls['email'].value;
     let pwd = this.regForm.controls['password'].value;
 
-    console.log("User errors ")
-    console.log()
-    console.log('PWD ')
-    console.log(this.regForm.controls['password'].errors)
 
     // Only proceeds with sign up when no errors
     if( this.regForm.controls['email'].errors == null && this.regForm.controls['password'].errors ==null ) {
@@ -79,12 +75,10 @@ export class RegisterComponent implements OnInit {
             this.signupFailed = false;
             this.signupFailedMessage = ""
 
-            console.log('Success signup!');
           } ,
           (err) => {
 
-            console.log('Fail signup ');
-            console.log(err)
+
             this.signupFailed = true;
             this.signupFailedMessage = err.message;
           }
@@ -108,13 +102,13 @@ export class RegisterComponent implements OnInit {
         if(prevUrl.includes('login') || prevUrl.includes('register')) {
           prevUrl = '/home';
         }
-        console.log('Navigating to ' + prevUrl);
+
         this.router.navigate([prevUrl]);
       },
       (err) => {
-        console.log('Error login google!');
+
         this.authService.triggerAuthEvent(user);
-        console.log(err);
+
       }
     )
 

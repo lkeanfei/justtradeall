@@ -33,7 +33,7 @@ export class DialogContentExampleDialog {
   passwordFormControl = new FormControl('');
 
   constructor (private authService: AuthService , private prevRouteService : PreviousRouteServiceService) {
-     console.log('Previous route is ' + this.prevRouteService.getPreviousUrl())
+     //console.log('Previous route is ' + this.prevRouteService.getPreviousUrl())
   }
 
 
@@ -60,7 +60,7 @@ export class DialogContentExampleDialog {
         }
         ,
         () => {
-          console.log('Facebook login failed!');
+          //console.log('Facebook login failed!');
         }
       );
 
@@ -71,11 +71,11 @@ export class DialogContentExampleDialog {
     this.authService.loginTwitter()
       .subscribe(
         () => {
-          console.log('Twitter login successful!');
+
         }
         ,
         () => {
-          console.log('Twitter login failed!');
+
         }
       );
 

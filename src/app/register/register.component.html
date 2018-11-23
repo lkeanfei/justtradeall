@@ -6,17 +6,17 @@
           <form [formGroup]="regForm" fxLayoutGap="15px">
             <mat-form-field class="classicinput">
             <input matInput type="email" placeholder="Email" formControlName="email" >
-            <mat-error *ngIf="regForm.hasError('required' , 'email') || regForm.hasError('email' , 'email') ">
+            <mat-error *ngIf="regForm.hasError('required' , ['email']) || regForm.hasError('email' ,['email']) ">
             Please enter a valid email address
             </mat-error>
 
             </mat-form-field>
             <mat-form-field class="classicinput">
               <input  matInput type="password" placeholder="New password" formControlName="password" required>
-              <mat-error *ngIf="regForm.hasError('required', 'password')">
+              <mat-error *ngIf="regForm.hasError('required', ['password'])">
                 Please enter your new password
               </mat-error>
-              <mat-error *ngIf="regForm.hasError('minlength', 'password')">
+              <mat-error *ngIf="regForm.hasError('minlength', ['password'])">
                 Minimum 8 characters
               </mat-error>
             </mat-form-field>

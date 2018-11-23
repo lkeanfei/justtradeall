@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as Plotly from 'plotly.js';
-import {Config, Data, Layout, ScatterData} from 'plotly.js';
+// import * as Plotly from 'plotly.js';
+
 
 
 @Component({
@@ -118,10 +118,10 @@ export class IndicatorsComponent implements OnInit {
       },
       yaxis2: {domain: [0.2, 0.8]}
     };
-    Plotly.plot('plotly-div', {
-      data: data,
-      layout: layout
-    });
+    // Plotly.plot('plotly-div', {
+    //   data: data,
+    //   layout: layout
+    // });
   }
 
 }
