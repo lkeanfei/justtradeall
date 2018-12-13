@@ -207,6 +207,7 @@ export class HomeComponent implements OnInit {
     // });
 
     this.httpService.getBursaPriceVolume().subscribe( (data:any) => {
+      console.log(data);
       this.plotKLSEChart(data);
     });
   }
