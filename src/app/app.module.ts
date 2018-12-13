@@ -9,7 +9,7 @@ import {
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule,
   MatTableModule,
-  MatToolbarModule, MatTabsModule
+  MatToolbarModule, MatTabsModule, MatIconModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -39,6 +39,8 @@ import {PreviousRouteServiceService} from "./shared/previous-route-service.servi
 import { OverviewComponent } from './security/sub/overview/overview.component';
 import { ChartsComponent } from './security/sub/charts/charts.component';
 import { SecshareholdingsComponent } from './security/sub/secshareholdings/secshareholdings.component';
+import { MainNavComponent } from './main-nav/main-nav.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -74,7 +76,8 @@ const appRoutes: Routes = [
     DialogContentExampleDialog,
     OverviewComponent,
     ChartsComponent,
-    SecshareholdingsComponent
+    SecshareholdingsComponent,
+    MainNavComponent
   ],
   imports: [
     BrowserModule,
@@ -100,12 +103,14 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FlexLayoutModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes , {useHash: true}),
+    RouterModule.forRoot(appRoutes ,  {useHash: true} ),
     AngularFireModule.initializeApp(  environment.firebase , 'angular-auth-firebase'),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    LayoutModule,
+    MatIconModule
   ],
   entryComponents: [ DialogContentExampleDialog],
 

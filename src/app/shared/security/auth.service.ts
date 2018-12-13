@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth  } from 'angularfire2/auth';
-import {Observable, ReplaySubject} from 'rxjs/index';
-import {Subject} from 'rxjs/index';
+import {Observable, ReplaySubject, Subject, BehaviorSubject, ObjectUnsubscribedError} from 'rxjs/index';
 import {AuthInfo} from './authInfo';
-import {BehaviorSubject} from 'rxjs/index';
 import {User as FirebaseUser  ,auth}from 'firebase';
 import {User} from './user';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {HttpService} from '../httpservice.service';
 import {HttpParams} from '@angular/common/http';
-import {ObjectUnsubscribedError} from 'rxjs/index';
 import { switchMap } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { of } from 'rxjs';
-import { from } from 'rxjs';
+import { of ,  from } from 'rxjs';
 
 @Injectable()
 export class AuthService {

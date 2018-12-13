@@ -1,90 +1,57 @@
-<div fxLayout="column" fxLayoutGap="5px" class="topcontainer" style=" font-family: 'Lato', sans-serif;">
-  <mat-toolbar  color="primary">
-
-    <div fxFlex="1 1 15%">Just Trade All</div>
-    <div fxFlex="1 1 8%" class="menuTitle">
-      <button mat-button routerLinkActive="menu-active" routerLink="home">Home</button>
-    </div>
-    <div fxFlex="1 1 75%" class="menuTitle">
-      <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
-    </div>
-    <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
-        <button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Shareholdings Analysis</button>
-    </mat-menu>
-    <!--<div fxFlex="0 1 10%" class="menuTitle">-->
-      <!--<button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>-->
-    <!--</div>-->
-    <!--<div fxFlex="0 1 10%" class="menuTitle">-->
-      <!--<button mat-button routerLinkActive="menu-active" routerLink="register">Sign Up</button>-->
-    <!--</div>-->
-      <!--<button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>-->
-      <div fxFlex="1 1 6%" class="leftrightpadding" *ngIf="showSearchButton; else showSearchInputTemplate">
-        <button mat-button (click)="activateSearchInput()"><i class="fas fa-search"></i>Search</button>
-      </div>
-    <ng-template #showSearchInputTemplate>
-      <mat-form-field class="leftrightpadding" [floatLabel]="'never'">
-        <input [formControl]="myControl"  class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
-          <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutSearchInput()" >
-            {{option}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
-    </ng-template>
-
-      <div fxFlex="1 1 10%" *ngIf="(isLoggedIn | async); else templateName">
-        <img class="profileimg leftrightpadding" title="{{userName}}" src="{{photourl}}"  height="35" width="35">
-        <button class="leftrightpadding" mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>
-
-      </div>
-    <mat-menu #userMenu="matMenu" [overlapTrigger]="false" >
-      <button mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
-
-      <ng-template #templateName>
-        <button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>
-        <button mat-button routerLinkActive="menu-active" routerLink="register">Register</button>
-      </ng-template>
-
-
-  </mat-toolbar>
-
-  <!--************************** Splits here-->
-  <!--<div  class="primaryrow" fxLayout="row">-->
-
-    <!--<button class="mainTitle" mat-button (click)="activateHome()">Home</button>-->
-    <!--<button class="mainTitle" mat-button (click)="activateMarket()">Market</button>-->
-    <!--<button class="mainTitle" mat-button (click)="activateAnalysis()">Analysis</button>-->
-
-        <!--&lt;!&ndash; This fills the remaining space of the current row &ndash;&gt;-->
-        <!--<span class="example-fill-remaining-space"></span>-->
-
-
-    <!--&lt;!&ndash;<button class="mainTitle" mat-button (click)="openDialog()">Login</button>&ndash;&gt;-->
-    <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="login">Login</button>-->
-
-  <!--</div>-->
-  <!--<div fxLayout="row" fxLayoutGap="10px"  class="secrow">-->
-    <!--<div fxLayout="row" *ngFor="let data of secondaryTitles">-->
-      <!--<button mat-button (click)="testClick(data)">{{data}} </button>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<div fxFlex="1 1 80%">-->
-  <!--<mat-form-field style="width:400px !important">-->
-    <!--&lt;!&ndash;<input class="input-width" [formControl]="myControl"  matInput placeholder="Search Symbol or Code"  >&ndash;&gt;-->
-    <!--&lt;!&ndash;<mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >&ndash;&gt;-->
-      <!--&lt;!&ndash;<mat-option *ngFor="let option of filteredOptions | async" [value]="option">&ndash;&gt;-->
-        <!--&lt;!&ndash;{{option}}&ndash;&gt;-->
-      <!--&lt;!&ndash;</mat-option>&ndash;&gt;-->
-    <!--&lt;!&ndash;</mat-autocomplete>&ndash;&gt;-->
-  <!--</mat-form-field>-->
-<!--</div>-->
-
-
-
-
+<app-main-nav>
   <router-outlet></router-outlet>
+</app-main-nav>
 
-</div>
+
+<!--<div fxLayout="column" fxLayoutGap="5px" class="topcontainer" style=" font-family: 'Lato', sans-serif;">-->
+  <!--<mat-toolbar  color="primary">-->
+
+
+
+
+    <!--&lt;!&ndash;<div fxFlex="0 1 10%" class="menuTitle">&ndash;&gt;-->
+      <!--&lt;!&ndash;<button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div fxFlex="0 1 10%" class="menuTitle">&ndash;&gt;-->
+      <!--&lt;!&ndash;<button mat-button routerLinkActive="menu-active" routerLink="register">Sign Up</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;<button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>&ndash;&gt;-->
+      <!--<div fxFlex="1 1 6%" class="leftrightpadding" *ngIf="showSearchButton; else showSearchInputTemplate">-->
+
+      <!--</div>-->
+    <!--<ng-template #showSearchInputTemplate>-->
+      <!--<mat-form-field class="leftrightpadding" [floatLabel]="'never'">-->
+        <!--<input [formControl]="myControl"  class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>-->
+        <!--<mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >-->
+          <!--<mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutSearchInput()" >-->
+            <!--{{option}}-->
+          <!--</mat-option>-->
+        <!--</mat-autocomplete>-->
+      <!--</mat-form-field>-->
+
+    <!--</ng-template>-->
+
+      <!--<div fxFlex="1 1 10%" *ngIf="(isLoggedIn | async); else templateName">-->
+        <!--<img class="profileimg leftrightpadding" title="{{userName}}" src="{{photourl}}"  height="35" width="35">-->
+        <!--<button class="leftrightpadding" mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>-->
+
+      <!--</div>-->
+    <!--<mat-menu #userMenu="matMenu" [overlapTrigger]="false" >-->
+      <!--<button mat-menu-item (click)="logout()">Logout</button>-->
+    <!--</mat-menu>-->
+
+      <!--<ng-template #templateName>-->
+        <!--<button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>-->
+        <!--<button mat-button routerLinkActive="menu-active" routerLink="register">Register</button>-->
+      <!--</ng-template>-->
+
+
+  <!--</mat-toolbar>-->
+
+
+
+
+
+
+
 

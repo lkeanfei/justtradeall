@@ -2,14 +2,14 @@
 
 
 
-<div fxLayout="column" fxLayoutGap="40px">
+<div class="topdiv" fxLayout="column" fxLayoutGap="40px" fxLayoutAlign="center center">
   <div>
     <div> <b> {{ symbol }}  {{ name }} </b> </div>
     <div> Full name: <b> {{ fullname }} </b></div>
     <div> Category: <b> {{ category }} </b></div>
     <div> Sector : <b> {{ sector }} </b> </div>
   </div>
-  <div>
+  <div fxLayoutAlign="center center">
     <mat-tab-group (selectedTabChange)="tabChanged($event)">
       <mat-tab label="Overview"> <app-overview></app-overview></mat-tab>
       <mat-tab label="Charts"> <app-charts></app-charts> </mat-tab>

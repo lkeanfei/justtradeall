@@ -1,0 +1,62 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport="false"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">Analysis</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span> Just Trade All </span>
+
+      <div *ngIf="!(isHandset$ | async)">
+        <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
+
+        <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
+          <button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Shareholdings Analysis</button>
+        </mat-menu>
+      </div>
+
+        <span class="spacer"></span>
+
+      <div *ngIf="!(isHandset$ | async)">
+        <button *ngIf="showSearchButton; else showSearchInputTemplate" mat-button (click)="activateSearchInput()" ><i class="fas fa-search"></i>Search</button>
+        <ng-template #showSearchInputTemplate>
+          <mat-form-field class="leftrightpadding" [floatLabel]="'never'">
+            <input [formControl]="myControl"  class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
+              <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutSearchInput()" >
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </ng-template>
+
+
+        <a routerLink="login">Sign In</a>
+        <a routerLink="register">Sign Up</a>
+
+      </div>
+
+
+
+
+
+    </mat-toolbar>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
