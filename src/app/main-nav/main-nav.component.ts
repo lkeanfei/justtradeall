@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { map , startWith } from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
-import {HttpService} from "../shared/httpservice.service";
+import {HttpService} from '../shared/httpservice.service';
 import {Router} from '@angular/router';
+import {AuthService} from '../shared/security/auth.service';
+import {User} from '../shared/security/user';
 
 @Component({
   selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.css'],
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnInit{
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -19,13 +21,52 @@ export class MainNavComponent {
     );
 
   showSearchButton = true;
+  photourl: string;
+  userName: string;
   myControl = new FormControl();
   filteredOptions: Observable<string[]>;
   options: string[] = [];
+  isLoggedIn: Observable<boolean>;
+  loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
 
   constructor(private breakpointObserver: BreakpointObserver ,
-              private router: Router,
+              private router: Router, private authService: AuthService,
               private httpService: HttpService) {
+    this.isLoggedIn = this.loginSubject.asObservable();
+  }
+
+  ngOnInit() {
+
+    // Verify the user
+    this.authService.verifyUser().subscribe( (user:User) => {
+      if (user === AuthService.UNKNOWN_USER ) {
+        this.loginSubject.next(false);
+      } else {
+        this.loginSubject.next(true);
+        this.userName = user['name'];
+        this.photourl = user['photourl'];
+        console.log('User is verfied! ' + this.userName);
+
+      }
+    });
+
+    this.authService.getAuthReplayObservable().subscribe( (user: User) => {
+      if (user === AuthService.UNKNOWN_USER ) {
+
+        this.loginSubject.next(false);
+      } else {
+
+        this.loginSubject.next(true);
+        this.userName = user['name'];
+        this.photourl = user['photourl'];
+        console.log('User is authenticated! ' + this.userName);
+        // console.log('**** known user ' + user['name']);
+        // console.log('**** known user ' + user['email']);
+        // console.log('**** know user ' + user['photourl']);
+
+      }
+    })
+
     this.httpService.getAllCounters().subscribe( (counterList: Array<any> )=> {
 
 
@@ -42,12 +83,18 @@ export class MainNavComponent {
       );
   }
 
+
   activateSearchInput() {
     this.showSearchButton = false;
   }
 
   focusOutSearchInput() {
     this.showSearchButton = true;
+  }
+
+  logout() {
+    // Set logged in to False
+    this.authService.logout();
   }
 
   selectCounter(counter: string) {

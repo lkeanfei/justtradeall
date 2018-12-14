@@ -16,6 +16,33 @@
   top: 0;
 }
 
+.toprightclass {
+  display: inline-block;
+}
+
+.zeropadding {
+  padding: 0px !important;
+}
+
+.mat-button {
+  min-width: 10%;
+}
+
+.menuclass {
+  width: 32px !important;
+}
+
+.mobileusername {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.leftrightpadding {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
 mat-toolbar a {
   display: inline-block;
   font-size: 15px;
