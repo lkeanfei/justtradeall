@@ -4,7 +4,7 @@
   min-width: 300px;
 }
 .klsechart {
-  width: 40vw;
+  width: 90vw;
 }
 
 .mytooltip {outline:none; }
@@ -38,6 +38,10 @@
 
 .topgainer {
   width: 30vw
+}
+
+.firstrowelement {
+  width: 100%
 }
 
 .row1 {

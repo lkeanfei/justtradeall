@@ -17,7 +17,10 @@ export class MainNavComponent implements OnInit{
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches)
+      map(result => {
+        console.log('Changing ' + window.innerWidth);
+        return  result.matches;
+      })
     );
 
   showSearchButton = true;
@@ -28,11 +31,20 @@ export class MainNavComponent implements OnInit{
   options: string[] = [];
   isLoggedIn: Observable<boolean>;
   loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
+  layoutClass: string;
 
   constructor(private breakpointObserver: BreakpointObserver ,
               private router: Router, private authService: AuthService,
               private httpService: HttpService) {
     this.isLoggedIn = this.loginSubject.asObservable();
+
+    this.isHandset$.subscribe( val => {
+      console.log('This is handset ' + val);
+
+      if (!val) {
+        this.layoutClass = 'row';
+      }
+    });
   }
 
   ngOnInit() {

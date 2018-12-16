@@ -245,6 +245,7 @@ export class HomeComponent implements OnInit {
 
     this.latestUpdateDate = data['todate']
     this.chartOptions['subtitle']['text'] = data['todate'];
+    this.chartOptions['chart']['width'] = window.innerWidth *0.7;
 
     this.updateFlag = true;
     // this.chartOptions = {

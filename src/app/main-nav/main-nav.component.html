@@ -76,10 +76,12 @@
       </div>
 
 
-
+       <div *ngIf="(isHandset$ | async)" fxLayoutAlign="center center">
+         <mat-icon>search</mat-icon>
+       </div>
 
 
     </mat-toolbar>
-    <ng-content></ng-content>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
