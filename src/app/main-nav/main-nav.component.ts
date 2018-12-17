@@ -18,7 +18,7 @@ export class MainNavComponent implements OnInit{
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => {
-        console.log('Changing ' + window.innerWidth);
+
         return  result.matches;
       })
     );
@@ -33,6 +33,7 @@ export class MainNavComponent implements OnInit{
   loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
   layoutClass: string;
 
+
   constructor(private breakpointObserver: BreakpointObserver ,
               private router: Router, private authService: AuthService,
               private httpService: HttpService) {
@@ -41,7 +42,13 @@ export class MainNavComponent implements OnInit{
     this.isHandset$.subscribe( val => {
       console.log('This is handset ' + val);
 
-      if (!val) {
+      if (val) {
+        // For mobile handsets
+        this.layoutClass = "column"
+      }
+      else {
+        // for bigger displays
+
         this.layoutClass = 'row';
       }
     });

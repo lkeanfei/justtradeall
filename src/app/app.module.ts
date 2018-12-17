@@ -41,6 +41,7 @@ import { ChartsComponent } from './security/sub/charts/charts.component';
 import { SecshareholdingsComponent } from './security/sub/secshareholdings/secshareholdings.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import {LayoutServiceService} from "./shared/layout-service.service";
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -103,7 +104,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     FlexLayoutModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes ,  {useHash: true} ),
+    RouterModule.forRoot(appRoutes  ),
     AngularFireModule.initializeApp(  environment.firebase , 'angular-auth-firebase'),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -114,7 +115,7 @@ const appRoutes: Routes = [
   ],
   entryComponents: [ DialogContentExampleDialog],
 
-  providers: [AuthService, HttpService , LoginService , PreviousRouteServiceService],
+  providers: [AuthService, HttpService , LoginService , PreviousRouteServiceService , LayoutServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

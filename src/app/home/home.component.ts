@@ -12,6 +12,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
 import {AngularFirestore} from "@angular/fire/firestore";
+import {LayoutServiceService} from '../shared/layout-service.service';
 
 
 @Component({
@@ -84,9 +85,12 @@ export class HomeComponent implements OnInit {
     }
   };
 
+  firstRowFxLayout : string;
 
 
-  constructor(private firestore: AngularFirestore,private httpService: HttpService, private authService: AuthService) {
+
+  constructor(private firestore: AngularFirestore,private httpService: HttpService,
+              private authService: AuthService , private layoutService: LayoutServiceService) {
 
     this.marketList = new Array();
     this.marketList.push("Bursa");
@@ -200,7 +204,19 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.searchField = new FormControl();
-    const input = { 'id' : '0200I.MY', 'fromDate' : '2018-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
+
+    this.layoutService.getIsHandSetObservable().subscribe(val => {
+       // for mobile handsets
+      if(val) {
+        this.firstRowFxLayout = 'column';
+      }
+      else {
+        this.firstRowFxLayout = 'row';
+
+      }
+    });
+
+    //const input = { 'id' : '0200I.MY', 'fromDate' : '2018-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
     // this.httpService.getPriceVolume(input).subscribe((data:any) => {
     //
     //      this.plotKLSEChart(data);
