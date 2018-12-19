@@ -24,9 +24,11 @@ export class MainNavComponent implements OnInit{
     );
 
   showSearchButton = true;
+  showMobileSearchButton = true;
   photourl: string;
   userName: string;
   myControl = new FormControl();
+  handsetControl = new FormControl();
   filteredOptions: Observable<string[]>;
   options: string[] = [];
   isLoggedIn: Observable<boolean>;
@@ -105,6 +107,14 @@ export class MainNavComponent implements OnInit{
 
   activateSearchInput() {
     this.showSearchButton = false;
+  }
+
+  toggleMobileSearchInput() {
+    this.showMobileSearchButton = !this.showMobileSearchButton;
+  }
+
+  focusOutMobileSearchInput() {
+    this.showMobileSearchButton = false;
   }
 
   focusOutSearchInput() {

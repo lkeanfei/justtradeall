@@ -66,8 +66,6 @@
         <ng-template #templateName>
           <a routerLink="login">Sign In</a>
           <a routerLink="register">Sign Up</a>
-        <!--<button mat-button routerLinkActive="menu-active" routerLink="login">Login</button>-->
-        <!--<button mat-button routerLinkActive="menu-active" routerLink="register">Register</button>-->
         </ng-template>
 
 
@@ -77,11 +75,24 @@
 
 
        <div *ngIf="(isHandset$ | async)" fxLayoutAlign="center center">
-         <mat-icon>search</mat-icon>
+         <mat-icon (click)="toggleMobileSearchInput()">search</mat-icon>
        </div>
 
 
     </mat-toolbar>
+    <div *ngIf="showMobileSearchButton && (isHandset$ | async)">
+      <mat-form-field class="leftrightpadding" [floatLabel]="'never'">
+        <input [formControl]="handsetControl"  class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
+          <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutMobileSearchInput()" >
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
+
 </mat-sidenav-container>
+
