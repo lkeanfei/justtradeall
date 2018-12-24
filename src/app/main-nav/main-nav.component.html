@@ -82,10 +82,10 @@
     </mat-toolbar>
     <div *ngIf="showMobileSearchButton && (isHandset$ | async)">
       <mat-form-field class="leftrightpadding" [floatLabel]="'never'">
-        <input [formControl]="handsetControl"  class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
-          <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutMobileSearchInput()" >
-            {{option}}
+        <input [formControl]="handsetControl"  class="searchinput leftrightpadding" matInput placeholder="Search" [matAutocomplete]="auto" (keyup.enter)="mobileNavigateSecurity()" autofocus>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectMobileCounter($event.option.value)' >
+          <mat-option  *ngFor="let option1 of mobileFilteredOptions | async" [value]="option1"  (focusout)="focusOutMobileSearchInput()" >
+            {{option1}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

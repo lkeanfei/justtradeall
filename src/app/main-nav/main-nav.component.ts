@@ -24,16 +24,18 @@ export class MainNavComponent implements OnInit{
     );
 
   showSearchButton = true;
-  showMobileSearchButton = true;
+  showMobileSearchButton = false;
   photourl: string;
   userName: string;
   myControl = new FormControl();
   handsetControl = new FormControl();
   filteredOptions: Observable<string[]>;
+  mobileFilteredOptions: Observable<string[]>;
   options: string[] = [];
   isLoggedIn: Observable<boolean>;
   loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
   layoutClass: string;
+  currentHandsetState : boolean;
 
 
   constructor(private breakpointObserver: BreakpointObserver ,
@@ -43,7 +45,7 @@ export class MainNavComponent implements OnInit{
 
     this.isHandset$.subscribe( val => {
       console.log('This is handset ' + val);
-
+      this.currentHandsetState = val;
       if (val) {
         // For mobile handsets
         this.layoutClass = "column"
@@ -102,6 +104,12 @@ export class MainNavComponent implements OnInit{
         startWith(''),
         map(value => this._filter(value))
       );
+
+    this.mobileFilteredOptions = this.handsetControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
 
@@ -110,11 +118,19 @@ export class MainNavComponent implements OnInit{
   }
 
   toggleMobileSearchInput() {
+    console.log("Toggling the search " + this.showMobileSearchButton)
     this.showMobileSearchButton = !this.showMobileSearchButton;
   }
 
   focusOutMobileSearchInput() {
     this.showMobileSearchButton = false;
+  }
+
+  selectMobileCounter(counter: string) {
+
+    this.handsetControl.setValue(counter);
+    // console.log('Selected the counter ' + counter)
+    this.mobileNavigateSecurity();
   }
 
   focusOutSearchInput() {
@@ -137,6 +153,12 @@ export class MainNavComponent implements OnInit{
   navigateSecurity() {
     // console.log('Navigate Security is ' + this.myControl.value);
     const fullSecStr = this.myControl.value;
+    const tokens = fullSecStr.split(' ');
+    this.router.navigate(['/security' , tokens[0] + '.MY'] );
+  }
+
+  mobileNavigateSecurity() {
+    const fullSecStr = this.handsetControl.value;
     const tokens = fullSecStr.split(' ');
     this.router.navigate(['/security' , tokens[0] + '.MY'] );
   }
