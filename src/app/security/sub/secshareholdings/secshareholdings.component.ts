@@ -5,6 +5,7 @@ import {concatMap } from 'rxjs/operators';
 import {ActivatedRoute} from "@angular/router";
 import {MatTableDataSource} from '@angular/material';
 import {CompanyData} from '../../../shareholdings/shareholdings.component';
+import {LayoutServiceService} from "../../../shared/layout-service.service";
 
 export interface DistHoldingsData {
   levelname: string;
@@ -29,14 +30,17 @@ export class SecshareholdingsComponent implements OnInit {
 
 
   showLogin: boolean;
+  showDistHoldingsTable: boolean;
+  showTop30Table : boolean;
   distholdingsColumns = ['levelname', 'numshareholders', 'numshares', 'sharespercentage'];
   Top30Columns =  ['id', 'detailname', 'shares', 'percentage'];
   distholdingsDataSource: any;
   top30DataSource: any;
   yearDisplay: string;
+  tableCellFontClass: string;
 
 
-  constructor(private route: ActivatedRoute ,private httpService: HttpService) {
+  constructor(private route: ActivatedRoute ,private httpService: HttpService, private layoutService: LayoutServiceService) {
 
     this.distholdingsDataSource = new MatTableDataSource<DistHoldingsData>( );
     this.top30DataSource = new MatTableDataSource<ShareHolderData>();
@@ -45,11 +49,20 @@ export class SecshareholdingsComponent implements OnInit {
       concatMap( prms => this.routeChangedDetected(prms))
     );
 
+    this.layoutService.getIsHandSetObservable().subscribe(isHandset => {
+       if(isHandset) {
+         this.tableCellFontClass = 'handsetfont';
+       }
+       else {
+         this.tableCellFontClass = 'normalfont';
+       }
+    })
+
     theSub.subscribe( res => {
 
       const dataList = []
       let status = res['status']
-
+      console.log('The secshareholdings status is ' + status);
 
       if (status == 'login') {
         this.showLogin = true;
@@ -62,6 +75,20 @@ export class SecshareholdingsComponent implements OnInit {
 
         this.distholdingsDataSource.data = res['distlist'];
         this.top30DataSource.data = res['top30list'];
+
+        if (this.distholdingsDataSource.data.length > 0) {
+          this.showDistHoldingsTable = true;
+        }
+        else {
+          this.showDistHoldingsTable = false;
+        }
+
+        if (this.top30DataSource.data.length > 0 ) {
+          this.showTop30Table = true;
+        }
+        else {
+          this.showTop30Table = false;
+        }
 
       }
     })
