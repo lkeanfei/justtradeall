@@ -9,7 +9,7 @@ import {
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule,
   MatTableModule,
-  MatToolbarModule, MatTabsModule, MatIconModule
+  MatToolbarModule, MatTabsModule, MatIconModule, MatAccordionDisplayMode, MatExpansionModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -98,6 +98,7 @@ const appRoutes: Routes = [
     MatListModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
     MatToolbarModule,
     MatTabsModule,
     MatSelectModule,

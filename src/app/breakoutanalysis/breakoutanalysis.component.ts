@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpService} from '../shared/httpservice.service';
 import * as moment from 'moment';
+import {LayoutServiceService} from '../shared/layout-service.service';
 
 @Component({
   selector: 'app-breakoutanalysis',
@@ -10,11 +11,22 @@ import * as moment from 'moment';
 export class BreakoutanalysisComponent implements OnInit {
 
   staticBoxBreakoutDataSource = [];
+  isHandSet = true;
   staticBreakoutColumns: string[] = ['stock' , 'fromdate' , 'todate' , 'highesthigh' , 'lowestlow' ,  'breakoutcompare']
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private layoutService: LayoutServiceService) { }
 
   ngOnInit() {
+
+    this.layoutService.getIsHandSetObservable().subscribe(isHandset => {
+      if(isHandset) {
+        this.isHandSet = true;
+      }
+      else {
+        this.isHandSet = false;
+      }
+    })
+
     this.httpService.getStaticBoxBreakout('all').subscribe( response => {
       let results = response['results'];
 
