@@ -28,6 +28,11 @@ export class ChartsComponent implements OnInit {
   dailyData = [];
   Highstocks = Highcharts;
 
+  staticBoxFromDate: string;
+  staticBoxToDate: string;
+  staticBoxHigh: string;
+  staticBoxLow: string;
+
 
 
   constructor(private route: ActivatedRoute , private httpService: HttpService ,

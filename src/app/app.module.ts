@@ -42,19 +42,22 @@ import { SecshareholdingsComponent } from './security/sub/secshareholdings/secsh
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import {LayoutServiceService} from "./shared/layout-service.service";
+import { BreakoutanalysisComponent } from './breakoutanalysis/breakoutanalysis.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
-  {path: 'home' , component: HomeComponent} ,
-  {path: 'login' , component: LoginComponent} ,
-  {path: 'register' , component: RegisterComponent} ,
-  {path: 'reset' , component: ResetComponent} ,
-  {path: 'shareholdings' , component: ShareholdingsComponent},
+  {path: 'app/home' , component: HomeComponent} ,
+  {path: 'app/login' , component: LoginComponent} ,
+  {path: 'app/register' , component: RegisterComponent} ,
+  {path: 'app/reset' , component: ResetComponent} ,
+  {path: 'app/shareholdings' , component: ShareholdingsComponent},
   {path: 'coolchart' , component: CoolchartComponent},
   {path: 'subplot' , component: SubplotComponent},
   {path: 'highstock' , component: HighstockComponent},
   {path: 'experiment' , component: ExperimentComponent},
-  {path: 'security/:fullid' , component: SecurityComponent}
+  {path: 'app/security/:fullid' , component: SecurityComponent},
+  {path: 'app/breakoutanalysis' , component: BreakoutanalysisComponent}
+
 
 
 
@@ -78,7 +81,8 @@ const appRoutes: Routes = [
     OverviewComponent,
     ChartsComponent,
     SecshareholdingsComponent,
-    MainNavComponent
+    MainNavComponent,
+    BreakoutanalysisComponent
   ],
   imports: [
     BrowserModule,

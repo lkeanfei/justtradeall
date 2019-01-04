@@ -11,6 +11,15 @@
 
   ></highcharts-chart>
 </div>
+<div *ngIf="staticBoxExists; else templateNotStaticBox"  >
+  Static box is from {{staticBoxFromDate}} to {{ staticBoxToDate}} with
+  High = {{ staticBoxHigh }}
+  Low = {{ staticBoxLow}}
+</div>
+
+<ng-template #templateName>
+  Static box does not exist
+</ng-template>
 
 <div fxFlex="1 1 20%">
   <table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >

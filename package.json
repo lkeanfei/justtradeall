@@ -26,6 +26,7 @@
     "@angular/router": "^6.0.2",
     "@ngrx/store": "^6.0.1",
     "@types/highcharts": "^5.0.25",
+    "@types/moment": "^2.13.0",
     "@types/plotly.js": "^1.38.3",
     "angular2-highcharts": "^0.5.5",
     "angularfire2": "^5.0.1",
@@ -34,6 +35,7 @@
     "hammerjs": "^2.0.8",
     "highcharts": "^6.1.1",
     "highcharts-angular": "^2.0.0",
+    "moment": "^2.23.0",
     "plotly.js": "^1.38.3",
     "rxjs": "^6.2.0",
     "zone.js": "^0.8.26"

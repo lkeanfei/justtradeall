@@ -25,6 +25,12 @@ export class OverviewComponent implements OnInit {
   staticOneToOneFlag = false; // optional boolean, defaults to false
   staticChartOptions : any;
   startLoading = true;
+  staticBoxExists : boolean;
+  staticBoxFromDate: string;
+  staticBoxToDate: string;
+  staticBoxHigh: number;
+  staticBoxLow: number;
+
   dailyData = [];
   tableMap = {};
   securitySummaryDataSource =  new MatTableDataSource<any>();
@@ -74,18 +80,19 @@ export class OverviewComponent implements OnInit {
         },
         data: []
       }],
-      yAxis: {
+      yAxis: [{
         crosshair: true,
         tickPixelInterval: 10,
-      },
-      xAxis: {
+      }],
+      xAxis: [{
+
         crosshair: true,
         events: {
           setExtremes:(evt) => {
             let minDate = new Date(evt.min);
             //console.log('x axis ' + minDate + ' ' + evt.max);
           }},
-      }
+      }]
     };
 
     const theSub = this.route.params.pipe(
@@ -112,6 +119,46 @@ export class OverviewComponent implements OnInit {
 
       this.dailyData = res['daily'];
       this.staticChartOptions['series'][0]['data'] = this.dailyData;
+
+      if( Object.keys(res['staticbox']).length === 0) {
+        this.staticBoxExists = false;
+      }
+      else {
+        this.staticBoxExists = true;
+        this.staticBoxFromDate = res['staticbox']['fromdate'];
+        this.staticBoxToDate = res['staticbox']['todate'];
+        this.staticBoxHigh = res['staticbox']['highesthigh'];
+        this.staticBoxLow = res['staticbox']['lowestlow'];
+
+
+
+        let staticBoxPlotBand = {
+          color: '#FCFFC5',
+          from: this.staticBoxLow,
+          to: this.staticBoxHigh
+        };
+
+         let lowestLowPlotLine = {
+           color: '#FF0000',
+           width: 2,
+           value: res['staticbox']['todatems']
+         }
+
+         this.staticChartOptions['yAxis'][0]['plotBands'] = []
+        this.staticChartOptions['yAxis'][0]['plotBands'].push(staticBoxPlotBand)
+
+        this.staticChartOptions['xAxis'][0]['plotLines'] = []
+        this.staticChartOptions['xAxis'][0]['plotLines'].push(lowestLowPlotLine)
+        // this.staticChartOptions['xAxis'][0]['plotBands'][0]['from'] =  res['staticbox']['fromdatems']
+        // this.staticChartOptions['xAxis'][0]['plotBands'][0]['from'] =  res['staticbox']['todatems']
+        // console.log(this.staticChartOptions['xAxis'][0]['plotBands'][0])
+
+        // console.log(this.staticChartOptions['xAxis'])
+        // console.log(this.staticChartOptions['xAxis'].get('plotBands'))
+       // this.staticChartOptions['xAxis'][0]['plotBands'] = [ staticBoxPlotBand ];
+
+      }
+
 
 
       this.staticUpdateFlag = true;
