@@ -46,17 +46,17 @@ import { BreakoutanalysisComponent } from './breakoutanalysis/breakoutanalysis.c
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
-  {path: 'app/home' , component: HomeComponent} ,
-  {path: 'app/login' , component: LoginComponent} ,
-  {path: 'app/register' , component: RegisterComponent} ,
-  {path: 'app/reset' , component: ResetComponent} ,
-  {path: 'app/shareholdings' , component: ShareholdingsComponent},
+  {path: 'home' , component: HomeComponent} ,
+  {path: 'login' , component: LoginComponent} ,
+  {path: 'register' , component: RegisterComponent} ,
+  {path: 'reset' , component: ResetComponent} ,
+  {path: 'shareholdings' , component: ShareholdingsComponent},
   {path: 'coolchart' , component: CoolchartComponent},
   {path: 'subplot' , component: SubplotComponent},
   {path: 'highstock' , component: HighstockComponent},
   {path: 'experiment' , component: ExperimentComponent},
-  {path: 'app/security/:fullid' , component: SecurityComponent},
-  {path: 'app/breakoutanalysis' , component: BreakoutanalysisComponent}
+  {path: 'security/:fullid' , component: SecurityComponent},
+  {path: 'breakoutanalysis' , component: BreakoutanalysisComponent}
 
 
 
