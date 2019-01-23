@@ -62,6 +62,11 @@ export class HttpService {
       return this.httpClient.post( '/api/staticboxbreakout/' , body );
     }
 
+    getDynamicBoxBreakout(fullid: string) : Observable<any> {
+      const body = { 'fullid' : fullid  };
+      return this.httpClient.post( '/api/dynamicboxbreakout/' , body );
+    }
+
 
     getHoldingsDistAndTop30View(fullid: string) {
       const body = { 'fullid' : fullid   };

@@ -7,6 +7,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {LoginService} from "./shared/loginservice.service";
 import {AuthService} from "./shared/security/auth.service";
 import {User} from "./shared/security/user";
+import {Store} from '@ngrx/store';
+import {Ingredient} from "./shared/Ingredient.model";
+import * as AuthActions from './store/auth.actions';
+import {isUndefined} from "util";
+import {UserModel} from "./shared/security/user.model";
 
 @Component({
   selector: 'app-root',
@@ -27,9 +32,12 @@ export class AppComponent implements OnInit {
   userName: string;
   showSearchButton = true;
 
+  authState: Observable<{ user: UserModel}>;
+
   filteredOptions: Observable<string[]>;
 
   constructor(private loginService: LoginService,private httpService : HttpService ,
+              private store: Store<{authUser: {user: UserModel }}>,
               private route: ActivatedRoute , private authService: AuthService,
               private router: Router) {
 
@@ -38,15 +46,30 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
+    // Subscribe to store
+    // this.shoppingListState = this.store.select('shoppingList')
+    //
+    // this.shoppingListState.subscribe( obj => {
+    //   if ( ! isUndefined(obj)) {
+    //     console.log('inside app componet ');
+    //     console.log(obj);
+    //     sessionStorage.setItem('_auth' , JSON.stringify(obj))
+    //   }
+    // });
+
+
     // Verify the user
     this.authService.verifyUser().subscribe( (user:User) => {
        if (user === AuthService.UNKNOWN_USER ) {
            //console.log('App unknown user!!')
           this.loginSubject.next(false)
+           this.store.dispatch(new AuthActions.DeleteUser())
        } else {
          this.loginSubject.next(true)
          this.userName = user['name']
          this.photourl = user['photourl']
+         const newUser = new UserModel('' , true);
+         this.store.dispatch(new AuthActions.UpdateUser(newUser))
           // console.log('**** known user ' + user['name']);
           // console.log('**** known user ' + user['email']);
           // console.log('**** know user ' + user['photourl']);

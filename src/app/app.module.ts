@@ -9,7 +9,7 @@ import {
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule,
   MatTableModule,
-  MatToolbarModule, MatTabsModule, MatIconModule, MatAccordionDisplayMode, MatExpansionModule
+  MatToolbarModule, MatTabsModule, MatIconModule, MatAccordionDisplayMode, MatExpansionModule, MatSortModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -43,6 +43,10 @@ import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import {LayoutServiceService} from "./shared/layout-service.service";
 import { BreakoutanalysisComponent } from './breakoutanalysis/breakoutanalysis.component';
+import {StoreModule , ActionReducerMap, ActionReducer, MetaReducer } from "@ngrx/store";
+import { localStorageSync } from 'ngrx-store-localstorage';
+import {authReducer , AppState} from "./store/auth.reducers";
+import * as fromPost from "./store/auth.reducers";
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -62,6 +66,18 @@ const appRoutes: Routes = [
 
 
 ];
+
+export interface TheState {
+  post: fromPost.AppState
+}
+
+
+export const reducers: ActionReducerMap<TheState> = { post: authReducer};
+
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({keys: ['ingredients'], rehydrate: true})(reducer);
+}
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [
@@ -106,6 +122,7 @@ const appRoutes: Routes = [
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSortModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     FormsModule,
@@ -116,7 +133,8 @@ const appRoutes: Routes = [
     AngularFirestoreModule,
     HighchartsChartModule,
     LayoutModule,
-    MatIconModule
+    MatIconModule,
+    StoreModule.forRoot( {authUser: authReducer})
   ],
   entryComponents: [ DialogContentExampleDialog],
 

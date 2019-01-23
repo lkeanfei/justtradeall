@@ -1,7 +1,8 @@
 <div *ngIf="showLogin; else templateName" fxFlexAlign="center">
 
-  <div fxLayout="row">
-    <button mat-button (click)="openDialog()">Sign In</button> or Register for FREE to view Shareholdings details!
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <!--<button mat-button (click)="openDialog()">Sign In</button> or Register for FREE to view Shareholdings details!-->
+    <button mat-button routerLink="/login">Sign In</button> or <button mat-button routerLink="/register">Register for FREE</button> to view Shareholdings details!
   </div>
 
 </div>

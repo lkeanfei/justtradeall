@@ -55,7 +55,8 @@ export class HomeComponent implements OnInit {
   topGainersColumns: string[] = ['stock', 'last', 'change'];
   newHighLowColumns: string[] = ['stock' , 'weeks'];
   unusualVolumeColumns: string[] = ['stock' , 'ratio'];
-  staticBrekaoutColumns: string[] = ['stock' , 'breakoutcompare']
+  staticBrekaoutColumns: string[] = ['stock' , 'breakoutcompare'];
+  dynamicBreakoutColumns: string[] = ['stock' , 'breakoutcompare'];
   displayedColumns = ['userId', 'userName', 'progress', 'color'];
   dataSource = new MatTableDataSource();
   exampleDatabase = new ExampleDatabase();
@@ -110,6 +111,7 @@ export class HomeComponent implements OnInit {
         this.newLowDataSource = frontPageData['newlow'];
         this.unusualVolumeDataSource = frontPageData['unusualvolume'];
         this.staticBoxBreakoutDataSource = frontPageData['staticboxbreakout']
+        this.dynamicBoxBreakoutDataSource = frontPageData['dynamicboxbreakout']
         this.isLoading = false;
 
     })

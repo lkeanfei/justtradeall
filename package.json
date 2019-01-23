@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^6.0.2",
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/router": "^6.0.2",
-    "@ngrx/store": "^6.0.1",
+    "@ngrx/store": "^6.1.2",
     "@types/highcharts": "^5.0.25",
     "@types/moment": "^2.13.0",
     "@types/plotly.js": "^1.38.3",
@@ -36,6 +36,7 @@
     "highcharts": "^6.1.1",
     "highcharts-angular": "^2.0.0",
     "moment": "^2.23.0",
+    "ngrx-store-localstorage": "^6.0.0",
     "plotly.js": "^1.38.3",
     "rxjs": "^6.2.0",
     "zone.js": "^0.8.26"

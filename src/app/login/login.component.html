@@ -34,3 +34,11 @@
 
 </div>
 </div>
+
+
+<div>
+  <ul>
+    <span> Token ID </span><span > {{(authState | async).user.tokenId }}  </span>
+    <span> Is Authenticated </span><span > {{(authState | async).user.isAuthenticated }}  </span>
+  </ul>
+</div>

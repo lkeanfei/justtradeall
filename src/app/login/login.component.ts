@@ -8,7 +8,11 @@ import {Observable} from "rxjs/index";
 import {concatMap} from 'rxjs/operators';
 import {HttpService} from "../shared/httpservice.service";
 import {User} from "../shared/security/user";
-
+import {Store} from '@ngrx/store';
+import {Ingredient} from "../shared/Ingredient.model";
+import * as AuthActions from '../store/auth.actions';
+import {isUndefined} from "util";
+import {UserModel} from "../shared/security/user.model";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -48,26 +52,40 @@ export class LoginComponent implements OnInit {
     Validators.minLength(8)
   ]);
   bLoginFailed = false;
-
+  // shoppingListState: Observable<{ingredients: Ingredient[]}>;
+  authState: Observable<{user: UserModel}>;
+  idtoken: string;
   matcher = new MyErrorStateMatcher();
 
   constructor(private fb:FormBuilder , private authService: AuthService ,
-              private httpService: HttpService,
+              private httpService: HttpService, private store: Store<{authUser: {user: UserModel }}>,
               private router : Router, private prevRouteService: PreviousRouteServiceService) {
 
   }
 
 
+  testLogin() {
+    const newUser = new UserModel("New1" , true);
+    this.store.dispatch(new AuthActions.UpdateUser(newUser));
+  }
+
+  testLogout() {
+
+    this.store.dispatch(new AuthActions.DeleteUser());
+  }
+
+
   ngOnInit() {
-    let id: string;
-    id = localStorage.getItem('id');
-    if(id == null){
-    } else {
-      // User already logged in
-      // redirect to home page
-      // this.router.navigate(['/home']);
-      // console.log('id is ' + id);
-    }
+
+    this.authState = this.store.select('authUser');
+
+    this.authState.subscribe( obj => {
+       if ( ! isUndefined(obj)) {
+         console.log('adasdad ');
+         console.log(obj);
+       }
+    });
+
   }
 
 
@@ -108,16 +126,28 @@ export class LoginComponent implements OnInit {
     obs.subscribe(
       (val: string) => {
 
-        user = new User(val['user'] , val['email'] , val['photourl']);
-        //this.authService.triggerAuthEvent(user);
-        this.authService.triggerAuthReplayEvent(user);
-        let prevUrl = this.prevRouteService.getPreviousUrl()
+        console.log('Status is ' + val['status']);
+        if (val['status'] == 'success') {
+          user = new User(val['user'] , val['email'] , val['photourl']);
+          //this.authService.triggerAuthEvent(user);
+          this.authService.triggerAuthReplayEvent(user);
+          let prevUrl = this.prevRouteService.getPreviousUrl()
 
-        if(prevUrl.includes('login') || prevUrl.includes('register')) {
-          prevUrl = '/home';
+          if(prevUrl.includes('login') || prevUrl.includes('register')) {
+            prevUrl = '/home';
+          }
+
+          const newUser = new UserModel('' , true);
+          this.store.dispatch(new AuthActions.UpdateUser(newUser));
+
+
+
+
+
+          this.router.navigate([prevUrl]);
         }
 
-        this.router.navigate([prevUrl]);
+
       },
       (err) => {
 
@@ -136,7 +166,9 @@ export class LoginComponent implements OnInit {
 
     const obs = this.authService.login(email, password).pipe(
       concatMap( () => this.authService.getIdToken() ),
-      concatMap(  (idToken : string) => this.httpService.postIdToSessionLogin(idToken))
+      concatMap(  (idToken : string) => {
+        this.idtoken = idToken;
+        return this.httpService.postIdToSessionLogin(idToken)})
     );
 
     this.processLoginObservables(obs);
