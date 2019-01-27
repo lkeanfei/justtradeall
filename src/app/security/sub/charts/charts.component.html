@@ -7,17 +7,31 @@
 
 </div>
 <ng-template #templateName>
-  <highcharts-chart fxFlex
-                    [Highcharts]="Highstocks"
 
-                    [constructorType]="chartConstructor"
-                    [options]="interactiveChartOptions"
+  <div fxLayout="column">
+    <div *ngIf="isLoading; else templateLoaded">
+      <mat-progress-spinner
+        class="example-margin"
+        [color]="color"
+        [mode]="mode"
+        [value]="value">
+      </mat-progress-spinner>
+    </div>
+    <ng-template #templateLoaded>
+      <highcharts-chart fxFlex
+                        [Highcharts]="Highstocks"
 
-                    [(update)]="interactiveUpdateFlag"
-                    [oneToOne]="interactiveOneToOneFlag"
+                        [constructorType]="chartConstructor"
+                        [options]="interactiveChartOptions"
 
-                    style="width: 100%; height: 400px; display: block;"
-  ></highcharts-chart>
+                        [(update)]="interactiveUpdateFlag"
+                        [oneToOne]="interactiveOneToOneFlag"
 
-  Static box is from
+                        style="width: 100%; height: 400px; display: block;"
+      ></highcharts-chart>
+    </ng-template>
+  </div>
+
+
+
 </ng-template>

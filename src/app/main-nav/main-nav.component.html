@@ -29,14 +29,16 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span> Just Trade All </span>
+      <span><a routerLink="/home">Just Trade All</a></span>
 
       <div *ngIf="!(isHandset$ | async)">
         <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
 
         <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
-          <button mat-menu-item routerLinkActive="menu-active" routerLink="shareholdings">Shareholdings Analysis</button>
+          <button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Shareholdings Analysis</button>
+          <button mat-menu-item routerLinkActive="menu-active" routerLink="/breakoutanalysis">Breakout Analysis</button>
         </mat-menu>
+
       </div>
 
         <span class="spacer"></span>

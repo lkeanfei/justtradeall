@@ -7,6 +7,13 @@
   width: 90vw;
 }
 
+.viewmore {
+  font-size: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+
 .mytooltip {outline:none; }
 .mytooltip strong {line-height:30px;}
 .mytooltip:hover {text-decoration:none;}

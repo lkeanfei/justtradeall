@@ -33,6 +33,12 @@ export class ChartsComponent implements OnInit {
   staticBoxHigh: string;
   staticBoxLow: string;
 
+  isLoading = true;
+
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+
 
 
   constructor(private route: ActivatedRoute , private httpService: HttpService ,
@@ -147,7 +153,9 @@ export class ChartsComponent implements OnInit {
 
       this.interactiveChartOptions['series'][0]['data'] = this.dailyData;
       this.interactiveChartOptions['series'][1]['data'] = res['volume']
+      this.isLoading = false;
       this.interactiveUpdateFlag = true;
+
 
     });
 

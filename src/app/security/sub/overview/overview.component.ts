@@ -31,6 +31,12 @@ export class OverviewComponent implements OnInit {
   staticBoxHigh: number;
   staticBoxLow: number;
 
+  isLoading = true;
+
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+
   dailyData = [];
   tableMap = {};
   securitySummaryDataSource =  new MatTableDataSource<any>();
@@ -162,6 +168,7 @@ export class OverviewComponent implements OnInit {
 
 
       this.staticUpdateFlag = true;
+      this.isLoading = false;
 
 
       // Temporary disable

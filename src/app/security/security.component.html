@@ -3,12 +3,23 @@
 
 
 <div class="topdiv" fxLayout="column" fxLayoutGap="40px">
-  <div>
+  <div *ngIf="isLoading; else templateLoaded">
+    <mat-progress-spinner
+      class="example-margin"
+      [color]="color"
+      [mode]="mode"
+      [value]="value">
+    </mat-progress-spinner>
+  </div>
+  <ng-template #templateLoaded>
+    <div>
     <div> <b> {{ symbol }}  {{ name }} </b> </div>
     <div> Full name: <b> {{ fullname }} </b></div>
     <div> Category: <b> {{ category }} </b></div>
     <div> Sector : <b> {{ sector }} </b> </div>
-  </div>
+    </div>
+  </ng-template>
+
   <div>
     <mat-tab-group (selectedTabChange)="tabChanged($event)">
       <mat-tab label="Overview"> <app-overview></app-overview></mat-tab>

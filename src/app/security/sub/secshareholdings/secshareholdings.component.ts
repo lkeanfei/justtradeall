@@ -39,6 +39,12 @@ export class SecshareholdingsComponent implements OnInit {
   yearDisplay: string;
   tableCellFontClass: string;
 
+  isLoading = true;
+
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 50;
+
 
   constructor(private route: ActivatedRoute ,private httpService: HttpService, private layoutService: LayoutServiceService) {
 
@@ -89,6 +95,8 @@ export class SecshareholdingsComponent implements OnInit {
         else {
           this.showTop30Table = false;
         }
+
+        this.isLoading = false;
 
       }
     })

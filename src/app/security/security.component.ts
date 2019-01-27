@@ -29,6 +29,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
   fxFlexValue = 75;
 
+  isLoading = true;
 
   dailyData = [];
   chartWidth: number;
@@ -302,6 +303,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
         this.fullname = res['fullname'];
         this.category = res['category'];
         this.sector = res['sector'];
+        this.isLoading = false
 
       } else {
 
