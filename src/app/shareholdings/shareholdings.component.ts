@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {HttpService} from '../shared/httpservice.service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { AngularFirestore , AngularFirestoreCollection } from '@angular/fire/firestore';
+import {Observable} from "rxjs";
 
 export interface CompanyData {
   id: string;
@@ -16,6 +18,14 @@ export interface HoldersData {
   holder: string;
   shares: number;
   percentage: number;
+}
+
+export interface MarketCap { market: string; }
+
+export interface SharesChange {
+  symbol : string;
+  numsharesdelta: number;
+
 }
 
 @Component({
@@ -55,7 +65,7 @@ export class ShareholdingsComponent implements OnInit {
 
 
 
-  constructor(private httpService: HttpService, fb: FormBuilder) {
+  constructor(private httpService: HttpService, private fireStore: AngularFirestore, fb: FormBuilder ) {
 
     this.hasCompanyResults = false;
     this.hasHolderResults = false;
@@ -122,6 +132,26 @@ export class ShareholdingsComponent implements OnInit {
   ngOnInit() {
     this.companyField = new FormControl();
     this.shareholderField = new FormControl();
+
+    let items: Observable < SharesChange[] >;
+
+    items = this.fireStore.collection<SharesChange>("/marketcap/bursa/26-02-2019/").valueChanges();
+
+    items.subscribe( arr => {
+      for(let i=0; i< arr.length; i++){
+        console.log('Symbol ' +  arr[i].symbol  +  ' '  + arr[i].numsharesdelta); //use i instead of 0
+      }
+    } );
+
+
+    /*
+        this.fireStore.collection("marketcap").snapshotChanges().subscribe( val=> {
+             console.log(val);
+             console.log('*****');
+             console.log(JSON.stringify(val[0]))
+
+        });
+        */
   }
 
 }

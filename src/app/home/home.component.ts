@@ -101,20 +101,51 @@ export class HomeComponent implements OnInit {
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new BehaviorSubject(this.data.selectedDate);
 
-    this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
+    this.httpService.getFrontPageNewHighLowView().subscribe( (frontPageData :any)=> {
+      this.newHighDataSource = frontPageData['newhigh'];
+      this.newLowDataSource = frontPageData['newlow'];
+    });
 
-        this.topGainersDateSource = frontPageData["topgainers"];
-        this.topGainersPctDateSource = frontPageData["topgainerspct"];
-        this.topLosersDateSource = frontPageData["toplosers"];
-        this.topLosersPctDateSource = frontPageData["toploserspct"];
-        this.newHighDataSource = frontPageData['newhigh'];
-        this.newLowDataSource = frontPageData['newlow'];
-        this.unusualVolumeDataSource = frontPageData['unusualvolume'];
-        this.staticBoxBreakoutDataSource = frontPageData['staticboxbreakout']
-        this.dynamicBoxBreakoutDataSource = frontPageData['dynamicboxbreakout']
-        this.isLoading = false;
+    this.httpService.getFrontPageBreakout().subscribe( (frontPageData :any)=> {
+
+      this.staticBoxBreakoutDataSource = frontPageData['staticboxbreakout'];
+      this.dynamicBoxBreakoutDataSource = frontPageData['dynamicboxbreakout'];
 
     })
+
+    this.httpService.getFrontPageTopGainers().subscribe( (frontPageData :any)=> {
+
+      this.topGainersDateSource = frontPageData["topgainers"];
+      this.topGainersPctDateSource = frontPageData["topgainerspct"];
+    })
+
+    this.httpService.getFrontPageTopLosers().subscribe( (frontPageData :any)=> {
+
+      this.topLosersDateSource = frontPageData["toplosers"];
+      this.topLosersPctDateSource = frontPageData["toploserspct"];
+    })
+
+    this.httpService.getFrontPageVolume().subscribe( (frontPageData :any)=> {
+
+      this.unusualVolumeDataSource = frontPageData['unusualvolume'];
+      this.isLoading = false;
+    })
+
+
+    // this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
+    //
+    //     this.topGainersDateSource = frontPageData["topgainers"];
+    //     this.topGainersPctDateSource = frontPageData["topgainerspct"];
+    //     this.topLosersDateSource = frontPageData["toplosers"];
+    //     this.topLosersPctDateSource = frontPageData["toploserspct"];
+    //     this.newHighDataSource = frontPageData['newhigh'];
+    //     this.newLowDataSource = frontPageData['newlow'];
+    //
+    //     this.staticBoxBreakoutDataSource = frontPageData['staticboxbreakout']
+    //     this.dynamicBoxBreakoutDataSource = frontPageData['dynamicboxbreakout']
+    //     this.isLoading = false;
+    //
+    // })
 
     const subscription = this.subject.subscribe(
       (dateSelected:string ) => {
@@ -266,41 +297,10 @@ export class HomeComponent implements OnInit {
 
     this.latestUpdateDate = data['todate']
     this.chartOptions['subtitle']['text'] = data['todate'];
-    this.chartOptions['chart']['width'] = window.innerWidth *0.7;
+    // this.chartOptions['chart']['width'] = window.innerWidth *0.7;
 
     this.updateFlag = true;
-    // this.chartOptions = {
-    //   series: [{
-    //     type : 'candlestick',
-    //     data: this.klseData
-    //   }],
-    //   title : {
-    //     text : 'FBMKLCI'
-    //   },
-    //   subtitle : {
-    //     text :'21 Aug 2018'
-    //   },
-    //   yAxis: {
-    //     crosshair: true,
-    //     tickPixelInterval: 10,
-    //   },
-    //   xAxis: {
-    //     crosshair: true,
-    //     events: {
-    //       setExtremes:(evt) => {
-    //         let minDate = new Date(evt.min);
-    //
-    //       }},
-    //   }
-    // };
 
-
-    //
-    // for( const arrayIndex of range(0,dataLength)) {
-
-    // }
-
-    // this.plotCandlesticks(dateList, openList, highList, lowList , closeList , volumeList);
 
   }
 

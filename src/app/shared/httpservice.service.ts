@@ -84,6 +84,36 @@ export class HttpService {
       return this.httpClient.post( '/api/frontpage/' , body );
     }
 
+    getFrontPageNewHighLowView() {
+
+      const body = {};
+      return this.httpClient.post( '/api/frontpagenewhighlow/' , body );
+    }
+
+    getFrontPageTopGainers() {
+
+      const body = {};
+      return this.httpClient.post( '/api/frontpagetopgainers/' , body );
+    }
+
+    getFrontPageTopLosers() {
+
+      const body = {};
+      return this.httpClient.post( '/api/frontpagetoplosers/' , body );
+    }
+
+    getFrontPageVolume() {
+
+      const body = {};
+      return this.httpClient.post( '/api/frontpagevolume/' , body );
+    }
+
+    getFrontPageBreakout() {
+
+      const body = {};
+      return this.httpClient.post( '/api/frontpagebreakout/' , body );
+    }
+
     searchCompany( companyName : string) {
 
         const prm = new HttpParams();

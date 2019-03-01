@@ -44,7 +44,7 @@ export class MainNavComponent implements OnInit{
     this.isLoggedIn = this.loginSubject.asObservable();
 
     this.isHandset$.subscribe( val => {
-      console.log('This is handset ' + val);
+      //console.log('This is handset ' + val);
       this.currentHandsetState = val;
       if (val) {
         // For mobile handsets
@@ -68,7 +68,7 @@ export class MainNavComponent implements OnInit{
         this.loginSubject.next(true);
         this.userName = user['name'];
         this.photourl = user['photourl'];
-        console.log('User is verfied! ' + this.userName);
+        //console.log('User is verfied! ' + this.userName);
 
       }
     });
@@ -82,7 +82,7 @@ export class MainNavComponent implements OnInit{
         this.loginSubject.next(true);
         this.userName = user['name'];
         this.photourl = user['photourl'];
-        console.log('User is authenticated! ' + this.userName);
+        //console.log('User is authenticated! ' + this.userName);
         // console.log('**** known user ' + user['name']);
         // console.log('**** known user ' + user['email']);
         // console.log('**** know user ' + user['photourl']);

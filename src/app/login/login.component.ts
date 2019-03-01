@@ -81,8 +81,8 @@ export class LoginComponent implements OnInit {
 
     this.authState.subscribe( obj => {
        if ( ! isUndefined(obj)) {
-         console.log('adasdad ');
-         console.log(obj);
+         //console.log('adasdad ');
+         //console.log(obj);
        }
     });
 

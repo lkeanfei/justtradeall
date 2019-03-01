@@ -1,127 +1,138 @@
 
-      <div *ngIf="showByStock" fxLayout="column" fxLayoutGap="15px">
-        <div></div>
-        <div class="div-center" fxFlexAlign="center" fxLayout="row">
-          <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
-            <mat-label>Shareholder's Name</mat-label>
-            <input type="search"  [formControl]="companyField" (keyup.enter)="onSearchCompany()" matInput placeholder="Search">
-          </mat-form-field>
-        </div>
+<mat-tab-group >
+  <mat-tab label="Shares Analysis">
 
-        <div *ngIf="hasCompanyResults">
-          <mat-form-field>
-            <mat-select placeholder="Year" [(value)]="companySelectedYear">
-              <mat-option value="2017">2017</mat-option>
-              <mat-option value="2016">2016</mat-option>
-              <mat-option value="2015">2015</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div *ngIf="hasCompanyResults" class="table-class">
-          <mat-table #table [dataSource]="companyDataSource">
-
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-              <mat-header-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matHeaderCellDef> ID </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matCellDef="let element"> {{element.id}}. </mat-cell>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <mat-header-cell class="cell-class"  fxLayoutAlign="center"  fxFlex="{{ nameColumnWidth }}" *matHeaderCellDef> Name </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matCellDef="let element"> {{ element.name}} </mat-cell>
-            </ng-container>
-
-            <!-- Shares Column -->
-            <ng-container matColumnDef="shares">
-              <mat-header-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" fxLayoutAlign="center"  *matHeaderCellDef> Shares </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}"  *matCellDef="let element"> {{ element.shares.toLocaleString() }} </mat-cell>
-            </ng-container>
-
-            <!-- Percentage Column -->
-            <ng-container matColumnDef="percentage">
-              <mat-header-cell class="cell-class" fxFlex="{{ percentageColumnWidth }}" *matHeaderCellDef> Percentage </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ percentageColumnWidth }}" *matCellDef="let element"> {{element.percentage }} </mat-cell>
-            </ng-container>
-
-            <mat-header-row  class="my-mat-row" *matHeaderRowDef="companyColumns"></mat-header-row>
-            <mat-row class="my-mat-row" *matRowDef="let row; columns: companyColumns;"></mat-row>
-          </mat-table>
+  </mat-tab>
+  <mat-tab label="Shareholdings Search">
 
 
-        </div>
+    <div *ngIf="showByStock" fxLayout="column" fxLayoutGap="15px">
+      <div></div>
+      <div class="div-center" fxFlexAlign="center" fxLayout="row">
+        <mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
+          <mat-label>Shareholder's Name</mat-label>
+          <input type="search"  [formControl]="companyField" (keyup.enter)="onSearchCompany()" matInput placeholder="Search">
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="hasCompanyResults">
+        <mat-form-field>
+          <mat-select placeholder="Year" [(value)]="companySelectedYear">
+            <mat-option value="2017">2017</mat-option>
+            <mat-option value="2016">2016</mat-option>
+            <mat-option value="2015">2015</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="hasCompanyResults" class="table-class">
+        <mat-table #table [dataSource]="companyDataSource">
+
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matCellDef="let element"> {{element.id}}. </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell class="cell-class"  fxLayoutAlign="center"  fxFlex="{{ nameColumnWidth }}" *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matCellDef="let element"> {{ element.name}} </mat-cell>
+          </ng-container>
+
+          <!-- Shares Column -->
+          <ng-container matColumnDef="shares">
+            <mat-header-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" fxLayoutAlign="center"  *matHeaderCellDef> Shares </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}"  *matCellDef="let element"> {{ element.shares.toLocaleString() }} </mat-cell>
+          </ng-container>
+
+          <!-- Percentage Column -->
+          <ng-container matColumnDef="percentage">
+            <mat-header-cell class="cell-class" fxFlex="{{ percentageColumnWidth }}" *matHeaderCellDef> Percentage </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ percentageColumnWidth }}" *matCellDef="let element"> {{element.percentage }} </mat-cell>
+          </ng-container>
+
+          <mat-header-row  class="my-mat-row" *matHeaderRowDef="companyColumns"></mat-header-row>
+          <mat-row class="my-mat-row" *matRowDef="let row; columns: companyColumns;"></mat-row>
+        </mat-table>
+
 
       </div>
 
-      <div *ngIf="!showByStock" fxLayout="column"  fxLayoutGap="15px">
+    </div>
+
+    <div *ngIf="!showByStock" fxLayout="column"  fxLayoutGap="15px">
 
 
-        <div class="div-center" fxFlexAlign="center" fxLayout="column">
-          <div>Shareholder's search</div>
-          <div><mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
+      <div class="div-center" fxFlexAlign="center" fxLayout="column">
+        <div>Shareholder's search</div>
+        <div><mat-form-field class="example-full-width" [floatLabel]="options.value.floatLabel">
 
-            <mat-label>Shareholder's name</mat-label>
-            <input type="search"  [formControl]="shareholderField" (keyup.enter)="onSearchShareholders()" matInput placeholder="Search">
-          </mat-form-field></div>
+          <mat-label>Shareholder's name</mat-label>
+          <input type="search"  [formControl]="shareholderField" (keyup.enter)="onSearchShareholders()" matInput placeholder="Search">
+        </mat-form-field></div>
 
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div *ngIf="startSearchingShareHolders">
+          <mat-progress-spinner
+            class="example-margin"
+            [color]="color"
+            [mode]="mode"
+            [value]="value">
+          </mat-progress-spinner>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center center">
-          <div *ngIf="startSearchingShareHolders">
-            <mat-progress-spinner
-              class="example-margin"
-              [color]="color"
-              [mode]="mode"
-              [value]="value">
-            </mat-progress-spinner>
-          </div>
-        </div>
-
-
-
-
-        <div *ngIf="hasHolderResults" class="table-class">
-          <mat-table #table [dataSource]="holdersDataSource">
-
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-              <mat-header-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matHeaderCellDef> ID </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matCellDef="let element"> {{element.id}} </mat-cell>
-            </ng-container>
-
-            <!-- Holder Column -->
-            <ng-container matColumnDef="holder">
-              <mat-header-cell class="cell-class"  fxFlex="{{ holderColumnWidth }}" *matHeaderCellDef> Holder </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ holderColumnWidth }}" *matCellDef="let element"> {{element.holder}} </mat-cell>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <mat-header-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matHeaderCellDef> Counter </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matCellDef="let element"> {{ element.name}} </mat-cell>
-            </ng-container>
-
-            <!-- Shares Column -->
-            <ng-container matColumnDef="shares">
-              <mat-header-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matHeaderCellDef> Shares </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matCellDef="let element"> {{ element.shares.toLocaleString()}} </mat-cell>
-            </ng-container>
-
-            <!-- Percentage Column -->
-            <ng-container matColumnDef="percentage">
-              <mat-header-cell class="cell-class" fxFlex="{{ percentageColumnWidth }}" *matHeaderCellDef> Percentage </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{ percentageColumnWidth }}" *matCellDef="let element"> {{element.percentage }} </mat-cell>
-            </ng-container>
-
-            <mat-header-row  class="my-mat-row" *matHeaderRowDef="holderColumns"></mat-header-row>
-            <mat-row class="my-mat-row" *matRowDef="let row; columns: holderColumns;"></mat-row>
-          </mat-table>
-
-
-        </div>
-
       </div>
 
 
 
 
+      <div *ngIf="hasHolderResults" class="table-class">
+        <mat-table #table [dataSource]="holdersDataSource">
+
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ idColumnWidth }}" *matCellDef="let element"> {{element.id}} </mat-cell>
+          </ng-container>
+
+          <!-- Holder Column -->
+          <ng-container matColumnDef="holder">
+            <mat-header-cell class="cell-class"  fxFlex="{{ holderColumnWidth }}" *matHeaderCellDef> Holder </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ holderColumnWidth }}" *matCellDef="let element"> {{element.holder}} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matHeaderCellDef> Counter </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ nameColumnWidth }}" *matCellDef="let element"> {{ element.name}} </mat-cell>
+          </ng-container>
+
+          <!-- Shares Column -->
+          <ng-container matColumnDef="shares">
+            <mat-header-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matHeaderCellDef> Shares </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ sharesColumnWidth }}" *matCellDef="let element"> {{ element.shares.toLocaleString()}} </mat-cell>
+          </ng-container>
+
+          <!-- Percentage Column -->
+          <ng-container matColumnDef="percentage">
+            <mat-header-cell class="cell-class" fxFlex="{{ percentageColumnWidth }}" *matHeaderCellDef> Percentage </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ percentageColumnWidth }}" *matCellDef="let element"> {{element.percentage }} </mat-cell>
+          </ng-container>
+
+          <mat-header-row  class="my-mat-row" *matHeaderRowDef="holderColumns"></mat-header-row>
+          <mat-row class="my-mat-row" *matRowDef="let row; columns: holderColumns;"></mat-row>
+        </mat-table>
+
+
+      </div>
+
+    </div>
+
+
+
+
+
+
+  </mat-tab>
+</mat-tab-group>
