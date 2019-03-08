@@ -33,6 +33,16 @@
   width:40%;
 }
 
+
+.ownershiptable-center {
+  align-self: center;
+  width:70%;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
 .table-class {
   width: 98%;
   height: 100%;

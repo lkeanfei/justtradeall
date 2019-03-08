@@ -6,6 +6,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MatTableDataSource} from '@angular/material';
 import {CompanyData} from '../../../shareholdings/shareholdings.component';
 import {LayoutServiceService} from "../../../shared/layout-service.service";
+import {AngularFirestore} from '@angular/fire/firestore';
 
 export interface DistHoldingsData {
   levelname: string;
@@ -20,6 +21,8 @@ export interface ShareHolderData {
   shares: number;
   percentage: number;
 }
+
+
 
 @Component({
   selector: 'app-secshareholdings',
@@ -46,7 +49,7 @@ export class SecshareholdingsComponent implements OnInit {
   value = 50;
 
 
-  constructor(private route: ActivatedRoute ,private httpService: HttpService, private layoutService: LayoutServiceService) {
+  constructor(private route: ActivatedRoute ,private httpService: HttpService, private layoutService: LayoutServiceService , private fireStore: AngularFirestore) {
 
     this.distholdingsDataSource = new MatTableDataSource<DistHoldingsData>( );
     this.top30DataSource = new MatTableDataSource<ShareHolderData>();
@@ -104,6 +107,9 @@ export class SecshareholdingsComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+
   }
 
   routeChangedDetected( prms) : Observable<any> {

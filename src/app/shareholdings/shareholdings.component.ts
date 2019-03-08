@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {HttpService} from '../shared/httpservice.service';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import { AngularFirestore , AngularFirestoreCollection } from '@angular/fire/firestore';
 import {Observable} from "rxjs";
+
 
 export interface CompanyData {
   id: string;
@@ -22,9 +23,22 @@ export interface HoldersData {
 
 export interface MarketCap { market: string; }
 
-export interface SharesChange {
-  symbol : string;
-  numsharesdelta: number;
+export interface NumSharesSummaryItem {
+  Symbol : string;
+  TradeDate : string;
+  NumSharesDiff : number;
+  PercentageDiff : number;
+
+}
+
+export interface OwnershipSummaryItem {
+  Symbol : string;
+  Code: string;
+  SharesAcquired : number;
+  PercentageSharesAcquired : number;
+  SharesDisposed : number;
+  PercentageSharesDisposed : number;
+
 
 }
 
@@ -45,14 +59,33 @@ export class ShareholdingsComponent implements OnInit {
   rowList : any = []
   companyDataSource: any;
   holdersDataSource: any;
+  equitiesTotalShareChangeDataSource: any;
+  ownershipSummaryDataSource: any;
+
   companyColumns = ['id', 'name', 'shares', 'percentage'];
-  holderColumns = ['id', 'holder' , 'name' ,  'shares' , 'percentage']
+  holderColumns = ['id', 'holder' , 'name' ,  'shares' , 'percentage'];
+  equitiesTotalShareChangeColumns = [ 'Symbol' , 'NumSharesDiff'  , 'PercentageDiff'];
+  ownershipSummaryColumns = ['Symbol' , 'SharesAcquired' , 'PercentageSharesAcquired' , 'SharesDisposed' ,'PercentageSharesDisposed'];
+
   options: FormGroup;
+
+  symbolColumnWidth = 20 ;
+  totalSharesWidth = 40;
+  sharesPercentageWidth = 40
+
   idColumnWidth = 5;
   holderColumnWidth = 20;
   nameColumnWidth = 30;
   sharesColumnWidth = 25;
   percentageColumnWidth = 20;
+
+  // Ownership summary table
+  ownershipSymbolWidth = 8;
+  ownershipSharesAcquiredWidth = 23;
+  ownershipPercentageSharesAcquiredWidth = 23;
+  ownershipSharesDisposedWidth = 23;
+  ownershipPercentageSharesDisposedWidth = 23;
+
   companySelectedYear = '2017';
   shareHolderSelectedYear = '2017';
   shareHolderTableLoading: boolean;
@@ -62,6 +95,9 @@ export class ShareholdingsComponent implements OnInit {
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
+
+  @ViewChild('totalshare') equitiesTotalShareSort: MatSort;
+  @ViewChild('ownership') ownershipSummarySort: MatSort;
 
 
 
@@ -76,6 +112,9 @@ export class ShareholdingsComponent implements OnInit {
     this.selStyles.push('white');
     this.companyDataSource = new MatTableDataSource<CompanyData>( );
     this.holdersDataSource = new MatTableDataSource<HoldersData>();
+    this.equitiesTotalShareChangeDataSource = new MatTableDataSource<NumSharesSummaryItem>();
+    this.ownershipSummaryDataSource = new MatTableDataSource<OwnershipSummaryItem>();
+
     this.options = fb.group({
       hideRequired: false,
       floatLabel: 'auto',
@@ -132,26 +171,38 @@ export class ShareholdingsComponent implements OnInit {
   ngOnInit() {
     this.companyField = new FormControl();
     this.shareholderField = new FormControl();
+    this.equitiesTotalShareChangeDataSource.sort = this.equitiesTotalShareSort;
+    setTimeout(() => {
+      this.ownershipSummaryDataSource.sort = this.ownershipSummarySort;
+    });
 
-    let items: Observable < SharesChange[] >;
 
-    items = this.fireStore.collection<SharesChange>("/marketcap/bursa/26-02-2019/").valueChanges();
+
+    let items: Observable < NumSharesSummaryItem[] >;
+
+    items = this.fireStore.collection<NumSharesSummaryItem>("/numsharessummary/Bursa/27-Feb-2019").valueChanges();
 
     items.subscribe( arr => {
-      for(let i=0; i< arr.length; i++){
-        console.log('Symbol ' +  arr[i].symbol  +  ' '  + arr[i].numsharesdelta); //use i instead of 0
-      }
+
+      this.equitiesTotalShareChangeDataSource.data = arr;
+
     } );
 
+    // Gets the ownership summary
 
-    /*
-        this.fireStore.collection("marketcap").snapshotChanges().subscribe( val=> {
-             console.log(val);
-             console.log('*****');
-             console.log(JSON.stringify(val[0]))
+    let ownershipItems: Observable <OwnershipSummaryItem[] >;
 
-        });
-        */
+    // /ownershipsummary/Bursa/27-Feb-2019/udAqWtQYrqzxxQlsyLPI
+    ownershipItems = this.fireStore.collection<OwnershipSummaryItem>("/ownershipsummary/Bursa/27-Feb-2019").valueChanges();
+
+    ownershipItems.subscribe( arr => {
+      this.ownershipSummaryDataSource.data = arr;
+    });
+  }
+
+  selectRow(row)
+  {
+     console.log('Row selected is ' + row.Symbol);
   }
 
 }
