@@ -42,6 +42,45 @@
   margin-left: auto;
 }
 
+.tradesummary{
+  align-self: center;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+.tradesummarysignalclass {
+  width:30%;
+  margin-right: 10px;
+  margin-left: 10px;
+
+}
+
+.dateclass {
+
+  margin-top: 20px;
+  margin-left: 20px;
+
+}
+
+.highlightBuyUp {
+  background-color: yellow;
+}
+
+.highlightSellDown {
+  background-color: green;
+}
+
+
+.tradesummarysignaldetailsclass {
+  width:70%;
+  margin-right: 10px;
+  margin-left: 10px;
+
+}
+
+
 
 .table-class {
   width: 98%;
