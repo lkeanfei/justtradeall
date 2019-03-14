@@ -211,7 +211,32 @@
 
   </mat-tab>
   <mat-tab label="Trade Summary Signals">
-    <div class="dateclass">Date : 27-Feb-2019</div>
+    <div class="inputclass">
+      <mat-grid-list cols="3" rowHeight="2:1">
+        <mat-grid-tile>
+          <mat-select placeholder="Select date" [(ngModel)]="selectedDate">
+          <mat-option *ngFor="let tradingDay of tradingDayList" [value]="tradingDay.date" >
+            {{tradingDay.date}}
+          </mat-option>
+        </mat-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-select placeholder="Aggregate" [(ngModel)]="selectedAggregateDays">
+          <mat-option *ngFor="let aggregateDay of aggregateDays" [value]="aggregateDay">
+            {{aggregateDay}}
+          </mat-option>
+        </mat-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button color="primary" (click)="viewTradeSummary()">View</button>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+
+
+    </div>
+
     <div class="tradesummary" fxFlexAlign="center" fxLayout="row">
       <div class="tradesummarysignalclass">
         <mat-table #tradesummarysignal="matSort" matSort  [dataSource]="tradeSummarySignalDataSource">

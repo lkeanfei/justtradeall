@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {HttpService} from '../shared/httpservice.service';
-import {MatPaginator, MatSort, MatTableDataSource, Sort} from '@angular/material';
+import {MatSort, MatTableDataSource, Sort} from '@angular/material';
 import { AngularFirestore , AngularFirestoreCollection } from '@angular/fire/firestore';
 import {Observable} from "rxjs";
-
+import * as moment from 'moment';
 
 export interface CompanyData {
   id: string;
@@ -24,15 +24,15 @@ export interface HoldersData {
 export interface MarketCap { market: string; }
 
 export interface NumSharesSummaryItem {
-  Symbol : string;
-  TradeDate : string;
-  NumSharesDiff : number;
-  PercentageDiff : number;
+  Symbol: string;
+  TradeDate: string;
+  NumSharesDiff: number;
+  PercentageDiff: number;
 
 }
 
 export interface OwnershipSummaryItem {
-  Symbol : string;
+  Symbol: string;
   Code: string;
   SharesAcquired : number;
   PercentageSharesAcquired : number;
@@ -53,6 +53,10 @@ export interface TradeSummarySignalDetailsItem {
   AverageBuyUpTrades: number;
   Selldown: number;
   AverageSellDownTrades: number;
+}
+
+export interface TradingDay {
+  date: string;
 }
 
 @Component({
@@ -130,6 +134,13 @@ export class ShareholdingsComponent implements OnInit {
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
+
+  // Binding for drop down selections
+  tradingDayListObservable : Observable<TradingDay[]>;
+  tradingDayList: TradingDay[];
+  aggregateDays = [1,2,4,8];
+  selectedDate = '';
+  selectedAggregateDays = 1;
 
   @ViewChild('totalshare') equitiesTotalShareSort: MatSort;
   @ViewChild('ownership') ownershipSummarySort: MatSort;
@@ -230,6 +241,21 @@ export class ShareholdingsComponent implements OnInit {
 
     } );
 
+    // Gets the trading day list
+    this.tradingDayListObservable = this.fireStore.collection<TradingDay>("/TradingDays").valueChanges();
+
+    this.tradingDayListObservable.subscribe(arr => {
+       arr.sort(function(a, b){
+         if(a.date > b.date)
+           return -1;
+         else {
+           return 1;
+         }
+       });
+
+       this.tradingDayList = arr;
+    });
+
     // Gets the ownership summary
 
     let ownershipItems: Observable <OwnershipSummaryItem[] >;
@@ -256,6 +282,13 @@ export class ShareholdingsComponent implements OnInit {
   selectRow(row)
   {
      console.log('Row selected is ' + row.Symbol);
+  }
+
+  viewTradeSummary() {
+
+    console.log(moment(this.selectedDate).format('DD-MMM-YYYY'));
+    console.log(this.selectedAggregateDays);
+
   }
 
   sortData(sort: Sort) {
