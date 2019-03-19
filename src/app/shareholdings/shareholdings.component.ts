@@ -254,6 +254,10 @@ export class ShareholdingsComponent implements OnInit {
        });
 
        this.tradingDayList = arr;
+
+       // Gets the latest day
+       console.log('Latest day is ' + arr[0].date);
+       this.getTradeSummarySignals(moment(arr[0].date).format('DD-MMM-YYYY') , 1);
     });
 
     // Gets the ownership summary
@@ -269,9 +273,16 @@ export class ShareholdingsComponent implements OnInit {
 
 
     // Fetch the Trade Summary Signal from  Firestore
-    let tradeSummarySignalItems: Observable<TradeSummarySignalItem[]>;
 
-    tradeSummarySignalItems = this.fireStore.collection<TradeSummarySignalItem>("/TradeSummarySignal/Bursa/27-Feb-2019/Aggregate_1/List").valueChanges();
+
+  }
+
+  getTradeSummarySignals(dateStr: string, aggregateDays: number)
+  {
+    let tradeSummarySignalItems: Observable<TradeSummarySignalItem[]>;
+    let aggregateDayString = 'Aggregate_' + aggregateDays;
+
+    tradeSummarySignalItems = this.fireStore.collection<TradeSummarySignalItem>("/TradeSummarySignal/Bursa/"+ dateStr  +"/"+ aggregateDayString  +"/List").valueChanges();
 
     tradeSummarySignalItems.subscribe(arr=> {
       this.tradeSummarySignalDataSource.data = arr;
@@ -288,6 +299,8 @@ export class ShareholdingsComponent implements OnInit {
 
     console.log(moment(this.selectedDate).format('DD-MMM-YYYY'));
     console.log(this.selectedAggregateDays);
+
+    this.getTradeSummarySignals(moment(this.selectedDate).format('DD-MMM-YYYY') , this.selectedAggregateDays);
 
   }
 
@@ -342,11 +355,12 @@ console.log(sort.active);
     this.mostSellDownPrice = row.MostSellDownPrice;
     console.log('Trade Summary signal row is ' + row.Symbol);
 
-    //Sets the TradeSummarySignal details table
-    // /TradeSummarySignal/Bursa/27-Feb-2019/Aggregate_1/List/0127/List
+    let dateStr = moment(this.selectedDate).format('DD-MMM-YYYY');
+    let aggregateStr = 'Aggregate_' + this.selectedAggregateDays;
+
 
     let tradeSummarySignalDetailItems: Observable<TradeSummarySignalDetailsItem[]>;
-    let path = '/TradeSummarySignal/Bursa/27-Feb-2019/Aggregate_1/List/' +  row.Symbol +'/List';
+    let path = '/TradeSummarySignal/Bursa/' + dateStr  +'/' + aggregateStr +'/List/' +  row.Symbol +'/List';
 
     tradeSummarySignalDetailItems = this.fireStore.collection<TradeSummarySignalDetailsItem>(path).valueChanges();
 
