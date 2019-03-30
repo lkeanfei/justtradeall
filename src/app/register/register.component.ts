@@ -74,6 +74,7 @@ export class RegisterComponent implements OnInit {
 
             this.signupFailed = false;
             this.signupFailedMessage = ""
+            console.log('Sign up passed!');
 
           } ,
           (err) => {
@@ -81,6 +82,7 @@ export class RegisterComponent implements OnInit {
 
             this.signupFailed = true;
             this.signupFailedMessage = err.message;
+            console.log('Sign up failed ' + err.message);
           }
         );
 

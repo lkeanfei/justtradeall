@@ -1,7 +1,7 @@
 
 <mat-tab-group >
   <mat-tab label="Equity Total Share Changes Analysis">
-
+    <div class="dateclass">Date : 27-Feb-2019</div>
     <div class="totalsharestable-center" fxFlexAlign="center" fxLayout="column">
       <mat-table #totalshare="matSort" matSort [dataSource]="equitiesTotalShareChangeDataSource">
 
@@ -25,7 +25,7 @@
 
 
         <mat-header-row  class="my-mat-row" *matHeaderRowDef="equitiesTotalShareChangeColumns"></mat-header-row>
-        <mat-row class="my-mat-row" *matRowDef="let row; columns: equitiesTotalShareChangeColumns;"  ></mat-row>
+        <mat-row class="my-mat-row"  *matRowDef="let row; columns: equitiesTotalShareChangeColumns;"  ></mat-row>
       </mat-table>
     </div>
 
@@ -167,6 +167,7 @@
   </mat-tab>
   <mat-tab label="Ownership Changes Analysis">
 
+    <div class="dateclass">Date : 27-Feb-2019</div>
     <div class="ownershiptable-center" fxFlexAlign="center" fxLayout="column">
       <mat-table #ownership="matSort" matSort [dataSource]="ownershipSummaryDataSource">
 
@@ -209,7 +210,122 @@
 
 
   </mat-tab>
-  <mat-tab label="Trade Summary Analysis">
+  <mat-tab label="Trade Summary Signals">
+    <div class="inputclass">
+      <mat-grid-list cols="3" rowHeight="2:1">
+        <mat-grid-tile>
+          <mat-select placeholder="Select date" [(ngModel)]="selectedDate">
+          <mat-option *ngFor="let tradingDay of tradingDayList" [value]="tradingDay.date" >
+            {{tradingDay.date}}
+          </mat-option>
+        </mat-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-select placeholder="Aggregate" [(ngModel)]="selectedAggregateDays">
+          <mat-option *ngFor="let aggregateDay of aggregateDays" [value]="aggregateDay">
+            {{aggregateDay}}
+          </mat-option>
+        </mat-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-button color="primary" (click)="viewTradeSummary()">View</button>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+
+
+    </div>
+
+    <div class="tradesummary" fxFlexAlign="center" fxLayout="row">
+      <div class="tradesummarysignalclass">
+        <mat-table #tradesummarysignal="matSort" matSort  [dataSource]="tradeSummarySignalDataSource">
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Symbol">
+            <mat-header-cell class="cell-class"  fxFlex="{{ tradeSymbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ tradeSymbolWidth }}" *matCellDef="let element"> {{element.Symbol}} </mat-cell>
+          </ng-container>
+
+          <!-- SharesAcquired Column -->
+          <ng-container matColumnDef="MostBuyUpPrice">
+            <mat-header-cell class="cell-class"  fxFlex="{{ mostBuyUpWidth }}" *matHeaderCellDef mat-sort-header> Most Buy Up Price </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ mostBuyUpWidth }}" *matCellDef="let element"> {{element.MostBuyUpPrice | number}} </mat-cell>
+          </ng-container>
+
+          <!-- PercentageSharesAcquired Column -->
+          <ng-container matColumnDef="MostSellDownPrice">
+            <mat-header-cell class="cell-class"  fxFlex="{{ mostSellDownWidth }}" *matHeaderCellDef mat-sort-header> Most Sell Down Price   </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ mostSellDownWidth }}" *matCellDef="let element"> {{element.MostSellDownPrice | number }} </mat-cell>
+          </ng-container>
+
+
+
+          <mat-header-row  class="my-mat-row" *matHeaderRowDef="tradeSummarySignalColumns"></mat-header-row>
+          <mat-row class="my-mat-row" *matRowDef="let row; columns: tradeSummarySignalColumns;"  (click)="selectTradeSummarySignalRow(row)"></mat-row>
+        </mat-table>
+      </div>
+
+      <div class="tradesummarysignaldetailsclass">
+
+        <div *ngIf="tradeSummaryDetailSymbol !='' ">
+
+          Trade Summary for {{tradeSummaryDetailSymbol}}
+
+          <mat-table matSort (matSortChange)="sortData($event)"    [dataSource]="tradeSummarySignalDetailsDataSource">
+
+            <!-- Price Column -->
+            <ng-container matColumnDef="Price">
+              <mat-header-cell class="cell-class"  fxFlex="{{ priceWidth }}" *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ priceWidth }}" *matCellDef="let element"> {{element.Price}} </mat-cell>
+            </ng-container>
+
+            <!-- Trades Column -->
+            <ng-container matColumnDef="Trades">
+              <mat-header-cell class="cell-class"  fxFlex="{{ tradesWidth }}" *matHeaderCellDef mat-sort-header> Trades </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ tradesWidth }}" *matCellDef="let element"> {{element.Trades | number}} </mat-cell>
+            </ng-container>
+
+            <!-- BuyUp Column -->
+            <ng-container matColumnDef="BuyUp">
+              <mat-header-cell class="cell-class"  fxFlex="{{ buyUpWidth }}" *matHeaderCellDef mat-sort-header> Buy Up </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ buyUpWidth }}" *matCellDef="let element"> {{element.BuyUp | number }} </mat-cell>
+            </ng-container>
+
+            <!-- AverageBuyUpTrades Column -->
+            <ng-container matColumnDef="AverageBuyUpTrades">
+              <mat-header-cell class="cell-class"  fxFlex="{{ averageBuyUpTradesWidth }}" *matHeaderCellDef mat-sort-header> Average Buy Up Trades </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ averageBuyUpTradesWidth }}" *matCellDef="let element"> {{element.AverageBuyUpTrades | number }} </mat-cell>
+            </ng-container>
+
+            <!-- Selldown Column -->
+            <ng-container matColumnDef="Selldown">
+              <mat-header-cell class="cell-class"  fxFlex="{{ sellDownWidth }}" *matHeaderCellDef mat-sort-header> Sell Down</mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ sellDownWidth }}" *matCellDef="let element"> {{element.Selldown | number }} </mat-cell>
+            </ng-container>
+
+            <!-- AverageSellDownTrades Column -->
+            <ng-container matColumnDef="AverageSellDownTrades">
+              <mat-header-cell class="cell-class"  fxFlex="{{ averageSellDownTradesWidth }}" *matHeaderCellDef mat-sort-header> Average Sell Down Trades </mat-header-cell>
+              <mat-cell class="cell-class"  fxFlex="{{ averageSellDownTradesWidth }}" *matCellDef="let element"> {{element.AverageSellDownTrades | number }} </mat-cell>
+            </ng-container>
+
+
+
+            <mat-header-row  class="my-mat-row" *matHeaderRowDef="tradeSummarySignalDetailsColumns"></mat-header-row>
+            <mat-row class="my-mat-row" [ngClass]="{'highlightBuyUp': row.Price == mostBuyUpPrice , 'highlightSellDown': row.Price == mostSellDownPrice }" *matRowDef="let row; columns: tradeSummarySignalDetailsColumns;"   ></mat-row>
+          </mat-table>
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+
+
+
 
   </mat-tab>
 </mat-tab-group>

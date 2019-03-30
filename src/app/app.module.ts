@@ -8,7 +8,7 @@ import {
   MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule,
   MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule,
-  MatTableModule,
+  MatTableModule, MatGridListModule,
   MatToolbarModule, MatTabsModule, MatIconModule, MatAccordionDisplayMode, MatExpansionModule, MatSortModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
@@ -110,6 +110,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MatRadioModule,
     MatSliderModule,
     MatDividerModule,
+    MatGridListModule,
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
