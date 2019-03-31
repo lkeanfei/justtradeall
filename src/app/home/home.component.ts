@@ -13,6 +13,27 @@ import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {LayoutServiceService} from '../shared/layout-service.service';
+import {NumSharesSummaryItem} from '../shareholdings/shareholdings.component';
+
+export interface MarketOverview {
+  counterfullid: string;
+  symbol: string;
+  tradedate: Date;
+  marketcap: number;
+  sector: string;
+  subsactor: string;
+  turnover1day : number;
+  validmoneyflow5days : number;
+  moneyflow5days : number;
+  validmoneyflow15days : number;
+  moneyflow15days : number;
+  moneyflowin5days : number;
+  moneyflowout5days : number;
+  moneyflowin15days : number;
+  moneyflowout15days : number;
+
+
+}
 
 
 @Component({
@@ -36,12 +57,32 @@ export class HomeComponent implements OnInit {
   histoConstructor = 'chart';
   klseData = [];
   updateFlag = false;
-  isLoading = true;
+  isLoading = false;
+
+  marketOverviewDataSource: any;
+  marketOverViewColumns = [ 'symbol' , 'marketcap'  , 'turnover1day' , 'moneyflowin5days', 'moneyflowout5days' , 'moneyflow5days' , 'moneyflowin15days' , 'moneyflowout15days' ,'moneyflow15days' ];
+
+
+  symbolWidth = 10;
+  marketCapWidth = 10;
+  turnOverWidth = 10;
+  moneyflowin5daysWidth = 10;
+  moneyflowout5dayWidth = 10;
+  netmoneyflow5daysWidth = 10;
+  moneyflowin15daysWidth = 10;
+  moneyflowout15daysWidth = 15;
+  netmoneyflow15daysWidth = 15;
 
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
 
+  tradingDates = [ '18-Mar-2019' , '19-Mar-2019' , '20-Mar-2019']
+
+  sectorList = [ 'Closed End Fund' , 'Construction' , 'Consumer Products & Services,' , 'Energy',
+                  'Financial Services', 'Health Care' , 'Industrial Products & Services' , 'Plantation' ,
+                  'Property' , 'Real Estate Investment Trusts' , 'Special Purpose Acquisition Company',
+                 'Technology' , 'Telecommunications & Media' , 'Transportation & Logistics' , 'Utilities' ];
   latestUpdateDate = '';
   topGainersDateSource = [];
   topGainersPctDateSource = [];
@@ -100,36 +141,8 @@ export class HomeComponent implements OnInit {
     this.marketList.push("Bursa");
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new BehaviorSubject(this.data.selectedDate);
+    this.marketOverviewDataSource = new MatTableDataSource<MarketOverview>();
 
-    this.httpService.getFrontPageNewHighLowView().subscribe( (frontPageData :any)=> {
-      this.newHighDataSource = frontPageData['newhigh'];
-      this.newLowDataSource = frontPageData['newlow'];
-    });
-
-    this.httpService.getFrontPageBreakout().subscribe( (frontPageData :any)=> {
-
-      this.staticBoxBreakoutDataSource = frontPageData['staticboxbreakout'];
-      this.dynamicBoxBreakoutDataSource = frontPageData['dynamicboxbreakout'];
-
-    })
-
-    this.httpService.getFrontPageTopGainers().subscribe( (frontPageData :any)=> {
-
-      this.topGainersDateSource = frontPageData["topgainers"];
-      this.topGainersPctDateSource = frontPageData["topgainerspct"];
-    })
-
-    this.httpService.getFrontPageTopLosers().subscribe( (frontPageData :any)=> {
-
-      this.topLosersDateSource = frontPageData["toplosers"];
-      this.topLosersPctDateSource = frontPageData["toploserspct"];
-    })
-
-    this.httpService.getFrontPageVolume().subscribe( (frontPageData :any)=> {
-
-      this.unusualVolumeDataSource = frontPageData['unusualvolume'];
-      this.isLoading = false;
-    })
 
 
     // this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
@@ -257,6 +270,14 @@ export class HomeComponent implements OnInit {
     //
     //      this.plotKLSEChart(data);
     // });
+
+    this.httpService.getMarketOverview('20-Mar-2019' , 'Construction').subscribe( arr => {
+
+      //console.log('data is back');
+      //console.log(arr);
+      this.marketOverviewDataSource.data = arr['results'];
+
+    });
 
     this.httpService.getBursaPriceVolume().subscribe( (data:any) => {
       console.log(data);

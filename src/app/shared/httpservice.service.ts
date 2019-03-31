@@ -46,6 +46,12 @@ export class HttpService {
       return this.httpClient.post( '/api/sessionlogin/' , data )
     }
 
+    getMarketOverview(dateStr : string , sector:string)
+    {
+        const body = { 'date' : dateStr , 'sector' : sector };
+        return this.httpClient.post( '/api/marketoverview/' , body );
+    }
+
     getSecurityView(fullid: string ,dateStr: string) : Observable<any> {
       const body = { 'fullid' : fullid , 'date' : dateStr };
       return this.httpClient.post( '/api/security/' , body );

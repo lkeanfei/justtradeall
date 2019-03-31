@@ -47,6 +47,7 @@ import {StoreModule , ActionReducerMap, ActionReducer, MetaReducer } from "@ngrx
 import { localStorageSync } from 'ngrx-store-localstorage';
 import {authReducer , AppState} from "./store/auth.reducers";
 import * as fromPost from "./store/auth.reducers";
+import { SummaryComponent } from './summary/summary.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -98,7 +99,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     ChartsComponent,
     SecshareholdingsComponent,
     MainNavComponent,
-    BreakoutanalysisComponent
+    BreakoutanalysisComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
