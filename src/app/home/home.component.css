@@ -7,11 +7,30 @@
   width: 90vw;
 }
 
+.inputclass {
+  width: 35%;
+  margin-left:auto;
+  margin-right: 10%;;
+}
+
 .viewmore {
   font-size: 12px;
   margin-left: 12px;
   margin-right: 12px;
   margin-bottom: 12px;
+}
+
+.marketoverview {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.marketoverview-center {
+  align-self: center;
+  width:70%;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .mytooltip {outline:none; }

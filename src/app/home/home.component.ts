@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatSort, MatTableDataSource, Sort} from '@angular/material';
  import { BehaviorSubject} from 'rxjs/index';
 import { Market } from '../shared/market.model';
+import * as moment from 'moment';
 // import {AngularFireDatabase} from 'angularfire2/database';
 // import _ from 'lodash';
 // import {DataSource} from '@angular/cdk/collections';
@@ -77,8 +78,10 @@ export class HomeComponent implements OnInit {
   mode = 'indeterminate';
   value = 50;
 
-  tradingDates = [ '18-Mar-2019' , '19-Mar-2019' , '20-Mar-2019']
-
+  // tradingDates = [ '18-Mar-2019' , '19-Mar-2019' , '20-Mar-2019']
+  tradingDates = [];
+  selectedDate = '';
+  selectedSector = 'Construction';
   sectorList = [ 'Closed End Fund' , 'Construction' , 'Consumer Products & Services,' , 'Energy',
                   'Financial Services', 'Health Care' , 'Industrial Products & Services' , 'Plantation' ,
                   'Property' , 'Real Estate Investment Trusts' , 'Special Purpose Acquisition Company',
@@ -132,6 +135,8 @@ export class HomeComponent implements OnInit {
 
   firstRowFxLayout : string;
 
+  @ViewChild('marketoverview') marketOverviewSort: MatSort;
+
 
 
   constructor(private firestore: AngularFirestore,private httpService: HttpService,
@@ -142,6 +147,9 @@ export class HomeComponent implements OnInit {
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new BehaviorSubject(this.data.selectedDate);
     this.marketOverviewDataSource = new MatTableDataSource<MarketOverview>();
+
+
+
 
 
 
@@ -226,6 +234,50 @@ export class HomeComponent implements OnInit {
 
   }
 
+  sortData(sort: Sort) {
+
+    let column = sort.active;
+    console.log(sort.active);
+    console.log('Direction ' + sort.direction );
+
+
+
+    function compare(a,b)  {
+
+      let val = -1;
+      if(sort.direction == 'desc')
+      {
+        val = 1;
+      }
+      if (a[column] < b[column])
+        return val;
+      if (a[column] > b[column])
+        return val*(-1);
+      return 0;
+    }
+
+    let arr =  this.marketOverviewDataSource.data;
+
+    arr.sort(compare);
+
+    this.marketOverviewDataSource.data = arr;
+
+    /*
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'name': return compare(a.name, b.name, isAsc);
+        case 'calories': return compare(a.calories, b.calories, isAsc);
+        case 'fat': return compare(a.fat, b.fat, isAsc);
+        case 'carbs': return compare(a.carbs, b.carbs, isAsc);
+        case 'protein': return compare(a.protein, b.protein, isAsc);
+        default: return 0;
+      }
+    });
+
+    */
+  }
+
   addElement() {
     this.exampleDatabase.addUser();
     //  this.exampleDatabase.addElement( 21 );
@@ -265,11 +317,21 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    //const input = { 'id' : '0200I.MY', 'fromDate' : '2018-01-01' , 'toDate' : '2018-04-20' , 'intra' : false};
-    // this.httpService.getPriceVolume(input).subscribe((data:any) => {
-    //
-    //      this.plotKLSEChart(data);
-    // });
+    this.httpService.getTradingDays().subscribe( arr => {
+
+      for(let d of arr['results'])
+      {
+         let m = moment(d);
+         let dateStr = m.format('DD-MMM-YYYY');
+         console.log('Date is ' + dateStr);
+         this.tradingDates.push(dateStr);
+      }
+    //  this.tradingDates = arr['results'];
+      this.selectedDate = this.tradingDates[0];
+
+    });
+
+
 
     this.httpService.getMarketOverview('20-Mar-2019' , 'Construction').subscribe( arr => {
 

@@ -120,6 +120,11 @@ export class HttpService {
       return this.httpClient.post( '/api/frontpagebreakout/' , body );
     }
 
+    getTradingDays() {
+      const body = {};
+      return this.httpClient.post('/api/tradingdays/' , body );
+    }
+
     searchCompany( companyName : string) {
 
         const prm = new HttpParams();
