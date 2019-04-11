@@ -2,6 +2,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from "rxjs/index";
+import {FundamentalScreener} from "./Screener";
 
 interface PriceRequestInput {
   id: string,
@@ -46,8 +47,28 @@ export class HttpService {
       return this.httpClient.post( '/api/sessionlogin/' , data )
     }
 
+    getLatestMarketOverview(dateStr : string , sector:string)
+    {
+      const body = { 'date' : dateStr , 'sector' : sector };
+      return this.httpClient.post( '/api/latestmarketoverview/' , body );
+    }
+
+    getScreenerResults( fundamentalScreener: FundamentalScreener)
+    {
+       const body = { 'eps' : fundamentalScreener.eps , 'marketcap' : fundamentalScreener.marketcap ,
+                      'shares' : fundamentalScreener.shares , 'peratio' : fundamentalScreener.peratio,
+                      'roeratio' : fundamentalScreener.roeratio , 'dividend' : fundamentalScreener.dividend,
+                      'dividendyield' : fundamentalScreener.dividendyield , 'nta' : fundamentalScreener.nta,
+                      'parvalue' : fundamentalScreener.parvalue
+         }
+
+      return this.httpClient.post( '/api/screener/' , body );
+    }
+
+
     getMarketOverview(dateStr : string , sector:string)
     {
+        console.log('trading date is ' + dateStr)
         const body = { 'date' : dateStr , 'sector' : sector };
         return this.httpClient.post( '/api/marketoverview/' , body );
     }

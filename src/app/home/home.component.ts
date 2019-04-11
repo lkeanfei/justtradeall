@@ -8,13 +8,14 @@ import * as moment from 'moment';
 // import {DataSource} from '@angular/cdk/collections';
 import {AuthService} from '../shared/security/auth.service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable , of} from 'rxjs';
 // import * as Plotly from 'plotly.js';
 import {HttpService} from "../shared/httpservice.service";
 import * as Highcharts from 'highcharts/highstock';
 import {AngularFirestore} from "@angular/fire/firestore";
 import {LayoutServiceService} from '../shared/layout-service.service';
 import {NumSharesSummaryItem} from '../shareholdings/shareholdings.component';
+import {concatMap } from 'rxjs/operators';
 
 export interface MarketOverview {
   counterfullid: string;
@@ -237,8 +238,8 @@ export class HomeComponent implements OnInit {
   sortData(sort: Sort) {
 
     let column = sort.active;
-    console.log(sort.active);
-    console.log('Direction ' + sort.direction );
+   // console.log(sort.active);
+   // console.log('Direction ' + sort.direction );
 
 
 
@@ -317,6 +318,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
+    /*
     this.httpService.getTradingDays().subscribe( arr => {
 
       for(let d of arr['results'])
@@ -332,7 +334,20 @@ export class HomeComponent implements OnInit {
     });
 
 
+    */
+    let obs = this.httpService.getTradingDays().pipe(
+      concatMap(arr => this.processTradingDays(arr) ),
+      concatMap( lastTradingDate => this.httpService.getMarketOverview(lastTradingDate , 'Construction'))
+    );
 
+    obs.subscribe(  arr => {
+
+      this.marketOverviewDataSource.data = arr['results'];
+    });
+
+
+
+    /*
     this.httpService.getMarketOverview('20-Mar-2019' , 'Construction').subscribe( arr => {
 
       //console.log('data is back');
@@ -340,11 +355,39 @@ export class HomeComponent implements OnInit {
       this.marketOverviewDataSource.data = arr['results'];
 
     });
-
+    */
     this.httpService.getBursaPriceVolume().subscribe( (data:any) => {
-      console.log(data);
+
       this.plotKLSEChart(data);
     });
+  }
+
+  viewMarketOverview() {
+
+    this.httpService.getMarketOverview(this.selectedDate, this.selectedSector).subscribe( arr => {
+      this.marketOverviewDataSource.data = arr['results'];
+    });
+
+  }
+
+  processTradingDays(arr) : Observable<string>  {
+    for(let d of arr['results'])
+    {
+      let m = moment(d);
+      let dateStr = m.format('DD-MMM-YYYY');
+      //console.log('Date is ' + dateStr);
+      this.tradingDates.push(dateStr);
+    }
+
+    this.selectedDate = this.tradingDates[0];
+
+    return of(this.tradingDates[0]);
+
+  }
+
+  getLatestMarketOverview( dateStr: string)
+  {
+    return this.httpService.getMarketOverview(dateStr , 'Construction');
   }
 
   plotKLSEChart(data) {

@@ -36,7 +36,7 @@
     </div>
 
     <div fxLayout="column" fxLayoutGap="10px">
-      <div class="marketoverview"><h2>Market Overview</h2></div>
+      <div class="marketoverview"><h2>Bursa Market Overview</h2></div>
       <div class="inputclass">
         <mat-grid-list cols="3" rowHeight ="35px">
           <mat-grid-tile>
@@ -54,7 +54,7 @@
             </mat-select>
           </mat-grid-tile>
           <mat-grid-tile>
-            <button mat-raised-button>View</button>
+            <button mat-raised-button (click)="viewMarketOverview()">View</button>
           </mat-grid-tile>
 
         </mat-grid-list>
