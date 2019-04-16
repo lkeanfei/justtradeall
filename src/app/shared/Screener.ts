@@ -1,4 +1,4 @@
-export interface FundamentalScreener {
+export interface Screener {
   eps: string,
   marketcap: string,
   shares: string,

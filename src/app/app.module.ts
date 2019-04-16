@@ -48,6 +48,7 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 import {authReducer , AppState} from "./store/auth.reducers";
 import * as fromPost from "./store/auth.reducers";
 import { SummaryComponent } from './summary/summary.component';
+import { ScreenerComponent } from './screener/screener.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
   {path: 'highstock' , component: HighstockComponent},
   {path: 'experiment' , component: ExperimentComponent},
   {path: 'security/:fullid' , component: SecurityComponent},
+  {path: 'screener' , component: ScreenerComponent},
   {path: 'breakoutanalysis' , component: BreakoutanalysisComponent}
 
 
@@ -100,7 +102,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SecshareholdingsComponent,
     MainNavComponent,
     BreakoutanalysisComponent,
-    SummaryComponent
+    SummaryComponent,
+    ScreenerComponent
   ],
   imports: [
     BrowserModule,

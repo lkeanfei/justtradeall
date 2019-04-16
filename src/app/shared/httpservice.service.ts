@@ -2,7 +2,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from "rxjs/index";
-import {FundamentalScreener} from "./Screener";
+import { Screener} from './Screener';
 
 interface PriceRequestInput {
   id: string,
@@ -53,13 +53,13 @@ export class HttpService {
       return this.httpClient.post( '/api/latestmarketoverview/' , body );
     }
 
-    getScreenerResults( fundamentalScreener: FundamentalScreener)
+    getScreenerResults( screener: Screener)
     {
-       const body = { 'eps' : fundamentalScreener.eps , 'marketcap' : fundamentalScreener.marketcap ,
-                      'shares' : fundamentalScreener.shares , 'peratio' : fundamentalScreener.peratio,
-                      'roeratio' : fundamentalScreener.roeratio , 'dividend' : fundamentalScreener.dividend,
-                      'dividendyield' : fundamentalScreener.dividendyield , 'nta' : fundamentalScreener.nta,
-                      'parvalue' : fundamentalScreener.parvalue
+       const body = { 'eps' : screener.eps , 'marketcap' : screener.marketcap ,
+                      'shares' : screener.shares , 'peratio' : screener.peratio,
+                      'roeratio' : screener.roeratio , 'dividend' : screener.dividend,
+                      'dividendyield' : screener.dividendyield , 'nta' : screener.nta,
+                      'parvalue' : screener.parvalue
          }
 
       return this.httpClient.post( '/api/screener/' , body );

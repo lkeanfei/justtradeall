@@ -1,0 +1,90 @@
+<mat-tab-group>
+  <mat-tab label="Fundamentals">
+    <mat-grid-list cols="4" rowHeight="75">
+      <mat-grid-tile>
+        <mat-form-field>
+        <mat-label>EPS</mat-label>
+        <mat-select placeholder="EPS"  [(ngModel)]="epsValue" (selectionChange)="epsChange()">
+          <mat-option *ngFor="let eps of epsRange" [value]="eps">
+            {{eps}}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>MarketCap</mat-label>
+          <mat-select placeholder="MarketCap"  [(ngModel)]="marketCap" (selectionChange)="marketCapChange()">
+            <mat-option *ngFor="let marketCap of marketCapRange" [value]="marketCap">
+              {{marketCap}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Shares</mat-label>
+          <mat-select placeholder="Shares"  [(ngModel)]="shares" (selectionChange)="sharesChange()">
+            <mat-option *ngFor="let shares of sharesRange" [value]="shares">
+              {{shares}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>P/E</mat-label>
+          <mat-select placeholder="P/E"  [(ngModel)]="peRatio" (selectionChange)="peRatioChange()">
+            <mat-option *ngFor="let peRatio of peRatioRange" [value]="peRatio">
+              {{peRatio}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>ROE(%)</mat-label>
+          <mat-select placeholder="ROE(%)"  [(ngModel)]="roeRatio" (selectionChange)="epsChange()">
+            <mat-option *ngFor="let roeRatio of roeRatioRange" [value]="roeRatio">
+              {{roeRatio}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Dividend(cent)</mat-label>
+          <mat-select placeholder="Dividend(cent)"  [(ngModel)]="dividend" (selectionChange)="dividendChange()">
+            <mat-option *ngFor="let dividend of dividendRange" [value]="dividend">
+              {{dividend}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>DividendYield(%)</mat-label>
+          <mat-select placeholder="DividendYield(%)"  [(ngModel)]="dividendYield" (selectionChange)="dividendYieldChange()">
+            <mat-option *ngFor="let dividendYield of dividendYieldRange" [value]="dividendYield">
+              {{dividendYield}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>NTA</mat-label>
+          <mat-select placeholder="NTA" [(ngModel)]="nta" (selectionChange)="ntaChange()">
+            <mat-option *ngFor="let nta of ntaRange" [value]="nta">
+              {{nta}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+  <mat-tab label="Technical"> Content 2 </mat-tab>
+  <mat-tab label="All"> Content 3 </mat-tab>
+</mat-tab-group>
