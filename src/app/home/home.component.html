@@ -121,7 +121,7 @@
 
 
 
-          <mat-header-row  class="my-mat-row" *matHeaderRowDef="marketOverViewColumns"></mat-header-row>
+          <mat-header-row  class="my-mat-row" *matHeaderRowDef="marketOverViewColumns;sticky: true"></mat-header-row>
           <mat-row class="my-mat-row" *matRowDef="let row; columns: marketOverViewColumns;"  ></mat-row>
         </mat-table>
       </div>
