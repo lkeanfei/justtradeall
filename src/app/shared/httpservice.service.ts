@@ -59,7 +59,12 @@ export class HttpService {
                       'shares' : screener.shares , 'peratio' : screener.peratio,
                       'roeratio' : screener.roeratio , 'dividend' : screener.dividend,
                       'dividendyield' : screener.dividendyield , 'nta' : screener.nta,
-                      'parvalue' : screener.parvalue
+                      'parvalue' : screener.parvalue ,
+                       'price' : screener.price , 'volume' : screener.volume ,
+                       'unusualVolume' : screener.unusualVolume , 'sma20' : screener.sma20,
+                       'sma50' : screener.sma50 , 'rsi' : screener.rsi,
+                        'gap' : screener.gap , 'atr' : screener.atr , 'vwap' : screener.vwap
+
          }
 
       return this.httpClient.post( '/api/screener/' , body );

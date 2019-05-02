@@ -4,12 +4,28 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { AppComponent } from './app.component';
 import {
   MatAutocompleteModule,
-  MatButtonModule, MatDialogModule,
-  MatCardModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatListModule, MatMenuModule,
-  MatProgressSpinnerModule, MatRadioModule, MatSelectModule,
-  MatSidenavModule, MatSliderModule,
-  MatTableModule, MatGridListModule,
-  MatToolbarModule, MatTabsModule, MatIconModule, MatAccordionDisplayMode, MatExpansionModule, MatSortModule
+  MatButtonModule,
+  MatDialogModule,
+  MatCardModule,
+  MatDividerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatTableModule,
+  MatGridListModule,
+  MatToolbarModule,
+  MatTabsModule,
+  MatIconModule,
+  MatAccordionDisplayMode,
+  MatExpansionModule,
+  MatSortModule,
+  MatTooltipModule, MatPaginatorModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -120,6 +136,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MatListModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule,
     MatExpansionModule,
     MatToolbarModule,
     MatTabsModule,
@@ -128,6 +145,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTooltipModule,
     MatSortModule,
     ReactiveFormsModule,
     FlexLayoutModule,

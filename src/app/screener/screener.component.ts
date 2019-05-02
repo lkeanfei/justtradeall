@@ -1,13 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, QueryList, ViewChild} from '@angular/core';
 import construct = Reflect.construct;
 import {HttpService} from "../shared/httpservice.service";
 import {Screener} from "../shared/Screener";
-import {MatTableDataSource, Sort} from "@angular/material";
+import {MatPaginator, MatTableDataSource, Sort} from "@angular/material";
+
+export interface TechnicalsRow {
+  name: string;
+  symbol: string;
+  Close: number;
+  Volume: number;
+  SMA20 : number;
+  SMA50 : number;
+  RSI : number;
+  ATR14 : number;
+  VolumeChangePct :number;
+}
 
 export interface FundamentalRow {
   name: string;
   symbol: string;
-  MarketCap: Date;
+  MarketCap: number;
   NumShares: number;
   EPS: number;
   PERatio: number;
@@ -16,7 +28,6 @@ export interface FundamentalRow {
   DividendYield : number;
   NTA : number;
   ParValue: number
-
 }
 
 @Component({
@@ -61,12 +72,51 @@ export class ScreenerComponent implements OnInit {
   NTAWidth = 10;
   ParValueWidth = 10;
 
+  technicalsDataSource = new MatTableDataSource<TechnicalsRow>();
+  technicalColumns = ['symbol' , 'Close' , 'Volume' , 'VolumeChangePct' , 'SMA20' , 'SMA50' , 'RSI', 'ATR14' ];
+
+  closeWidth = 10;
+  volumeWidth = 15;
+  volumeChangeWidth = 15;
+  sma20Width = 10;
+  sma50Width = 10;
+  rsiWidth = 10;
+  atrWidth = 10;
+
+
+
+
+
   isLoading = true;
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
 
+  // Technicals
+  priceValue = 'Any';
+  volumeValue = 'Any';
+  unusualVolumeValue = 'Any';
+  sma20Value = 'Any';
+  sma50Value = 'Any';
+  sma200Value = 'Any';
+  rsiValue = 'Any';
+  gapValue = 'Any';
+  atrValue = 'Any';
+  vwapValue = 'Any'
 
+  priceRange = ['Any' , '>10' , '>5' , '>2' , '>1' , '>0.5' , '<10' , '<5' , '<2' , '<1' , '<0.5'];
+  volumeRange = ['Any' , '>20m' , '>10m' , '>5m' , '>2m' , '>1m' , '>500k' , '<20m' , '<10m' , '<5m' , '<2m' , '<1m' , '<500k'];
+  unusualVolumeRange = ['Any' , '>10%' , '>20%' , '>50%' , '>100%' ];
+  sma20Range = ['Any' , 'Price above SMA20' , '10% above SMA20' ,'20% above SMA20' , '30% above SMA20' , 'Price below SMA20' ,'10% below SMA20' ,'20% below SMA20' , '30% below SMA20'  ];
+  sma50Range = ['Any' , 'Price above SMA50' , '10% above SMA50' ,'20% above SMA50' , '30% above SMA50' , 'Price below SMA50' ,'10% below SMA50' ,'20% below SMA50' , '30% below SMA50' ];
+  rsiRange = ['Any' , 'Overbought (90)','Overbought (80)', 'Overbought (70)', 'Overbought (60)' , 'Oversold (40)' , 'Oversold (30)' ,'Oversold (20)' ,'Oversold (10)'];
+  gapRange = ['Any' , 'Gap Up' , 'Gap Down'];
+  atrRange = ['Any' , '>0.5' , '>0.2' , '>0.1' , '>0.05' , '<0.5' ,'<0.2' , '<0.1' , '<0.05'];
+  vwapRange = ['Any'];
+
+
+  @ViewChild('fundPaginator') fundamentalsPaginator: MatPaginator;
+  @ViewChild('techPaginator') technicalsPaginator: MatPaginator;
 
   constructor(private  httpService : HttpService) {
     this.screener = {
@@ -78,13 +128,25 @@ export class ScreenerComponent implements OnInit {
       dividend:  this.dividend,
       dividendyield: this.dividendYield,
       nta: this.nta,
-      parvalue: this.parValue
+      parvalue: this.parValue,
+      price: this.priceValue,
+      volume: this.volumeValue,
+      unusualVolume: this.unusualVolumeValue,
+      sma20: this.sma20Value,
+      sma50: this.sma50Value,
+      rsi: this.rsiValue,
+      gap: this.gapValue,
+      atr: this.atrValue,
+      vwap: this.vwapValue,
     };
 
   }
 
   ngOnInit() {
 
+
+    this.fundamentalsDataSource.paginator = this.fundamentalsPaginator;
+    this.technicalsDataSource.paginator = this.technicalsPaginator;
     this.screenStocks();
 
 
@@ -98,19 +160,22 @@ export class ScreenerComponent implements OnInit {
       let endTime = new Date();
       let timeDiff = endTime.getTime() - startTime.getTime();
 
-      this.fundamentalsDataSource.data = res['results'];
+      this.fundamentalsDataSource.data = res['fundamentals'];
+      this.technicalsDataSource.data = res['technicals']
+
+      setTimeout(() => {
+        this.fundamentalsDataSource.paginator = this.fundamentalsPaginator;
+        this.technicalsDataSource.paginator = this.technicalsPaginator;
+      },2000);
+
       this.isLoading = false;
       console.log('time diff ' + timeDiff);
     });
   }
 
-  sortData(sort: Sort) {
+  sortTechnicalsData(sort: Sort) {
 
     let column = sort.active;
-    // console.log(sort.active);
-    // console.log('Direction ' + sort.direction );
-
-
 
     function compare(a,b)  {
 
@@ -119,6 +184,33 @@ export class ScreenerComponent implements OnInit {
       {
         val = 1;
       }
+
+      if (a[column] < b[column])
+        return val;
+      if (a[column] > b[column])
+        return val*(-1);
+      return 0;
+    }
+
+    let arr =  this.technicalsDataSource.data;
+
+    arr.sort(compare);
+
+    this.technicalsDataSource.data = arr;
+  }
+
+  sortData(sort: Sort) {
+
+    let column = sort.active;
+
+    function compare(a,b)  {
+
+      let val = -1;
+      if(sort.direction == 'desc')
+      {
+        val = 1;
+      }
+
       if (a[column] < b[column])
         return val;
       if (a[column] > b[column])
@@ -131,21 +223,6 @@ export class ScreenerComponent implements OnInit {
     arr.sort(compare);
 
     this.fundamentalsDataSource.data = arr;
-
-    /*
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'calories': return compare(a.calories, b.calories, isAsc);
-        case 'fat': return compare(a.fat, b.fat, isAsc);
-        case 'carbs': return compare(a.carbs, b.carbs, isAsc);
-        case 'protein': return compare(a.protein, b.protein, isAsc);
-        default: return 0;
-      }
-    });
-
-    */
   }
 
   ntaChange() {
@@ -190,5 +267,52 @@ export class ScreenerComponent implements OnInit {
     this.screener.eps = this.epsValue;
   //  this.screenStocks();
   }
+
+
+
+  //
+  //  Technicals
+  //
+  //
+  priceChange() {
+    this.screener.price = this.priceValue;
+  }
+
+  volumeChange() {
+    this.screener.volume = this.volumeValue;
+  }
+
+  unusualVolumeChange() {
+    this.screener.unusualVolume = this.unusualVolumeValue;
+  }
+
+  sma20Change()
+  {
+    this.screener.sma20 = this.sma20Value;
+  }
+
+  sma50Change() {
+    this.screener.sma50 = this.sma50Value;
+  }
+
+
+  rsiChange() {
+    this.screener.rsi = this.rsiValue;
+  }
+
+  gapChange(){
+    this.screener.gap = this.gapValue;
+  }
+
+  atrChange() {
+    this.screener.atr = this.atrValue;
+  }
+
+  vwapChange() {
+    this.screener.vwap = this.vwapValue
+  }
+
+
+
 
 }

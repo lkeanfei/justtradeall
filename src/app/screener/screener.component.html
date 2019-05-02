@@ -86,14 +86,119 @@
       </mat-grid-tile>
       <mat-grid-tile>
 
-          <button mat-button (click)="screenStocks()">View</button>
 
       </mat-grid-tile>
     </mat-grid-list>
   </mat-tab>
-  <mat-tab label="Technical"> Content 2 </mat-tab>
-  <mat-tab label="All"> Content 3 </mat-tab>
+  <mat-tab label="Technical">
+    <mat-grid-list cols="4" rowHeight="75">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Price</mat-label>
+          <mat-select placeholder="Price"  [(ngModel)]="priceValue" (selectionChange)="priceChange()">
+            <mat-option *ngFor="let price of priceRange" [value]="price">
+              {{price}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Volume</mat-label>
+          <mat-select placeholder="Volume"  [(ngModel)]="volumeValue" (selectionChange)="volumeChange()">
+            <mat-option *ngFor="let volume of volumeRange" [value]="volume">
+              {{volume}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Unusual Volume</mat-label>
+          <mat-select placeholder="Unusual Volume"  [(ngModel)]="unusualVolumeValue" (selectionChange)="unusualVolumeChange()">
+            <mat-option *ngFor="let unusualVolume of unusualVolumeRange" [value]="unusualVolume">
+              {{unusualVolume}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>SMA20</mat-label>
+          <mat-select placeholder="SMA20"  [(ngModel)]="sma20Value" (selectionChange)="sma20Change()">
+            <mat-option *ngFor="let sma20 of sma20Range" [value]="sma20">
+              {{sma20}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>SMA50</mat-label>
+          <mat-select placeholder="SMA50"  [(ngModel)]="sma50Value" (selectionChange)="sma50Change()">
+            <mat-option *ngFor="let sma50 of sma50Range" [value]="sma50">
+              {{sma50}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>RSI(14)</mat-label>
+          <mat-select placeholder="RSI(14)"  [(ngModel)]="rsiValue" (selectionChange)="rsiChange()">
+            <mat-option *ngFor="let rsi of rsiRange" [value]="rsi">
+              {{rsi}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Gap</mat-label>
+          <mat-select placeholder="Gap"  [(ngModel)]="gapValue" (selectionChange)="gapChange()">
+            <mat-option *ngFor="let gap of gapRange" [value]="gap">
+              {{gap}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>ATR</mat-label>
+          <mat-select placeholder="ATR"  [(ngModel)]="atrValue" (selectionChange)="atrChange()">
+            <mat-option *ngFor="let atr of atrRange" [value]="atr">
+              {{atr}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>VWAP</mat-label>
+          <mat-select placeholder="VWAP"  [(ngModel)]="vwapValue" (selectionChange)="vwapChange()">
+            <mat-option *ngFor="let vwap of vwapRange" [value]="vwap">
+              {{vwap}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+    </mat-grid-list>
+
+
+
+
+
+
+  </mat-tab>
+
 </mat-tab-group>
+
+<button mat-raised-button (click)="screenStocks()">View</button>
 
 <h2 class="center">Results</h2>
 <div class="center" *ngIf="isLoading;else tableContent">
@@ -105,75 +210,149 @@
   </mat-progress-spinner>
 </div>
 <ng-template #tableContent>
-  <div class="fundamentals-screener overlay" fxFlexAlign="center" fxLayout="column">
-    <mat-table matSort (matSortChange)="sortData($event)"   [dataSource]="fundamentalsDataSource">
+  <mat-tab-group>
+    <mat-tab label="Fundamentals">
+      <div class="fundamentals-screener overlay" fxFlexAlign="center" fxLayout="column">
+      <mat-table matSort (matSortChange)="sortData($event)"   [dataSource]="fundamentalsDataSource">
 
-      <!-- Symbol Column -->
-      <ng-container matColumnDef="symbol">
-        <mat-header-cell class="cell-class"  fxFlex="{{ symbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element"> {{element.symbol}} </mat-cell>
-      </ng-container>
+        <!-- Symbol Column -->
 
-      <!-- marketcap Column -->
-      <ng-container matColumnDef="MarketCap">
-        <mat-header-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matHeaderCellDef mat-sort-header> Market Cap </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matCellDef="let element"> {{element.MarketCap | number}} </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="symbol">
+          <mat-header-cell class="cell-class"  fxFlex="{{ symbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element"> {{element.symbol}} </mat-cell>
+        </ng-container>
 
-      <!-- NumShares Column -->
-      <ng-container matColumnDef="NumShares">
-        <mat-header-cell class="cell-class"  fxFlex="{{ NumSharesWidth }}" *matHeaderCellDef mat-sort-header> NumShares</mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ NumSharesWidth }}" *matCellDef="let element"> {{element.NumShares | number}} </mat-cell>
-      </ng-container>
+        <!-- marketcap Column -->
+        <ng-container matColumnDef="MarketCap">
+          <mat-header-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matHeaderCellDef mat-sort-header> Market Cap </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matCellDef="let element"> {{element.MarketCap | number}} </mat-cell>
+        </ng-container>
 
-      <!-- EPS Column -->
-      <ng-container matColumnDef="EPS">
-        <mat-header-cell class="cell-class"  fxFlex="{{ EPSWidth }}" *matHeaderCellDef mat-sort-header> EPS</mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ EPSWidth }}" *matCellDef="let element"> {{ element.EPS | number }} </mat-cell>
-      </ng-container>
+        <!-- NumShares Column -->
+        <ng-container matColumnDef="NumShares">
+          <mat-header-cell class="cell-class"  fxFlex="{{ NumSharesWidth }}" *matHeaderCellDef mat-sort-header> NumShares</mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ NumSharesWidth }}" *matCellDef="let element"> {{element.NumShares | number}} </mat-cell>
+        </ng-container>
 
-      <!-- PERatio Column -->
-      <ng-container matColumnDef="PERatio">
-        <mat-header-cell class="cell-class"  fxFlex="{{ PERatioWidth }}" *matHeaderCellDef mat-sort-header>  P/E </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ PERatioWidth }}" *matCellDef="let element"> {{ element.PERatio | number }} </mat-cell>
-      </ng-container>
+        <!-- EPS Column -->
+        <ng-container matColumnDef="EPS">
+          <mat-header-cell class="cell-class"  fxFlex="{{ EPSWidth }}" *matHeaderCellDef mat-sort-header> EPS</mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ EPSWidth }}" *matCellDef="let element"> {{ element.EPS | number }} </mat-cell>
+        </ng-container>
 
-      <!-- ROERatio Column -->
-      <ng-container matColumnDef="ROERatio">
-        <mat-header-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matHeaderCellDef mat-sort-header> ROE </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matCellDef="let element"> {{ element.ROERatio | number }} </mat-cell>
-      </ng-container>
+        <!-- PERatio Column -->
+        <ng-container matColumnDef="PERatio">
+          <mat-header-cell class="cell-class"  fxFlex="{{ PERatioWidth }}" *matHeaderCellDef mat-sort-header>  P/E </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ PERatioWidth }}" *matCellDef="let element"> {{ element.PERatio | number }} </mat-cell>
+        </ng-container>
 
-      <!-- Dividend Column -->
-      <ng-container matColumnDef="Dividend">
-        <mat-header-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matHeaderCellDef mat-sort-header> Dividend </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matCellDef="let element"> {{ element.Dividend | number }} </mat-cell>
-      </ng-container>
+        <!-- ROERatio Column -->
+        <ng-container matColumnDef="ROERatio">
+          <mat-header-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matHeaderCellDef mat-sort-header> ROE </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matCellDef="let element"> {{ element.ROERatio | number }} </mat-cell>
+        </ng-container>
 
-      <!-- DividendYield Column -->
-      <ng-container matColumnDef="DividendYield">
-        <mat-header-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matHeaderCellDef mat-sort-header> DividendYield </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matCellDef="let element"> {{ element.DividendYield | number }} </mat-cell>
-      </ng-container>
+        <!-- Dividend Column -->
+        <ng-container matColumnDef="Dividend">
+          <mat-header-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matHeaderCellDef mat-sort-header> Dividend </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matCellDef="let element"> {{ element.Dividend | number }} </mat-cell>
+        </ng-container>
 
-      <!-- NTA Column -->
-      <ng-container matColumnDef="NTA">
-        <mat-header-cell class="cell-class"  fxFlex="{{ NTAWidth }}" *matHeaderCellDef mat-sort-header> NTA </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ NTAWidth }}" *matCellDef="let element"> {{ element.NTA | number }} </mat-cell>
-      </ng-container>
+        <!-- DividendYield Column -->
+        <ng-container matColumnDef="DividendYield">
+          <mat-header-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matHeaderCellDef mat-sort-header> DividendYield </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matCellDef="let element"> {{ element.DividendYield | number }} </mat-cell>
+        </ng-container>
 
-      <!-- ParValue Column -->
-      <ng-container matColumnDef="ParValue">
-        <mat-header-cell class="cell-class"  fxFlex="{{ ParValueWidth }}" *matHeaderCellDef mat-sort-header> ParValue </mat-header-cell>
-        <mat-cell class="cell-class"  fxFlex="{{ ParValueWidth }}" *matCellDef="let element"> {{ element.ParValue | number }} </mat-cell>
-      </ng-container>
+        <!-- NTA Column -->
+        <ng-container matColumnDef="NTA">
+          <mat-header-cell class="cell-class"  fxFlex="{{ NTAWidth }}" *matHeaderCellDef mat-sort-header> NTA </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ NTAWidth }}" *matCellDef="let element"> {{ element.NTA | number }} </mat-cell>
+        </ng-container>
+
+        <!-- ParValue Column -->
+        <ng-container matColumnDef="ParValue">
+          <mat-header-cell class="cell-class"  fxFlex="{{ ParValueWidth }}" *matHeaderCellDef mat-sort-header> ParValue </mat-header-cell>
+          <mat-cell class="cell-class"  fxFlex="{{ ParValueWidth }}" *matCellDef="let element"> {{ element.ParValue | number }} </mat-cell>
+        </ng-container>
 
 
 
-      <mat-header-row  class="my-mat-row" *matHeaderRowDef="fundamentalColumns; sticky: true" ></mat-header-row>
-      <mat-row class="my-mat-row" *matRowDef="let row; columns: fundamentalColumns;"  ></mat-row>
-    </mat-table>
-  </div>
+        <mat-header-row  class="my-mat-row" *matHeaderRowDef="fundamentalColumns; sticky: true" ></mat-header-row>
+        <mat-row class="my-mat-row" *matRowDef="let row; columns: fundamentalColumns;"  ></mat-row>
+      </mat-table>
+        <mat-paginator #fundPaginator [pageSize]="20" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+    </mat-tab>
+    <mat-tab label="Technicals">
+      <div class="technicals" fxFlexAlign="center" fxLayout="column">
+
+        <!--SMA20 : number;-->
+        <!--SMA50 : number;-->
+        <!--RSI : number;-->
+        <!--ATR14 : number;-->
+        <!--VolumeChangePct :number;-->
+        <mat-table class="technicals-table" matSort (matSortChange)="sortTechnicalsData($event)"   [dataSource]="technicalsDataSource">
+
+          <!-- Symbol Column -->
+
+          <ng-container matColumnDef="symbol">
+            <mat-header-cell class="cell-class"  fxFlex="{{ symbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element"> {{element.symbol }} </mat-cell>
+          </ng-container>
+
+          <!-- Close Column -->
+          <ng-container matColumnDef="Close">
+            <mat-header-cell class="cell-class"  fxFlex="{{ closeWidth }}" *matHeaderCellDef mat-sort-header> Close</mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ closeWidth }}" *matCellDef="let element"> {{element.Close | number}} </mat-cell>
+          </ng-container>
+
+          <!-- Volume Column -->
+          <ng-container matColumnDef="Volume">
+            <mat-header-cell class="cell-class"  fxFlex="{{ volumeWidth }}" *matHeaderCellDef mat-sort-header> Volume </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ volumeWidth }}" *matCellDef="let element"> {{element.Volume | number}} </mat-cell>
+          </ng-container>
+
+          <!-- VolumeChangePct Column -->
+          <ng-container matColumnDef="VolumeChangePct">
+            <mat-header-cell class="cell-class"  fxFlex="{{ volumeChangeWidth }}" *matHeaderCellDef mat-sort-header> Volume Change (%)</mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ volumeChangeWidth }}" *matCellDef="let element"> {{element.VolumeChangePct | number}} </mat-cell>
+          </ng-container>
+
+          <!-- SMA20 Column -->
+          <ng-container matColumnDef="SMA20">
+            <mat-header-cell class="cell-class"  fxFlex="{{ sma20Width }}" *matHeaderCellDef mat-sort-header> SMA20</mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ sma20Width }}" *matCellDef="let element"> {{ element.SMA20 | number }} </mat-cell>
+          </ng-container>
+
+          <!-- SMA50 Column -->
+          <ng-container matColumnDef="SMA50">
+            <mat-header-cell class="cell-class"  fxFlex="{{ sma50Width }}" *matHeaderCellDef mat-sort-header>  SMA50 </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ sma50Width }}" *matCellDef="let element"> {{ element.SMA50 | number }} </mat-cell>
+          </ng-container>
+
+          <!-- RSI Column -->
+          <ng-container matColumnDef="RSI">
+            <mat-header-cell class="cell-class"  fxFlex="{{ rsiWidth }}" *matHeaderCellDef mat-sort-header> RSI </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ rsiWidth }}" *matCellDef="let element"> {{ element.RSI | number }} </mat-cell>
+          </ng-container>
+
+          <!-- ATR Column -->
+          <ng-container matColumnDef="ATR14">
+            <mat-header-cell class="cell-class"  fxFlex="{{ atrWidth }}" *matHeaderCellDef mat-sort-header> ATR </mat-header-cell>
+            <mat-cell class="cell-class"  fxFlex="{{ atrWidth }}" *matCellDef="let element"> {{ element.ATR14 | number }} </mat-cell>
+          </ng-container>
+
+          <mat-header-row  class="my-mat-row" *matHeaderRowDef="technicalColumns; sticky: true" ></mat-header-row>
+          <mat-row class="my-mat-row" *matRowDef="let row; columns: technicalColumns;"  ></mat-row>
+        </mat-table>
+        <mat-paginator #techPaginator [pageSize]="30" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+
+    </mat-tab>
+
+  </mat-tab-group>
+
 </ng-template>
 
 

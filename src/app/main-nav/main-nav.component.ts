@@ -163,10 +163,15 @@ export class MainNavComponent implements OnInit{
     this.router.navigate(['/security' , tokens[0] + '.MY'] );
   }
 
+  navigateToScreener() {
+     this.router.navigate( ['/screener']);
+  }
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
+
 
   }

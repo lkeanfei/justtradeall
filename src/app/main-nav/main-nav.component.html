@@ -33,6 +33,7 @@
 
       <div *ngIf="!(isHandset$ | async)">
         <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
+        <button mat-button (click)="navigateToScreener()">Screener</button>
 
         <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
           <button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Trade Analysis</button>

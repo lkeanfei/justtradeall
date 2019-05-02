@@ -3,6 +3,17 @@
   overflow: auto;
 }
 
+.technicals {
+  width : 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.technicals-table {
+
+  width : 80%;
+
+}
 .overlay {
 
   width: 100%;

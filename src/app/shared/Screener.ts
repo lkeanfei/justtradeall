@@ -7,5 +7,14 @@ export interface Screener {
   dividend: string,
   dividendyield: string,
   nta: string,
-  parvalue: string
+  parvalue: string,
+  price:string,
+  volume: string,
+  unusualVolume: string,
+  sma20: string,
+  sma50: string,
+  rsi: string,
+  gap: string,
+  atr: string,
+  vwap: string,
 }
