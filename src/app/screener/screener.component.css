@@ -1,19 +1,17 @@
 .fundamentals-screener {
-  display: block;
-  overflow: auto;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .technicals {
-  width : 80%;
-  display: flex;
-  justify-content: center;
+  width: 55%;
+  margin: 0 auto;
 }
 
 .technicals-table {
-
   width : 80%;
-
 }
+
 .overlay {
 
   width: 100%;
@@ -25,8 +23,7 @@
 }
 
 .center{
-  -ms-transform: translate(50%, 0); /* IE 9 */
-  -webkit-transform: translate(50%, 0); /* Safari */
-  transform: translate(50%, 0);
+  margin: 0 auto;
+  width: 10%;
 
 }

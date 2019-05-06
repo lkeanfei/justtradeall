@@ -75,6 +75,7 @@ export class ScreenerComponent implements OnInit {
   technicalsDataSource = new MatTableDataSource<TechnicalsRow>();
   technicalColumns = ['symbol' , 'Close' , 'Volume' , 'VolumeChangePct' , 'SMA20' , 'SMA50' , 'RSI', 'ATR14' ];
 
+  technicalSymbolWidth = 20;
   closeWidth = 10;
   volumeWidth = 15;
   volumeChangeWidth = 15;
