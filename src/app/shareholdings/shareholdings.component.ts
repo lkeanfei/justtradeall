@@ -1,10 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {HttpService} from '../shared/httpservice.service';
-import {MatSort, MatTableDataSource, Sort} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, Sort} from '@angular/material';
 import { AngularFirestore , AngularFirestoreCollection } from '@angular/fire/firestore';
-import {Observable} from "rxjs";
+import {from, Observable} from "rxjs";
+import { AppDateAdapter, APP_DATE_FORMATS} from './date.adapter';
+import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
 import * as moment from 'moment';
+import {Utils} from "../shared/utils";
 
 export interface CompanyData {
   id: string;
@@ -62,7 +65,15 @@ export interface TradingDay {
 @Component({
   selector: 'app-shareholdings',
   templateUrl: './shareholdings.component.html',
-  styleUrls: ['./shareholdings.component.css']
+  styleUrls: ['./shareholdings.component.css'],
+  providers: [
+    {
+    provide: DateAdapter, useClass: AppDateAdapter
+  },
+    {
+      provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+    }
+    ]
 })
 export class ShareholdingsComponent implements OnInit {
 
@@ -83,7 +94,9 @@ export class ShareholdingsComponent implements OnInit {
 
   companyColumns = ['id', 'name', 'shares', 'percentage'];
   holderColumns = ['id', 'holder' , 'name' ,  'shares' , 'percentage'];
-  equitiesTotalShareChangeColumns = [ 'Symbol' , 'NumSharesDiff'  , 'PercentageDiff'];
+
+
+  equitiesTotalShareChangeColumns = [ 'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];
   ownershipSummaryColumns = ['Symbol' , 'SharesAcquired' , 'PercentageSharesAcquired' , 'SharesDisposed' ,'PercentageSharesDisposed'];
   tradeSummarySignalColumns = ['Symbol' , 'MostBuyUpPrice' , 'MostSellDownPrice'];
   tradeSummarySignalDetailsColumns = [ 'Price' , 'Trades' , 'BuyUp' , 'AverageBuyUpTrades' , 'Selldown' , 'AverageSellDownTrades'];
@@ -92,8 +105,9 @@ export class ShareholdingsComponent implements OnInit {
   options: FormGroup;
 
   symbolColumnWidth = 20 ;
-  totalSharesWidth = 40;
-  sharesPercentageWidth = 40
+  ToSharesWidth = 30;
+  SharesDiffWidth = 30;
+  SharesDiffPctWidth = 20
 
   idColumnWidth = 5;
   holderColumnWidth = 20;
@@ -142,10 +156,21 @@ export class ShareholdingsComponent implements OnInit {
   selectedDate = '';
   selectedAggregateDays = 1;
 
+
+  fromDateControl : FormControl;
+  toDateControl : FormControl;
   @ViewChild('totalshare') equitiesTotalShareSort: MatSort;
   @ViewChild('ownership') ownershipSummarySort: MatSort;
   @ViewChild('tradesummarysignal') tradesummarysignalSort: MatSort;
   @ViewChild('tradesummarysignaldetails') tradeSummarySignalDetailsSort: MatSort;
+  @ViewChild('totalSharesPaginator') totalSharesPaginator: MatPaginator;
+
+
+  dateFilter = (d: Date): boolean => {
+    const year = d.getFullYear();
+    const month = d.getMonth();
+    return year >= 2019 && month >= 3;
+  }
 
 
 
@@ -160,7 +185,7 @@ export class ShareholdingsComponent implements OnInit {
     this.selStyles.push('white');
     this.companyDataSource = new MatTableDataSource<CompanyData>( );
     this.holdersDataSource = new MatTableDataSource<HoldersData>();
-    this.equitiesTotalShareChangeDataSource = new MatTableDataSource<NumSharesSummaryItem>();
+    this.equitiesTotalShareChangeDataSource = new MatTableDataSource();
     this.ownershipSummaryDataSource = new MatTableDataSource<OwnershipSummaryItem>();
     this.tradeSummarySignalDataSource = new MatTableDataSource<TradeSummarySignalItem>();
     this.tradeSummarySignalDetailsDataSource =  new MatTableDataSource<TradeSummarySignalDetailsItem>();
@@ -219,6 +244,14 @@ export class ShareholdingsComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    let toDate = new Date();
+    let fromDate = new Date();
+    fromDate.setDate(toDate.getDate() - 7);
+
+    this.fromDateControl = new FormControl(fromDate);
+    this.toDateControl = new FormControl(toDate);
+
     this.companyField = new FormControl();
     this.shareholderField = new FormControl();
     this.equitiesTotalShareChangeDataSource.sort = this.equitiesTotalShareSort;
@@ -229,17 +262,32 @@ export class ShareholdingsComponent implements OnInit {
       this.ownershipSummaryDataSource.sort = this.ownershipSummarySort;
     });
 
+    let fromDateStr = Utils.GetDateString(fromDate);
+    let toDateStr = Utils.GetDateString(toDate);
+
+    this.httpService.getCompanyShares(fromDateStr,toDateStr).subscribe(retData => {
+      console.log(retData['results'])
+      console.log('Results len ' + retData['results'].length);
+      this.equitiesTotalShareChangeDataSource.data = retData['results'];
+
+      setTimeout( ()=>{
+        this.equitiesTotalShareChangeDataSource.paginator = this.totalSharesPaginator;
+      },500)
+    });
+
+
+
 
     // Fetch the NumShares Summary from firestore
-    let items: Observable < NumSharesSummaryItem[] >;
-
-    items = this.fireStore.collection<NumSharesSummaryItem>("/numsharessummary/Bursa/27-Feb-2019").valueChanges();
-
-    items.subscribe( arr => {
-
-      this.equitiesTotalShareChangeDataSource.data = arr;
-
-    } );
+    // let items: Observable < NumSharesSummaryItem[] >;
+    //
+    // items = this.fireStore.collection<NumSharesSummaryItem>("/numsharessummary/Bursa/27-Feb-2019").valueChanges();
+    //
+    // items.subscribe( arr => {
+    //
+    //   this.equitiesTotalShareChangeDataSource.data = arr;
+    //
+    // } );
 
     // Gets the trading day list
     this.tradingDayListObservable = this.fireStore.collection<TradingDay>("/TradingDays").valueChanges();
@@ -288,6 +336,20 @@ export class ShareholdingsComponent implements OnInit {
       this.tradeSummarySignalDataSource.data = arr;
     });
 
+  }
+
+  viewShares() {
+    let fromDateStr = Utils.GetDateString(this.fromDateControl.value );
+    let toDateStr = Utils.GetDateString( this.toDateControl.value);
+
+    this.httpService.getCompanyShares(fromDateStr,toDateStr).subscribe(retData => {
+       this.equitiesTotalShareChangeDataSource.data = retData['results'];
+      setTimeout( ()=>{
+        this.equitiesTotalShareChangeDataSource.paginator = this.totalSharesPaginator;
+      },500)
+    });
+
+    console.log(fromDateStr + ' ' + toDateStr);
   }
 
   selectRow(row)

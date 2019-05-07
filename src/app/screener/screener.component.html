@@ -248,19 +248,19 @@
 
             <!-- ROERatio Column -->
             <ng-container matColumnDef="ROERatio">
-              <mat-header-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matHeaderCellDef mat-sort-header> ROE </mat-header-cell>
+              <mat-header-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matHeaderCellDef mat-sort-header> ROE (%)</mat-header-cell>
               <mat-cell class="cell-class"  fxFlex="{{ ROERatioWidth }}" *matCellDef="let element"> {{ element.ROERatio | number }} </mat-cell>
             </ng-container>
 
             <!-- Dividend Column -->
             <ng-container matColumnDef="Dividend">
-              <mat-header-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matHeaderCellDef mat-sort-header> Dividend </mat-header-cell>
+              <mat-header-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matHeaderCellDef mat-sort-header> Dividend (cents) </mat-header-cell>
               <mat-cell class="cell-class"  fxFlex="{{ DividendWidth }}" *matCellDef="let element"> {{ element.Dividend | number }} </mat-cell>
             </ng-container>
 
             <!-- DividendYield Column -->
             <ng-container matColumnDef="DividendYield">
-              <mat-header-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matHeaderCellDef mat-sort-header> DividendYield </mat-header-cell>
+              <mat-header-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matHeaderCellDef mat-sort-header> DividendYield (%)</mat-header-cell>
               <mat-cell class="cell-class"  fxFlex="{{ DividendYieldWidth }}" *matCellDef="let element"> {{ element.DividendYield | number }} </mat-cell>
             </ng-container>
 

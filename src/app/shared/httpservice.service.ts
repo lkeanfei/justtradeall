@@ -1,7 +1,7 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable} from "rxjs/index";
+import {from, Observable} from "rxjs/index";
 import { Screener} from './Screener';
 
 interface PriceRequestInput {
@@ -52,6 +52,12 @@ export class HttpService {
       const body = { 'date' : dateStr , 'sector' : sector };
       return this.httpClient.post( '/api/latestmarketoverview/' , body );
     }
+
+    getCompanyShares(fromDateStr: string , toDateStr: string)  {
+      const body = { 'fromdate' : fromDateStr , 'todate' : toDateStr};
+      return this.httpClient.post('/api/companyshares/' , body);
+    }
+
 
     getScreenerResults( screener: Screener)
     {

@@ -61,7 +61,7 @@
 }
 
 .dateclass {
-
+  width: 35%;
   margin-top: 20px;
   margin-left: 20px;
 
@@ -75,15 +75,16 @@
   background-color: green;
 }
 
+.totalsharestable-center {
+  width: 60%;
+  margin: 0 auto;
+}
 
 .tradesummarysignaldetailsclass {
   width:70%;
   margin-right: 10px;
   margin-left: 10px;
-
 }
-
-
 
 .table-class {
   width: 98%;

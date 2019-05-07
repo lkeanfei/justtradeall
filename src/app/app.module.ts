@@ -25,7 +25,7 @@ import {
   MatAccordionDisplayMode,
   MatExpansionModule,
   MatSortModule,
-  MatTooltipModule, MatPaginatorModule
+  MatTooltipModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule
 } from '@angular/material';
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -137,6 +137,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     MatMenuModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatExpansionModule,
     MatToolbarModule,
     MatTabsModule,

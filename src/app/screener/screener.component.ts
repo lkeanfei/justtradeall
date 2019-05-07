@@ -144,8 +144,6 @@ export class ScreenerComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
     this.fundamentalsDataSource.paginator = this.fundamentalsPaginator;
     this.technicalsDataSource.paginator = this.technicalsPaginator;
     this.screenStocks();
