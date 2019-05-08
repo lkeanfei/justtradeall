@@ -62,8 +62,7 @@
 
 .dateclass {
   width: 35%;
-  margin-top: 20px;
-  margin-left: 20px;
+  margin: 0 auto;
 
 }
 
@@ -77,6 +76,16 @@
 
 .totalsharestable-center {
   width: 60%;
+  margin: 0 auto;
+}
+
+.ownershiptable-class {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.viewOwnershipShares-button {
+  width: 10%;
   margin: 0 auto;
 }
 

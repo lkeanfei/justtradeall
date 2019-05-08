@@ -8,6 +8,7 @@ import { AppDateAdapter, APP_DATE_FORMATS} from './date.adapter';
 import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
 import * as moment from 'moment';
 import {Utils} from "../shared/utils";
+import {toDate} from "@angular/common/src/i18n/format_date";
 
 export interface CompanyData {
   id: string;
@@ -86,7 +87,7 @@ export class ShareholdingsComponent implements OnInit {
   selStyles: any = [];
   rowList : any = []
   companyDataSource: any;
-  holdersDataSource: any;
+
   equitiesTotalShareChangeDataSource: any;
   ownershipSummaryDataSource: any;
   tradeSummarySignalDataSource: any;
@@ -97,7 +98,20 @@ export class ShareholdingsComponent implements OnInit {
 
 
   equitiesTotalShareChangeColumns = [ 'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];
-  ownershipSummaryColumns = ['Symbol' , 'SharesAcquired' , 'PercentageSharesAcquired' , 'SharesDisposed' ,'PercentageSharesDisposed'];
+  // "FromHasShares": true,
+  // "FromShares": 3606314916,
+  // "FromPercentage": 72.1214,
+  // "Symbol": "BJLAND",
+  // "Code": "4219",
+  // "Name": "Berjaya Corp. Bhd.",
+  // "ToShares": 3836314916,
+  // "ToPercentage": 76.7211,
+  // "ToHasShares": true,
+  // "SharesDiff": 230000000,
+  // "PctDiff": 4.599700000000013
+
+  ownershipDataSource: any;
+  ownershipSummaryColumns = [ 'Name' ,'Symbol' , 'ToShares', 'ToPercentage' , 'FromShares' , 'FromPercentage' , 'SharesDiff' , 'PctDiff'];
   tradeSummarySignalColumns = ['Symbol' , 'MostBuyUpPrice' , 'MostSellDownPrice'];
   tradeSummarySignalDetailsColumns = [ 'Price' , 'Trades' , 'BuyUp' , 'AverageBuyUpTrades' , 'Selldown' , 'AverageSellDownTrades'];
 
@@ -159,11 +173,24 @@ export class ShareholdingsComponent implements OnInit {
 
   fromDateControl : FormControl;
   toDateControl : FormControl;
+  fromShareholdingsDateControl: FormControl;
+  toShareholdingsDateControl: FormControl;
+
+  NameColumnWidth = 10;
+  SymbolColumnWidth = 10;
+  ToSharesColumnWidth = 15;
+  ToPercentageColumnWidth = 10;
+  FromSharesColumnWidth = 15;
+  FromPercentageColumnWidth = 10;
+  SharesDiffColumnWidth = 10;
+  PctDiffColumnWidth = 10;
+
   @ViewChild('totalshare') equitiesTotalShareSort: MatSort;
   @ViewChild('ownership') ownershipSummarySort: MatSort;
   @ViewChild('tradesummarysignal') tradesummarysignalSort: MatSort;
   @ViewChild('tradesummarysignaldetails') tradeSummarySignalDetailsSort: MatSort;
   @ViewChild('totalSharesPaginator') totalSharesPaginator: MatPaginator;
+  @ViewChild('ownershipPaginator') ownershipPaginator: MatPaginator;
 
 
   dateFilter = (d: Date): boolean => {
@@ -184,9 +211,9 @@ export class ShareholdingsComponent implements OnInit {
     this.selStyles.push('aqua');
     this.selStyles.push('white');
     this.companyDataSource = new MatTableDataSource<CompanyData>( );
-    this.holdersDataSource = new MatTableDataSource<HoldersData>();
+
     this.equitiesTotalShareChangeDataSource = new MatTableDataSource();
-    this.ownershipSummaryDataSource = new MatTableDataSource<OwnershipSummaryItem>();
+    this.ownershipDataSource = new MatTableDataSource<OwnershipSummaryItem>();
     this.tradeSummarySignalDataSource = new MatTableDataSource<TradeSummarySignalItem>();
     this.tradeSummarySignalDetailsDataSource =  new MatTableDataSource<TradeSummarySignalDetailsItem>();
 
@@ -237,7 +264,6 @@ export class ShareholdingsComponent implements OnInit {
 
     this.httpService.searchShareHolders(this.shareholderField.value).subscribe( (data:any) => {
 
-      this.holdersDataSource.data = data['results'];
       this.hasHolderResults = true;
       this.startSearchingShareHolders = false;
     });
@@ -251,6 +277,9 @@ export class ShareholdingsComponent implements OnInit {
 
     this.fromDateControl = new FormControl(fromDate);
     this.toDateControl = new FormControl(toDate);
+
+    this.fromShareholdingsDateControl = new FormControl(fromDate);
+    this.toShareholdingsDateControl = new FormControl(toDate);
 
     this.companyField = new FormControl();
     this.shareholderField = new FormControl();
@@ -266,8 +295,7 @@ export class ShareholdingsComponent implements OnInit {
     let toDateStr = Utils.GetDateString(toDate);
 
     this.httpService.getCompanyShares(fromDateStr,toDateStr).subscribe(retData => {
-      console.log(retData['results'])
-      console.log('Results len ' + retData['results'].length);
+
       this.equitiesTotalShareChangeDataSource.data = retData['results'];
 
       setTimeout( ()=>{
@@ -304,7 +332,7 @@ export class ShareholdingsComponent implements OnInit {
        this.tradingDayList = arr;
 
        // Gets the latest day
-       console.log('Latest day is ' + arr[0].date);
+
        this.getTradeSummarySignals(moment(arr[0].date).format('DD-MMM-YYYY') , 1);
     });
 
@@ -336,6 +364,20 @@ export class ShareholdingsComponent implements OnInit {
       this.tradeSummarySignalDataSource.data = arr;
     });
 
+  }
+
+  viewOwnershipShares() {
+    let fromDateStr = Utils.GetDateString(this.fromShareholdingsDateControl.value);
+    let toDateStr = Utils.GetDateString(this.toShareholdingsDateControl.value);
+    let name = this.shareholderField.value
+
+    this.httpService.getOwnershipShares(fromDateStr, toDateStr , name).subscribe( data => {
+
+      this.ownershipDataSource.data = data["results"];
+      setTimeout( ()=>{
+        this.ownershipDataSource.paginator = this.ownershipPaginator;
+      },500)
+    });
   }
 
   viewShares() {
