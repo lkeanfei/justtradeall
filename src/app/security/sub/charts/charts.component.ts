@@ -167,8 +167,8 @@ export class ChartsComponent implements OnInit {
   }
 
   routeChangedDetected( prms) : Observable<any> {
-    const dateStr = '2018-08-21';
-    return this.httpService.getSecurityView(prms['fullid'], dateStr);
+    // const dateStr = '2018-08-21';
+    return this.httpService.getSecurityView(prms['fullid']);
   }
 
 }

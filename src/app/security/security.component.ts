@@ -41,7 +41,9 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
 
   securitySummaryDataSource =  new MatTableDataSource<any>();
+  securityOverviewDataSource = new MatTableDataSource();
   securitySummaryColumns: string[] = ['label' , 'value'];
+  securityOverviewColumns: string[] = ['key' , 'value'];
   Highstocks = Highcharts;
   tableMap = {};
   data = [
@@ -290,11 +292,15 @@ export class SecurityComponent implements OnInit, AfterViewInit {
     this.tableMap['wklow52'] = '52-week Low';
     this.tableMap['averagevol'] = 'Average Volume';
 
+
+
     const theSub = this.route.params.pipe(
       concatMap( prms => this.routeChangedDetected(prms))
     );
 
     theSub.subscribe( res => {
+      console.log("blabla securityOverview " );
+      this.securityOverviewDataSource = res["securityOverview"];
 
       let status = res['status'];
       if (status == 'ok') {
@@ -373,7 +379,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   }
 
   routeChangedDetected( prms) : Observable<any> {
-    return this.httpService.getCounterDetailView(prms['fullid']);
+    return this.httpService.getSecurityView(prms['fullid']);
   }
 
   switchToStatic() {

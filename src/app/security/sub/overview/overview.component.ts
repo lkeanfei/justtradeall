@@ -184,9 +184,9 @@ export class OverviewComponent implements OnInit {
   }
 
   routeChangedDetected( prms) : Observable<any> {
-    const dateStr = '2018-08-21';
-    this.startLoading = true;
-    return this.httpService.getSecurityView(prms['fullid'], dateStr)
+    // const dateStr = '2018-08-21';
+    // this.startLoading = true;
+    return this.httpService.getSecurityView(prms['fullid'])
   }
 
 }

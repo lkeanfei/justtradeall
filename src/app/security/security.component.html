@@ -3,14 +3,38 @@
 
 
 <div class="topdiv" fxLayout="column" fxLayoutGap="40px">
-  <div *ngIf="isLoading; else templateLoaded">
-    <mat-progress-spinner
-      class="example-margin"
-      [color]="color"
-      [mode]="mode"
-      [value]="value">
-    </mat-progress-spinner>
-  </div>
+   <div>
+     <div class="securityOverview">
+       <mat-table #totalshare="matSort" matSort [dataSource]="securityOverviewDataSource">
+
+         <!--'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];-->
+
+         <!-- Key Column -->
+         <ng-container matColumnDef="key">
+           <mat-header-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matHeaderCellDef> Symbol </mat-header-cell>
+           <mat-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matCellDef="let element"> {{element.key}} </mat-cell>
+         </ng-container>
+
+         <!-- value Column -->
+         <ng-container matColumnDef="value">
+           <mat-header-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+           <mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element"> {{element.value | number}} </mat-cell>
+         </ng-container>
+
+         <mat-header-row  class="my-mat-row" *matHeaderRowDef="securityOverviewColumns"></mat-header-row>
+         <mat-row class="my-mat-row"  *matRowDef="let row; columns: securityOverviewColumns;"  ></mat-row>
+       </mat-table>
+
+     </div>
+   </div>
+  <!--<div *ngIf="isLoading; else templateLoaded">-->
+    <!--<mat-progress-spinner-->
+      <!--class="example-margin"-->
+      <!--[color]="color"-->
+      <!--[mode]="mode"-->
+      <!--[value]="value">-->
+    <!--</mat-progress-spinner>-->
+  <!--</div>-->
   <ng-template #templateLoaded>
     <div>
     <div> <b> {{ symbol }}  {{ name }} </b> </div>

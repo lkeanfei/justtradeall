@@ -89,8 +89,8 @@ export class HttpService {
         return this.httpClient.post( '/api/marketoverview/' , body );
     }
 
-    getSecurityView(fullid: string ,dateStr: string) : Observable<any> {
-      const body = { 'fullid' : fullid , 'date' : dateStr };
+    getSecurityView(fullid: string ) : Observable<any> {
+      const body = { 'fullid' : fullid  };
       return this.httpClient.post( '/api/security/' , body );
     }
 
