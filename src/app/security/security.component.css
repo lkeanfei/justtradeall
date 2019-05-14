@@ -21,6 +21,17 @@
   width : 750px
 }
 
+.mat-row {
+  height: 24px;
+  min-height: 24px;
+}
+
+.securityOverview {
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 30%;
+}
+
 .my-centered-dialog {
   max-width: 80vw;
 

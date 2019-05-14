@@ -7,6 +7,7 @@ import {MatTableDataSource} from '@angular/material';
 import {CompanyData} from '../../../shareholdings/shareholdings.component';
 import {LayoutServiceService} from "../../../shared/layout-service.service";
 import {AngularFirestore} from '@angular/fire/firestore';
+import {DataService} from '../../data.service';
 
 export interface DistHoldingsData {
   levelname: string;
@@ -49,7 +50,9 @@ export class SecshareholdingsComponent implements OnInit {
   value = 50;
 
 
-  constructor(private route: ActivatedRoute ,private httpService: HttpService, private layoutService: LayoutServiceService , private fireStore: AngularFirestore) {
+  constructor(private route: ActivatedRoute ,private httpService: HttpService,
+              private dataService: DataService,
+              private layoutService: LayoutServiceService , private fireStore: AngularFirestore) {
 
     this.distholdingsDataSource = new MatTableDataSource<DistHoldingsData>( );
     this.top30DataSource = new MatTableDataSource<ShareHolderData>();

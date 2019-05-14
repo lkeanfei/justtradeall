@@ -9,17 +9,21 @@ HC_indic(Highcharts); // loads core and enables sma
 HC_BB(Highcharts);
 HC_RSI(Highcharts);
 
-import {concatMap, map, switchMap, take, tap} from 'rxjs/operators';
+import {concatMap, map, switchMap, take, tap } from 'rxjs/operators';
 import {MatTabChangeEvent, MatTableDataSource} from "@angular/material";
 import {LoginService} from "../shared/loginservice.service";
-import {Observable, of} from "rxjs/index";
+import { of } from 'rxjs';
+import {Observable} from "rxjs/index";
 import {AuthService} from "../shared/security/auth.service";
 import {User} from "../shared/security/user";
+import {ChartsComponent} from "./sub/charts/charts.component";
+import {DataService} from "./data.service";
 
 @Component({
   selector: 'app-security',
   templateUrl: './security.component.html',
-  styleUrls: ['./security.component.css']
+  styleUrls: ['./security.component.css'],
+
 })
 export class SecurityComponent implements OnInit, AfterViewInit {
 
@@ -38,12 +42,15 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   staticOneToOneFlag = false; // optional boolean, defaults to false
   staticChartOptions : any;
 
+  output : Observable<any>;
 
 
-  securitySummaryDataSource =  new MatTableDataSource<any>();
+
+
   securityOverviewDataSource = new MatTableDataSource();
+  securityOverviewColumns = ['key' , 'value'];
   securitySummaryColumns: string[] = ['label' , 'value'];
-  securityOverviewColumns: string[] = ['key' , 'value'];
+
   Highstocks = Highcharts;
   tableMap = {};
   data = [
@@ -266,13 +273,18 @@ export class SecurityComponent implements OnInit, AfterViewInit {
     ]];
 
   symbol: string;
-  name: string;
-  fullname: string;
-  category: string;
-  sector: string;
+  code: string;
+  corporateName: string;
+  lastClose: number;
+  priceChange: number;
+  pctChange: number;
 
 
-  // optional string, defaults to 'chart'
+  chartConstructor = 'stockChart';
+  interactiveUpdateFlag = false;
+  interactiveOneToOneFlag = false;
+  interactiveChartOptions : any;
+  showLogin = true;
 
   // Styling for the loading spinner
   color = 'primary';
@@ -285,35 +297,119 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
 
   constructor(private route: ActivatedRoute , private httpService: HttpService ,
-              private authService: AuthService, private loginService: LoginService) {
+              private authService: AuthService, private loginService: LoginService ,
+              private dataService: DataService) {
 
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
     this.tableMap['wklow52'] = '52-week Low';
     this.tableMap['averagevol'] = 'Average Volume';
+    const chartWidth = window.screen.width * 0.60;
+    this.interactiveChartOptions  = {
+      chart : {
+        width : chartWidth
+      },
 
-
+      series: [{
+        type : 'candlestick',
+        id : 'candlestick',
+        data: []
+      }
+        ,{
+          type: 'column',
+          name: 'Volume',
+          data: [],
+          yAxis: 1,
+        }
+        , {
+          type: 'bb',
+          linkedTo: 'candlestick'
+        }
+        , {
+          yAxis: 2,
+          type: 'rsi',
+          linkedTo: 'candlestick'
+        }],
+      yAxis:[{
+        crosshair: true,
+        height: '50%',
+        tickPixelInterval: 10,
+      },
+        {
+          labels: {
+            align: 'right',
+            x: -3
+          },
+          title: {
+            text: 'Volume'
+          },
+          top: '50%',
+          height: '25%',
+          offset: 0,
+          lineWidth: 2
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3
+          },
+          title: {
+            text: 'RSI'
+          },
+          top: '75%',
+          height: '25%',
+          offset: 0,
+          lineWidth: 2
+        }],
+      xAxis: {
+        crosshair: true,
+        events: {
+          setExtremes:(evt) => {
+            let minDate = new Date(evt.min);
+            //console.log('x axis ' + minDate + ' ' + evt.max);
+          }},
+      }
+    };
 
     const theSub = this.route.params.pipe(
       concatMap( prms => this.routeChangedDetected(prms))
     );
 
+
+
     theSub.subscribe( res => {
       console.log("blabla securityOverview " );
       this.securityOverviewDataSource = res["securityOverview"];
 
+      this.dailyData = res['daily'];
+
+      this.interactiveChartOptions['series'][0]['data'] = this.dailyData;
+      this.interactiveChartOptions['series'][1]['data'] = res['volume']
+      this.isLoading = false;
+      this.interactiveUpdateFlag = true;
+      console.log(res['daily']);
+      console.log('Volume*****')
+      console.log(res['volume']);
+
       let status = res['status'];
-      if (status == 'ok') {
-        this.symbol = res['symbol'];
-        this.name = res['name'];
-        this.fullname = res['fullname'];
-        this.category = res['category'];
-        this.sector = res['sector'];
-        this.isLoading = false
+      console.log('Corp')
+      console.log(res["corpdata"])
+      console.log('Technicals');
+      console.log(res['technicals'])
+      console.log('Top 30')
+      console.log(res['top30'])
 
-      } else {
+      this.code = res["summary"]["Code"]
+      this.symbol = res["summary"]["Symbol"]
+      this.corporateName = res["summary"]["CorporateName"]
+      this.lastClose = res["summary"]["LastClose"]
+      this.priceChange = res["summary"]["PriceChange"]
+      this.pctChange = res["summary"]["PCTChange"]
 
-      }
+      this.dataService.setTop30Data(res['top30']);
+      this.dataService.setFundamentalsData(res["securityOverview"]);
+      this.dataService.setTechnicalsData(res["technicals"]);
+
     })
 
     // const chartWidth = window.screen.width * 0.60;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as Highcharts from 'highcharts/highstock';
 import * as HC_indic from 'highcharts/indicators/indicators';
 import * as HC_BB from 'highcharts/indicators/bollinger-bands';
@@ -8,6 +8,7 @@ import {Observable, of} from "rxjs/index";
 import {HttpService} from "../../../shared/httpservice.service";
 import {concatMap } from 'rxjs/operators';
 import {MatTableDataSource} from "@angular/material";
+import {DataService} from "../../data.service";
 HC_indic(Highcharts); // loads core and enables sma
 HC_BB(Highcharts);
 HC_RSI(Highcharts);
@@ -18,6 +19,7 @@ HC_RSI(Highcharts);
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent implements OnInit {
+
 
   Highstocks = Highcharts;
   chartConstructor = 'stockChart'; // optional string, defaults to 'chart'
@@ -33,6 +35,11 @@ export class OverviewComponent implements OnInit {
 
   isLoading = true;
 
+  fundamentalsDataSource =  new MatTableDataSource<any>();
+  fundamentalsColumns: string[] = ['key' , 'value'];
+  technicalsDataSource =  new MatTableDataSource<any>();
+  technicalsColumns: string[] = ['key' , 'value'];
+
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
@@ -42,12 +49,14 @@ export class OverviewComponent implements OnInit {
   securitySummaryDataSource =  new MatTableDataSource<any>();
   securitySummaryColumns: string[] = ['label' , 'value'];
 
-  constructor(private route: ActivatedRoute , private httpService: HttpService ) {
+  constructor(private route: ActivatedRoute , private httpService: HttpService , private dataService: DataService ) {
 
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
     this.tableMap['wklow52'] = '52-week Low';
-    this.tableMap['averagevol'] = 'Average Volume'
+    this.tableMap['averagevol'] = 'Average Volume';
+
+
 
     const chartWidth = window.screen.width * 0.75;
     this.staticChartOptions = {
@@ -101,92 +110,101 @@ export class OverviewComponent implements OnInit {
       }]
     };
 
-    const theSub = this.route.params.pipe(
-      // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
-      concatMap( prms => this.routeChangedDetected(prms))
-    );
+    // const theSub = this.route.params.pipe(
+    //   // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
+    //   concatMap( prms => this.routeChangedDetected(prms))
+    // );
 
-
-    theSub.subscribe( res => {
-
-      const dataList = [];
-      let status =  res['status'];
-
-
-      const keys = Object.keys(res['summary']);
-      this.startLoading = false;
-
-      for (const key of keys) {
-        const value = res['summary'][key];
-        // console.log('key and value ' + value + ". " + key)
-        dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
-        this.securitySummaryDataSource.data = dataList;
-      }
-
-      this.dailyData = res['daily'];
-      this.staticChartOptions['series'][0]['data'] = this.dailyData;
-
-      if( Object.keys(res['staticbox']).length === 0) {
-        this.staticBoxExists = false;
-      }
-      else {
-        this.staticBoxExists = true;
-        this.staticBoxFromDate = res['staticbox']['fromdate'];
-        this.staticBoxToDate = res['staticbox']['todate'];
-        this.staticBoxHigh = res['staticbox']['highesthigh'];
-        this.staticBoxLow = res['staticbox']['lowestlow'];
-
-
-
-        let staticBoxPlotBand = {
-          color: '#FCFFC5',
-          from: this.staticBoxLow,
-          to: this.staticBoxHigh
-        };
-
-         let lowestLowPlotLine = {
-           color: '#FF0000',
-           width: 2,
-           value: res['staticbox']['todatems']
-         }
-
-         this.staticChartOptions['yAxis'][0]['plotBands'] = []
-        this.staticChartOptions['yAxis'][0]['plotBands'].push(staticBoxPlotBand)
-
-        this.staticChartOptions['xAxis'][0]['plotLines'] = []
-        this.staticChartOptions['xAxis'][0]['plotLines'].push(lowestLowPlotLine)
-        // this.staticChartOptions['xAxis'][0]['plotBands'][0]['from'] =  res['staticbox']['fromdatems']
-        // this.staticChartOptions['xAxis'][0]['plotBands'][0]['from'] =  res['staticbox']['todatems']
-        // console.log(this.staticChartOptions['xAxis'][0]['plotBands'][0])
-
-        // console.log(this.staticChartOptions['xAxis'])
-        // console.log(this.staticChartOptions['xAxis'].get('plotBands'))
-       // this.staticChartOptions['xAxis'][0]['plotBands'] = [ staticBoxPlotBand ];
-
-      }
-
-
-
-      this.staticUpdateFlag = true;
-      this.isLoading = false;
-
-
-      // Temporary disable
-      // this.Highstocks.charts[0].redraw();
-
-
+    this.dataService.technicalsData$.subscribe( data => {
+       this.technicalsDataSource.data = data;
     });
+
+    this.dataService.fundamentalsData$.subscribe( data => {
+       this.fundamentalsDataSource.data = data;
+    });
+
+
+    // theSub.subscribe( res => {
+    //
+    //   const dataList = [];
+    //   let status =  res['status'];
+    //   // const keys = Object.keys(res['summary']);
+    //   this.startLoading = false;
+    //
+    //
+    //   // for (const key of keys) {
+    //   //   const value = res['summary'][key];
+    //   //   // console.log('key and value ' + value + ". " + key)
+    //   //   dataList.push({ 'label' : this.tableMap[key] , 'value' : value})
+    //   //   this.securitySummaryDataSource.data = dataList;
+    //   // }
+    //
+    //   this.dailyData = res['daily'];
+    //   this.staticChartOptions['series'][0]['data'] = this.dailyData;
+    //
+    //   if( Object.keys(res['staticbox']).length === 0) {
+    //     this.staticBoxExists = false;
+    //   }
+    //   else {
+    //     this.staticBoxExists = true;
+    //     this.staticBoxFromDate = res['staticbox']['fromdate'];
+    //     this.staticBoxToDate = res['staticbox']['todate'];
+    //     this.staticBoxHigh = res['staticbox']['highesthigh'];
+    //     this.staticBoxLow = res['staticbox']['lowestlow'];
+    //
+    //
+    //
+    //     let staticBoxPlotBand = {
+    //       color: '#FCFFC5',
+    //       from: this.staticBoxLow,
+    //       to: this.staticBoxHigh
+    //     };
+    //
+    //      let lowestLowPlotLine = {
+    //        color: '#FF0000',
+    //        width: 2,
+    //        value: res['staticbox']['todatems']
+    //      }
+    //
+    //      this.staticChartOptions['yAxis'][0]['plotBands'] = []
+    //     this.staticChartOptions['yAxis'][0]['plotBands'].push(staticBoxPlotBand)
+    //
+    //     this.staticChartOptions['xAxis'][0]['plotLines'] = []
+    //     this.staticChartOptions['xAxis'][0]['plotLines'].push(lowestLowPlotLine)
+    //     // this.staticChartOptions['xAxis'][0]['plotBands'][0]['from'] =  res['staticbox']['fromdatems']
+    //     // this.staticChartOptions['xAxis'][0]['plotBands'][0]['from'] =  res['staticbox']['todatems']
+    //     // console.log(this.staticChartOptions['xAxis'][0]['plotBands'][0])
+    //
+    //     // console.log(this.staticChartOptions['xAxis'])
+    //     // console.log(this.staticChartOptions['xAxis'].get('plotBands'))
+    //    // this.staticChartOptions['xAxis'][0]['plotBands'] = [ staticBoxPlotBand ];
+    //
+    //   }
+    //
+    //
+    //
+    //   this.staticUpdateFlag = true;
+    //   this.isLoading = false;
+    //
+    //
+    //   // Temporary disable
+    //   // this.Highstocks.charts[0].redraw();
+    //
+    //
+    // });
 
 
 
   }
   ngOnInit() {
+
+
   }
 
-  routeChangedDetected( prms) : Observable<any> {
-    // const dateStr = '2018-08-21';
-    // this.startLoading = true;
-    return this.httpService.getSecurityView(prms['fullid'])
-  }
+  // routeChangedDetected( prms) : Observable<any> {
+  //   // const dateStr = '2018-08-21';
+  //   // this.startLoading = true;
+  //   return this.httpService.getSecurityView(prms['fullid'])
+  // }
 
 }

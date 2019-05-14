@@ -65,6 +65,7 @@ import {authReducer , AppState} from "./store/auth.reducers";
 import * as fromPost from "./store/auth.reducers";
 import { SummaryComponent } from './summary/summary.component';
 import { ScreenerComponent } from './screener/screener.component';
+import {DataService} from "./security/data.service";
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
@@ -164,7 +165,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
   ],
   entryComponents: [ DialogContentExampleDialog],
 
-  providers: [AuthService, HttpService , LoginService , PreviousRouteServiceService , LayoutServiceService],
+  providers: [AuthService, HttpService , LoginService , PreviousRouteServiceService , LayoutServiceService , DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

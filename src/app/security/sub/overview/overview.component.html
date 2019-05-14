@@ -1,61 +1,162 @@
-<div fxLayout="column">
-  <div *ngIf="isLoading; else templateLoaded">
-    <mat-progress-spinner
-      class="example-margin"
-      [color]="color"
-      [mode]="mode"
-      [value]="value">
-    </mat-progress-spinner>
+
+<div class="topdiv" fxLayout="column" fxLayoutGap="40px">
+<div fxLayout="row" fxLayoutAlign="space-around center">
+<div class="securityOverview">
+<mat-table  matSort [dataSource]="fundamentalsDataSource">
+
+<!--'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];-->
+
+<!-- Key Column -->
+<ng-container matColumnDef="key">
+<!--<mat-header-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matHeaderCellDef> Symbol </mat-header-cell>-->
+<mat-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matCellDef="let element"> {{element.key}} </mat-cell>
+</ng-container>
+
+<!-- value Column -->
+<ng-container matColumnDef="value">
+<!--<mat-header-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matHeaderCellDef mat-sort-header>  </mat-header-cell>-->
+<mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element">
+  <div *ngIf="element.type=='number';else stringTemplate">
+    {{element.value | number }}
   </div>
-  <ng-template #templateLoaded>
-  <div fxFlex="1 1 90%" >
-    <highcharts-chart
-      [Highcharts]="Highstocks"
-
-      [constructorType]="chartConstructor"
-      [options]="staticChartOptions"
-
-      [(update)]="staticUpdateFlag"
-      [oneToOne]="staticOneToOneFlag"
-
-
-    ></highcharts-chart>
+  <ng-template #stringTemplate>
+  <div *ngIf="element.type=='string';else floatTemplate">
+  {{element.value}}
   </div>
-  <div *ngIf="staticBoxExists; else templateNotStaticBox"  >
-    Static box is from {{staticBoxFromDate}} to {{ staticBoxToDate}} with
-    High = {{ staticBoxHigh }}
-    Low = {{ staticBoxLow}}
-  </div>
-
-  <ng-template #templateNotStaticBox>
-    Static box does not exist
+  </ng-template>
+  <ng-template #floatTemplate>
+  {{ element.value |  number:'1.3-3'}}
   </ng-template>
 
-  <div fxFlex="1 1 20%">
-    <table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >
+  </mat-cell>
+  </ng-container>
 
-      <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+<!--<mat-header-row  class="my-mat-row" *matHeaderRowDef="securityOverviewColumns"></mat-header-row>-->
+<mat-row class="my-mat-row"  *matRowDef="let row; columns: fundamentalsColumns;"  ></mat-row>
+</mat-table>
+</div>
+  <div class="securityOverview">
+    <mat-table [dataSource]="technicalsDataSource">
 
-      <!-- Stock Column -->
-      <ng-container matColumnDef="label">
-        <th mat-header-cell *matHeaderCellDef>  </th>
-        <td mat-cell *matCellDef="let element"> {{element['label']}} </td>
+      <!--'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];-->
+
+      <!-- Key Column -->
+      <ng-container matColumnDef="key">
+        <!--<mat-header-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matHeaderCellDef> Symbol </mat-header-cell>-->
+        <mat-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matCellDef="let element"> {{element.key}} </mat-cell>
       </ng-container>
 
-      <!-- Last Column -->
+      <!-- value Column -->
       <ng-container matColumnDef="value">
-        <th mat-header-cell *matHeaderCellDef> </th>
-        <td align="right" mat-cell *matCellDef="let element"> {{element['value']}} </td>
+        <!--<mat-header-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matHeaderCellDef mat-sort-header>  </mat-header-cell>-->
+        <mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element">
+          <div *ngIf="element.type=='number';else stringTemplate">
+            {{element.value | number }}
+          </div>
+          <ng-template #stringTemplate>
+            <div *ngIf="element.type=='string';else floatTemplate">
+              {{element.value}}
+            </div>
+          </ng-template>
+          <ng-template #floatTemplate>
+            {{ element.value |  number:'1.3-3'}}
+          </ng-template>
+
+        </mat-cell>
       </ng-container>
 
-
-
-      <tr mat-header-row *matHeaderRowDef="securitySummaryColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: securitySummaryColumns;"></tr>
-    </table>
+      <!--<mat-header-row  class="my-mat-row" *matHeaderRowDef="securityOverviewColumns"></mat-header-row>-->
+      <mat-row class="my-mat-row"  *matRowDef="let row; columns: technicalsColumns;"  ></mat-row>
+    </mat-table>
   </div>
+<div>
+<!--<highcharts-chart fxFlex-->
+<!--[Highcharts]="Highstocks"-->
 
-  </ng-template>
+<!--[constructorType]="chartConstructor"-->
+<!--[options]="interactiveChartOptions"-->
+
+<!--[(update)]="interactiveUpdateFlag"-->
+<!--[oneToOne]="interactiveOneToOneFlag"-->
+
+<!--style="width: 100%; height: 400px; display: block;">-->
+<!--</highcharts-chart>-->
 
 </div>
+
+
+
+</div>
+
+
+
+<!--<div>-->
+<!--<mat-tab-group (selectedTabChange)="tabChanged($event)">-->
+<!--<mat-tab label="Overview"> <app-overview></app-overview></mat-tab>-->
+<!--<mat-tab label="Charts"> <app-charts></app-charts> </mat-tab>-->
+<!--<mat-tab label="Shareholdings"> <app-secshareholdings></app-secshareholdings> </mat-tab>-->
+<!--</mat-tab-group>-->
+<!--</div>-->
+</div>
+
+
+
+
+<!--<div fxLayout="column">-->
+  <!--<div *ngIf="isLoading; else templateLoaded">-->
+    <!--<mat-progress-spinner-->
+      <!--class="example-margin"-->
+      <!--[color]="color"-->
+      <!--[mode]="mode"-->
+      <!--[value]="value">-->
+    <!--</mat-progress-spinner>-->
+  <!--</div>-->
+  <!--<ng-template #templateLoaded>-->
+  <!--<div fxFlex="1 1 90%" >-->
+    <!--<highcharts-chart-->
+      <!--[Highcharts]="Highstocks"-->
+
+      <!--[constructorType]="chartConstructor"-->
+      <!--[options]="staticChartOptions"-->
+
+      <!--[(update)]="staticUpdateFlag"-->
+      <!--[oneToOne]="staticOneToOneFlag"-->
+
+
+    <!--&gt;</highcharts-chart>-->
+  <!--</div>-->
+  <!--<div *ngIf="staticBoxExists; else templateNotStaticBox"  >-->
+    <!--Static box is from {{staticBoxFromDate}} to {{ staticBoxToDate}} with-->
+    <!--High = {{ staticBoxHigh }}-->
+    <!--Low = {{ staticBoxLow}}-->
+  <!--</div>-->
+
+  <!--<ng-template #templateNotStaticBox>-->
+    <!--Static box does not exist-->
+  <!--</ng-template>-->
+
+  <!--<div fxFlex="1 1 20%">-->
+    <!--<table class="tableClass"  mat-table [dataSource]="securitySummaryDataSource" >-->
+
+      <!--&lt;!&ndash;- Note that these columns can be defined in any order.-->
+            <!--The actual rendered columns are set as a property on the row definition" &ndash;&gt;-->
+
+      <!--&lt;!&ndash; Stock Column &ndash;&gt;-->
+      <!--<ng-container matColumnDef="label">-->
+        <!--<th mat-header-cell *matHeaderCellDef>  </th>-->
+        <!--<td mat-cell *matCellDef="let element"> {{element['label']}} </td>-->
+      <!--</ng-container>-->
+
+      <!--&lt;!&ndash; Last Column &ndash;&gt;-->
+      <!--<ng-container matColumnDef="value">-->
+        <!--<th mat-header-cell *matHeaderCellDef> </th>-->
+        <!--<td align="right" mat-cell *matCellDef="let element"> {{element['value']}} </td>-->
+      <!--</ng-container>-->
+      <!--<tr mat-header-row *matHeaderRowDef="securitySummaryColumns"></tr>-->
+      <!--<tr mat-row *matRowDef="let row; columns: securitySummaryColumns;"></tr>-->
+    <!--</table>-->
+  <!--</div>-->
+
+  <!--</ng-template>-->
+
+<!--</div>-->
