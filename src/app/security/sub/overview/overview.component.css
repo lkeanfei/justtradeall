@@ -1,0 +1,22 @@
+.securityOverview {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 30%;
+}
+
+.overview {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.fundamentals {
+  width: 30%;
+  margin: 10px 10px 10px 10px;
+}
+
+.technicals {
+  width: 30%;
+  margin: 10px 10px 10px 10px;
+}

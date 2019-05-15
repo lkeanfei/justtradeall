@@ -45,7 +45,8 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   output : Observable<any>;
 
 
-
+  corporateDataSource = new MatTableDataSource();
+  corporateColumns = ['key' , 'value'];
 
   securityOverviewDataSource = new MatTableDataSource();
   securityOverviewColumns = ['key' , 'value'];
@@ -406,6 +407,9 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       this.priceChange = res["summary"]["PriceChange"]
       this.pctChange = res["summary"]["PCTChange"]
 
+      this.corporateDataSource.data = res["corpdata"]
+
+      this.dataService.setOverviewDictData(res["overviewdict"])
       this.dataService.setTop30Data(res['top30']);
       this.dataService.setFundamentalsData(res["securityOverview"]);
       this.dataService.setTechnicalsData(res["technicals"]);

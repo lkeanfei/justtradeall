@@ -49,6 +49,18 @@ export class OverviewComponent implements OnInit {
   securitySummaryDataSource =  new MatTableDataSource<any>();
   securitySummaryColumns: string[] = ['label' , 'value'];
 
+  MarketCap: number;
+  Shares : number;
+  FloatingShares: number;
+  FloatingSharesPCT: number;
+  EPS : number;
+  PERatio : number;
+  ROERatio : number;
+  Dividend : number;
+  DividendYield : number;
+  NTA : number;
+  PARValue: number;
+
   constructor(private route: ActivatedRoute , private httpService: HttpService , private dataService: DataService ) {
 
     this.tableMap['rsi'] = 'RSI';
@@ -114,6 +126,20 @@ export class OverviewComponent implements OnInit {
     //   // concatMap(prms => { return this.httpService.getSecurityView(prms['fullid'], dateStr) })
     //   concatMap( prms => this.routeChangedDetected(prms))
     // );
+
+    this.dataService.overviewDictData$.subscribe(data => {
+      this.MarketCap = data["MarketCap"]
+      this.Shares = data["Shares"]
+      this.FloatingShares = data["FloatingShares"]
+      this.FloatingSharesPCT = data["FloatingSharesPCT"]
+      this.EPS= data["EPS"]
+      this.PERatio= data["PERatio"]
+      this.ROERatio = data["ROERatio"]
+      this.Dividend = data["Dividend"]
+      this.DividendYield = data["DividendYield"]
+      this.NTA = data["NTA"]
+      this.PARValue = data["PARValue"]
+    });
 
     this.dataService.technicalsData$.subscribe( data => {
        this.technicalsDataSource.data = data;
