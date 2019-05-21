@@ -98,6 +98,8 @@
   <div>
     <mat-tab-group (selectedTabChange)="tabChanged($event)">
       <mat-tab label="Overview"> <app-overview></app-overview></mat-tab>
+      <mat-tab label="Financials (Annual)"> <app-annual></app-annual> </mat-tab>
+      <mat-tab label="Financials (Quarterly)"><app-quarter></app-quarter> </mat-tab>
       <mat-tab label="Shareholdings"> <app-secshareholdings></app-secshareholdings> </mat-tab>
     </mat-tab-group>
   </div>
