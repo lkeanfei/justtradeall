@@ -1,135 +1,137 @@
-<div *ngIf="showLogin; else templateName" fxFlexAlign="center">
+<div class="table-class" fxFlex="1 1 90%" fxLayoutAlign="center">
+  <mat-table fxFlex="1 1 85%" #table [dataSource]="top30DataSource">
 
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <!--<button mat-button (click)="openDialog()">Sign In</button> or Register for FREE to view Shareholdings details!-->
-    <button mat-button routerLink="/login">Sign In</button> or <button mat-button routerLink="/register">Register for FREE</button> to view Shareholdings details!
-  </div>
+    <!-- Size of holdings Column -->
+    <ng-container matColumnDef="Holderid">
+      <mat-header-cell class="leftborder topborder {{tableCellFontClass}}" fxFlex="10%"  *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell class="leftborder {{tableCellFontClass}}" fxFlex="10%"   *matCellDef="let element"> {{element.Holderid}} </mat-cell>
+    </ng-container>
+
+    <!-- No. of shareholders Column -->
+    <ng-container matColumnDef="Detailname">
+      <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="55%"   *matHeaderCellDef> Name</mat-header-cell>
+      <mat-cell class="cell-class {{tableCellFontClass}}"  fxFlex="55%"   *matCellDef="let element"> {{ element.Detailname}} </mat-cell>
+    </ng-container>
+
+    <!-- Shares Column -->
+    <ng-container matColumnDef="Shares">
+      <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="20%"    *matHeaderCellDef>  Shares </mat-header-cell>
+      <mat-cell class="cell-class {{tableCellFontClass}}" fxFlex="20%"    *matCellDef="let element"> {{ element.Shares | number }} </mat-cell>
+    </ng-container>
+
+    <!-- Percentage Column -->
+    <ng-container matColumnDef="Percentage">
+      <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="15%"   *matHeaderCellDef> Percentage </mat-header-cell>
+      <mat-cell class="cell-class {{tableCellFontClass}}" fxFlex="15%"  *matCellDef="let element"> {{element.Percentage }}% </mat-cell>
+    </ng-container>
+
+    <mat-header-row  class="my-mat-row" *matHeaderRowDef="Top30Columns"></mat-header-row>
+    <mat-row class="my-mat-row" *matRowDef="let row; columns: Top30Columns;"></mat-row>
+  </mat-table>
+
 
 </div>
-<ng-template #templateName>
 
-  <div fxLayout="column">
-    <div *ngIf="isLoading; else templateLoaded">
-      <mat-progress-spinner
-        class="example-margin"
-        [color]="color"
-        [mode]="mode"
-        [value]="value">
-      </mat-progress-spinner>
-    </div>
-    <ng-template #templateLoaded>
+<!--<div *ngIf="showLogin; else templateName" fxFlexAlign="center">-->
 
-      <mat-tab-group >
-        <mat-tab label="Equities Total Shares Analysis"> </mat-tab>
-        <mat-tab label="Ownership Shares Analysis"> </mat-tab>
-        <mat-tab label="Shareholdings Search"> </mat-tab>
-      </mat-tab-group>
+  <!--<div fxLayout="row" fxLayoutAlign="center center">-->
+    <!--&lt;!&ndash;<button mat-button (click)="openDialog()">Sign In</button> or Register for FREE to view Shareholdings details!&ndash;&gt;-->
+    <!--<button mat-button routerLink="/login">Sign In</button> or <button mat-button routerLink="/register">Register for FREE</button> to view Shareholdings details!-->
+  <!--</div>-->
 
-      <div></div>
-      <div>
-        <b>Year {{ yearDisplay}}</b>
-      </div>
-      <div fxLayout="column">
-        <div fxLayoutAlign="center">
-          <h3>Distribution of Shareholdings</h3>
-        </div>
-        <div *ngIf="showDistHoldingsTable">
-          <div class="table-class" fxLayoutAlign="center center" >
-            <mat-table [dataSource]="distholdingsDataSource">
+<!--</div>-->
+<!--<ng-template #templateName>-->
 
-              <!-- Size of holdings Column -->
-              <ng-container matColumnDef="levelname">
-                <mat-header-cell class="leftborder topborder {{tableCellFontClass}}" fxFlex="45%"  *matHeaderCellDef> Size of Holdings </mat-header-cell>
-                <mat-cell class="leftborder {{tableCellFontClass}}" fxFlex="45%"  *matCellDef="let element"> {{element.levelname}}. </mat-cell>
-              </ng-container>
+  <!--<div fxLayout="column">-->
+    <!--<div *ngIf="isLoading; else templateLoaded">-->
+      <!--<mat-progress-spinner-->
+        <!--class="example-margin"-->
+        <!--[color]="color"-->
+        <!--[mode]="mode"-->
+        <!--[value]="value">-->
+      <!--</mat-progress-spinner>-->
+    <!--</div>-->
+    <!--<ng-template #templateLoaded>-->
 
-              <!-- No. of shareholders Column -->
-              <ng-container matColumnDef="numshareholders">
-                <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="20%"   *matHeaderCellDef> No. of Shareholders </mat-header-cell>
-                <mat-cell class="cell-class {{tableCellFontClass}}" fxFlex="20%"   *matCellDef="let element"> {{ element.numshareholders}} </mat-cell>
-              </ng-container>
+      <!--<mat-tab-group >-->
+        <!--<mat-tab label="Equities Total Shares Analysis"> </mat-tab>-->
+        <!--<mat-tab label="Ownership Shares Analysis"> </mat-tab>-->
+        <!--<mat-tab label="Shareholdings Search"> </mat-tab>-->
+      <!--</mat-tab-group>-->
 
-              <!-- Shares Column -->
-              <ng-container matColumnDef="numshares">
-                <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="20%"   *matHeaderCellDef> No. of Shares </mat-header-cell>
-                <mat-cell class="cell-class {{tableCellFontClass}}"  fxFlex="20%"   *matCellDef="let element" > {{ element.numshares.toLocaleString() }} </mat-cell>
-              </ng-container>
+      <!--<div></div>-->
+      <!--<div>-->
+        <!--<b>Year {{ yearDisplay}}</b>-->
+      <!--</div>-->
+      <!--<div fxLayout="column">-->
+        <!--<div fxLayoutAlign="center">-->
+          <!--<h3>Distribution of Shareholdings</h3>-->
+        <!--</div>-->
+        <!--<div *ngIf="showDistHoldingsTable">-->
+          <!--<div class="table-class" fxLayoutAlign="center center" >-->
+            <!--<mat-table [dataSource]="distholdingsDataSource">-->
 
-              <!-- Percentage Column -->
-              <ng-container matColumnDef="sharespercentage">
-                <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="15%"  *matHeaderCellDef> Percentage </mat-header-cell>
-                <mat-cell class="textAlignRight {{tableCellFontClass}}" fxFlex="15%" *matCellDef="let element"> {{element.sharespercentage }}% </mat-cell>
-              </ng-container>
+              <!--&lt;!&ndash; Size of holdings Column &ndash;&gt;-->
+              <!--<ng-container matColumnDef="levelname">-->
+                <!--<mat-header-cell class="leftborder topborder {{tableCellFontClass}}" fxFlex="45%"  *matHeaderCellDef> Size of Holdings </mat-header-cell>-->
+                <!--<mat-cell class="leftborder {{tableCellFontClass}}" fxFlex="45%"  *matCellDef="let element"> {{element.levelname}}. </mat-cell>-->
+              <!--</ng-container>-->
 
-              <mat-header-row  class="my-mat-row" *matHeaderRowDef="distholdingsColumns"></mat-header-row>
-              <mat-row class="my-mat-row" *matRowDef="let row; columns: distholdingsColumns;"></mat-row>
-            </mat-table>
+              <!--&lt;!&ndash; No. of shareholders Column &ndash;&gt;-->
+              <!--<ng-container matColumnDef="numshareholders">-->
+                <!--<mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="20%"   *matHeaderCellDef> No. of Shareholders </mat-header-cell>-->
+                <!--<mat-cell class="cell-class {{tableCellFontClass}}" fxFlex="20%"   *matCellDef="let element"> {{ element.numshareholders}} </mat-cell>-->
+              <!--</ng-container>-->
 
+              <!--&lt;!&ndash; Shares Column &ndash;&gt;-->
+              <!--<ng-container matColumnDef="numshares">-->
+                <!--<mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="20%"   *matHeaderCellDef> No. of Shares </mat-header-cell>-->
+                <!--<mat-cell class="cell-class {{tableCellFontClass}}"  fxFlex="20%"   *matCellDef="let element" > {{ element.numshares.toLocaleString() }} </mat-cell>-->
+              <!--</ng-container>-->
 
-          </div>
-        </div>
-        <div *ngIf="!showDistHoldingsTable">
-          Distribution holdings data is not available
-        </div>
+              <!--&lt;!&ndash; Percentage Column &ndash;&gt;-->
+              <!--<ng-container matColumnDef="sharespercentage">-->
+                <!--<mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="15%"  *matHeaderCellDef> Percentage </mat-header-cell>-->
+                <!--<mat-cell class="textAlignRight {{tableCellFontClass}}" fxFlex="15%" *matCellDef="let element"> {{element.sharespercentage }}% </mat-cell>-->
+              <!--</ng-container>-->
 
-
-      </div>
-      <div fxLayout="column">
-
-        <div fxLayoutAlign="center">
-          <h3>Top 30 Shareholders</h3>
-        </div>
-
-        <div *ngIf="showTop30Table">
-          <div class="table-class" fxFlex="1 1 90%" fxLayoutAlign="center">
-            <mat-table fxFlex="1 1 85%" #table [dataSource]="top30DataSource">
-
-              <!-- Size of holdings Column -->
-              <ng-container matColumnDef="id">
-                <mat-header-cell class="leftborder topborder {{tableCellFontClass}}" fxFlex="10%"  *matHeaderCellDef> ID </mat-header-cell>
-                <mat-cell class="leftborder {{tableCellFontClass}}" fxFlex="10%"   *matCellDef="let element"> {{element.id}}. </mat-cell>
-              </ng-container>
-
-              <!-- No. of shareholders Column -->
-              <ng-container matColumnDef="detailname">
-                <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="55%"   *matHeaderCellDef> Name</mat-header-cell>
-                <mat-cell class="cell-class {{tableCellFontClass}}"  fxFlex="55%"   *matCellDef="let element"> {{ element.detailname}} </mat-cell>
-              </ng-container>
-
-              <!-- Shares Column -->
-              <ng-container matColumnDef="shares">
-                <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="20%"    *matHeaderCellDef>  Shares </mat-header-cell>
-                <mat-cell class="cell-class {{tableCellFontClass}}" fxFlex="20%"    *matCellDef="let element"> {{ element.shares.toLocaleString() }} </mat-cell>
-              </ng-container>
-
-              <!-- Percentage Column -->
-              <ng-container matColumnDef="percentage">
-                <mat-header-cell class="topborder {{tableCellFontClass}}" fxFlex="15%"   *matHeaderCellDef> Percentage </mat-header-cell>
-                <mat-cell class="cell-class {{tableCellFontClass}}" fxFlex="15%"  *matCellDef="let element"> {{element.percentage }}% </mat-cell>
-              </ng-container>
-
-              <mat-header-row  class="my-mat-row" *matHeaderRowDef="Top30Columns"></mat-header-row>
-              <mat-row class="my-mat-row" *matRowDef="let row; columns: Top30Columns;"></mat-row>
-            </mat-table>
+              <!--<mat-header-row  class="my-mat-row" *matHeaderRowDef="distholdingsColumns"></mat-header-row>-->
+              <!--<mat-row class="my-mat-row" *matRowDef="let row; columns: distholdingsColumns;"></mat-row>-->
+            <!--</mat-table>-->
 
 
-          </div>
-        </div>
-        <div *ngIf="!showTop30Table" fxLayoutAlign="center center">
-          Top 30 share holders data is not available
-        </div>
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div *ngIf="!showDistHoldingsTable">-->
+          <!--Distribution holdings data is not available-->
+        <!--</div>-->
+
+
+      <!--</div>-->
+      <!--<div fxLayout="column">-->
+
+        <!--<div fxLayoutAlign="center">-->
+          <!--<h3>Top 30 Shareholders</h3>-->
+        <!--</div>-->
+
+        <!--<div *ngIf="showTop30Table">-->
+
+        <!--</div>-->
+        <!--<div *ngIf="!showTop30Table" fxLayoutAlign="center center">-->
+          <!--Top 30 share holders data is not available-->
+        <!--</div>-->
 
 
 
 
-      </div>
-    </ng-template>
-  </div>
-  <div fxLayout="column" fxLayoutGap="50px">
+      <!--</div>-->
+    <!--</ng-template>-->
+  <!--</div>-->
+  <!--<div fxLayout="column" fxLayoutGap="50px">-->
 
 
-  </div>
-</ng-template>
+  <!--</div>-->
+<!--</ng-template>-->
 
 
 

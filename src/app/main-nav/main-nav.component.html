@@ -6,17 +6,20 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
+    <!-- This is the side navigation bar for mobile-->
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
-      <div *ngIf="(isLoggedIn | async); else sideMenuTemplate" fxLayoutAlign="center center">
-        <div class="mobileusername">  {{ userName }} </div>
-      </div>
-      <ng-template #sideMenuTemplate>
-         Sign In / Register
-      </ng-template>
-
-      <a mat-list-item href="#">Analysis</a>
-      <button mat-list-item mat-button>Logout</button>
+      <!--<div *ngIf="(isLoggedIn | async); else sideMenuTemplate" fxLayoutAlign="center center">-->
+        <!--<div class="mobileusername">  {{ userName }} </div>-->
+      <!--</div>-->
+      <!--<ng-template #sideMenuTemplate>-->
+         <!--Sign In / Register-->
+      <!--</ng-template>-->
+      <section>Analysis</section>
+      <a mat-list-item href="#">Shareholdings Analysis</a>
+     <section>Screener</section>
+     <a mat-list-item href="#">Screener Analysis</a>
+      <!--<button mat-list-item mat-button>Logout</button>-->
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -36,9 +39,9 @@
         <button mat-button (click)="navigateToScreener()">Screener</button>
 
         <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
-          <button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Trade Analysis</button>
+          <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Trade Analysis</button>-->
           <button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Shareholdings Analysis</button>
-          <button mat-menu-item routerLinkActive="menu-active" routerLink="/breakoutanalysis">Breakout Analysis</button>
+          <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="/breakoutanalysis">Breakout Analysis</button>-->
         </mat-menu>
 
       </div>
@@ -58,19 +61,19 @@
           </mat-form-field>
         </ng-template>
 
-        <span  *ngIf="(isLoggedIn | async); else templateName">
-        <img class="profileimg leftrightpadding" title="{{userName}}" src="{{photourl}}"  height="35" width="35">
-        <button class="zeropadding menuclass" mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>
-        </span>
+        <!--<span  *ngIf="(isLoggedIn | async); else templateName">-->
+        <!--<img class="profileimg leftrightpadding" title="{{userName}}" src="{{photourl}}"  height="35" width="35">-->
+        <!--<button class="zeropadding menuclass" mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>-->
+        <!--</span>-->
 
-        <mat-menu #userMenu="matMenu" [overlapTrigger]="false" >
-        <button mat-menu-item (click)="logout()">Logout</button>
-        </mat-menu>
+        <!--<mat-menu #userMenu="matMenu" [overlapTrigger]="false" >-->
+        <!--<button mat-menu-item (click)="logout()">Logout</button>-->
+        <!--</mat-menu>-->
 
-        <ng-template #templateName>
-          <a routerLink="login">Sign In</a>
-          <a routerLink="register">Sign Up</a>
-        </ng-template>
+        <!--<ng-template #templateName>-->
+          <!--<a routerLink="login">Sign In</a>-->
+          <!--<a routerLink="register">Sign Up</a>-->
+        <!--</ng-template>-->
 
 
 

@@ -148,7 +148,7 @@ export class ChartsComponent implements OnInit {
       } else {
         this.showLogin = false;
       }
-      const keys = Object.keys(res['summary']);
+     // const keys = Object.keys(res['summary']);
       this.dailyData = res['daily'];
 
       this.interactiveChartOptions['series'][0]['data'] = this.dailyData;

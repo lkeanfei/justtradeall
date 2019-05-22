@@ -116,7 +116,7 @@
         <mat-grid-tile>
           <mat-form-field>
             <mat-label>Unusual Volume</mat-label>
-            <mat-select placeholder="Unusual Volume"  [(ngModel)]="unusualVolumeValue" (selectionChange)="unusualVolumeChange()">
+            <mat-select placeholder="Unusual Volume" matTooltip="Volume Change(%) compare to 5 days moving average volume" [(ngModel)]="unusualVolumeValue" (selectionChange)="unusualVolumeChange()">
               <mat-option *ngFor="let unusualVolume of unusualVolumeRange" [value]="unusualVolume">
                 {{unusualVolume}}
               </mat-option>
@@ -315,7 +315,7 @@
 
             <!-- VolumeChangePct Column -->
             <ng-container matColumnDef="VolumeChangePct">
-              <mat-header-cell class="cell-class"  fxFlex="{{ volumeChangeWidth }}" *matHeaderCellDef mat-sort-header> Volume Change (%)</mat-header-cell>
+              <mat-header-cell class="cell-class" matTooltip="Volume Change(%) compare to 5 days moving average volume"  fxFlex="{{ volumeChangeWidth }}" *matHeaderCellDef mat-sort-header> Volume Change (%)</mat-header-cell>
               <mat-cell class="cell-class"  fxFlex="{{ volumeChangeWidth }}" *matCellDef="let element">
                 <div *ngIf="element.HasUnusualVolume===1; else displayNA">
                   {{element.VolumeChangePct | number}}

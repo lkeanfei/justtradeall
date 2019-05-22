@@ -2,30 +2,81 @@
 
 
 
-<div class="topdiv" fxLayout="column" fxLayoutGap="40px">
-   <div>
-     <div class="securityOverview">
-       <mat-table #totalshare="matSort" matSort [dataSource]="securityOverviewDataSource">
 
-         <!--'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];-->
+   <div fxLayout="row" fxLayoutAlign="space-around center">
+     <div class="leftpart">
 
-         <!-- Key Column -->
-         <ng-container matColumnDef="key">
-           <mat-header-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matHeaderCellDef> Symbol </mat-header-cell>
-           <mat-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matCellDef="let element"> {{element.key}} </mat-cell>
-         </ng-container>
+       <div class="summary">
+         <div fxLayout="row">
+           <div class="symbolcode"><b>{{code}}</b></div>
+           <div class="symbolcode"><b>{{ symbol}}</b></div>
+         </div>
+         <div class="corporatename">
+           <b>{{ corporateName}}</b>
+         </div>
+         <div class="priceContainer"  >
+           <div class="lastPriceContainer">Last Price : <b>{{lastClose }}</b></div>
+           <div class="changeContainer" fxLayout="row">
+             <div class="intro">Change : <b>{{ priceChange | number:'1.2-2' }}</b> </div>
+             <div class="intro"> (<b>{{ pctChange  | number:'1.2-2'}}% </b>)</div>
+           </div>
 
-         <!-- value Column -->
-         <ng-container matColumnDef="value">
-           <mat-header-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-           <mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element"> {{element.value }} </mat-cell>
-         </ng-container>
 
-         <mat-header-row  class="my-mat-row" *matHeaderRowDef="securityOverviewColumns"></mat-header-row>
-         <mat-row class="my-mat-row"  *matRowDef="let row; columns: securityOverviewColumns;"  ></mat-row>
-       </mat-table>
+         </div>
+       </div>
+       <div class="corporate">
+         <mat-table #totalshare="matSort" matSort [dataSource]="corporateDataSource">
+
+           <!--'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];-->
+
+           <!-- Key Column -->
+           <ng-container matColumnDef="key">
+             <!--<mat-header-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matHeaderCellDef> Symbol </mat-header-cell>-->
+             <mat-cell class="cell-class"  fxFlex="{{ symbolColumnWidth }}" *matCellDef="let element"> {{element.key}} </mat-cell>
+           </ng-container>
+
+           <!-- value Column -->
+           <ng-container matColumnDef="value">
+             <!--<mat-header-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matHeaderCellDef mat-sort-header>  </mat-header-cell>-->
+             <mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element">
+               <div *ngIf="element.type=='number';else stringTemplate">
+                 {{element.value | number }}
+               </div>
+               <ng-template #stringTemplate>
+                 <div *ngIf="element.type=='string';else floatTemplate">
+                   {{element.value}}
+                 </div>
+               </ng-template>
+               <ng-template #floatTemplate>
+                 {{ element.value |  number:'1.3-3'}}
+               </ng-template>
+
+             </mat-cell>
+           </ng-container>
+
+           <!--<mat-header-row  class="my-mat-row" *matHeaderRowDef="securityOverviewColumns"></mat-header-row>-->
+           <mat-row class="my-mat-row"  *matRowDef="let row; columns: corporateColumns;"  ></mat-row>
+         </mat-table>
+       </div>
+     </div>
+
+     <div>
+       <highcharts-chart fxFlex
+                          [Highcharts]="Highstocks"
+
+                          [constructorType]="chartConstructor"
+                          [options]="interactiveChartOptions"
+
+                          [(update)]="interactiveUpdateFlag"
+                          [oneToOne]="interactiveOneToOneFlag"
+
+                          style="width: 100%; height: 400px; display: block;">
+     </highcharts-chart>
 
      </div>
+
+
+
    </div>
   <!--<div *ngIf="isLoading; else templateLoaded">-->
     <!--<mat-progress-spinner-->
@@ -47,9 +98,10 @@
   <div>
     <mat-tab-group (selectedTabChange)="tabChanged($event)">
       <mat-tab label="Overview"> <app-overview></app-overview></mat-tab>
-      <mat-tab label="Charts"> <app-charts></app-charts> </mat-tab>
+      <mat-tab label="Financials (Annual)"> <app-annual></app-annual> </mat-tab>
+      <mat-tab label="Financials (Quarterly)"><app-quarter></app-quarter> </mat-tab>
       <mat-tab label="Shareholdings"> <app-secshareholdings></app-secshareholdings> </mat-tab>
     </mat-tab-group>
   </div>
-</div>
+
 
