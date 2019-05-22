@@ -13,8 +13,21 @@
   cursor: pointer;
 }
 
+.securityOverview {
+  width : 20%;
+}
+
+.securityOverviewCell {
+  height : 16px;
+}
+
 .staticChart {
   width : 750px
+}
+
+.mat-row {
+  min-height: 16px !important;
+  height: 16px !important;
 }
 
 .interactiveChart {

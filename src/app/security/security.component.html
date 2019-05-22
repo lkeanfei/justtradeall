@@ -18,7 +18,7 @@
          <!-- value Column -->
          <ng-container matColumnDef="value">
            <mat-header-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-           <mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element"> {{element.value | number}} </mat-cell>
+           <mat-cell class="cell-class"  fxFlex="{{ ToSharesWidth }}" *matCellDef="let element"> {{element.value }} </mat-cell>
          </ng-container>
 
          <mat-header-row  class="my-mat-row" *matHeaderRowDef="securityOverviewColumns"></mat-header-row>
