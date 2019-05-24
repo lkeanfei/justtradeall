@@ -9,35 +9,58 @@ import {DataService} from "../../data.service";
 })
 export class AnnualComponent implements OnInit {
 
-  annualDataSource =  new MatTableDataSource<any>();
-  columns = [];
+  balanceSheetDataSource =  new MatTableDataSource<any>();
+  profitLossDataSource = new MatTableDataSource<any>();
+  cashFlowDataSource  = new MatTableDataSource<any>()
 
+  balanceSheetColumns = [];
+  profitLossColumns = [];
+  cashFlowColumns = []
 
   constructor(private dateService: DataService) { }
 
   ngOnInit() {
-    this.dateService.balanceSheetData$.subscribe( balanceSheetData => {
+    this.dateService.annualData$.subscribe( annualData => {
 
-      if(balanceSheetData["ready"] == false)
+      if(annualData["ready"] == false)
       {
-        console.log("ready is false");
+       // console.log("ready is false");
       }
       else {
-        this.columns = []
-        this.columns.push("displayname");
+        // Balance Sheet
+        this.balanceSheetColumns = []
+        this.balanceSheetColumns.push("displayname");
 
-        for(let n of balanceSheetData["years"])
+        for(let n of annualData["balancesheet"]["years"])
         {
-          this.columns.push(n);
+          this.balanceSheetColumns.push(n);
         }
 
-        this.annualDataSource.data = balanceSheetData["results"];
+        this.balanceSheetDataSource.data = annualData["balancesheet"]["results"];
+
+        // Profit Loss
+        this.profitLossColumns = [];
+        this.profitLossColumns.push("displayname");
+
+        for(let n of annualData["profitloss"]["years"])
+        {
+          this.profitLossColumns.push(n);
+        }
+
+        this.profitLossDataSource.data = annualData["profitloss"]["results"];
+
+        // Cash Flow
+        this.cashFlowColumns = []
+        this.cashFlowColumns.push("displayname");
+
+        for(let n of annualData["cashflow"]["years"])
+        {
+          this.cashFlowColumns.push(n);
+        }
+
+        this.cashFlowDataSource.data = annualData["cashflow"]["results"];
 
 
-
-        console.log(this.columns);
-        console.log("Balance sheet data");
-        console.log(balanceSheetData);
       }
 
     })

@@ -1,12 +1,80 @@
-<mat-table [dataSource]="annualDataSource">
-  <ng-container *ngFor="let column of columns ; let colIndex = index" [matColumnDef]="column">
-    <mat-header-cell *matHeaderCellDef>{{ columns[colIndex] }}</mat-header-cell>
-    <mat-cell *matCellDef="let row" >
-      <div >
-        {{ row[column]['value'] }}
-      </div>
-    </mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columns;"></mat-row>
-</mat-table>
+<mat-tab-group>
+  <mat-tab label="Balance Sheet">
+    <div class="balancesheet">
+      <mat-table [dataSource]="balanceSheetDataSource">
+        <ng-container *ngFor="let column of balanceSheetColumns ; let colIndex = index" [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef>{{ balanceSheetColumns[colIndex] }}</mat-header-cell>
+          <mat-cell *matCellDef="let row" >
+            <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+              {{ row[column]['value'] | number:'1.2-3'}}
+            </div>
+            <ng-template #numberTemplate>
+              <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                {{ row[column]['value'] | number}}
+              </div>
+            </ng-template>
+            <ng-template #stringTemplate>
+              {{ row[column]['value']}}
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="balanceSheetColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: balanceSheetColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </mat-tab>
+  <mat-tab label="Profit & Loss">
+    <div class="profitloss">
+      <mat-table [dataSource]="profitLossDataSource">
+        <ng-container *ngFor="let column of profitLossColumns ; let colIndex = index" [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef>{{ profitLossColumns[colIndex] }}</mat-header-cell>
+          <mat-cell *matCellDef="let row" >
+            <  <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+            {{ row[column]['value'] | number:'1.2-3'}}
+          </div>
+            <ng-template #numberTemplate>
+              <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                {{ row[column]['value'] | number}}
+              </div>
+            </ng-template>
+            <ng-template #stringTemplate>
+              {{ row[column]['value']}}
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="profitLossColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: profitLossColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+
+  </mat-tab>
+  <mat-tab label="Cash Flow">
+    <div class="cashflow">
+      <mat-table [dataSource]="cashFlowDataSource">
+        <ng-container *ngFor="let column of cashFlowColumns ; let colIndex = index" [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef>{{ cashFlowColumns[colIndex] }}</mat-header-cell>
+          <mat-cell *matCellDef="let row" >
+            <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+              {{ row[column]['value'] | number:'1.2-3'}}
+            </div>
+            <ng-template #numberTemplate>
+              <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                {{ row[column]['value'] | number}}
+              </div>
+            </ng-template>
+            <ng-template #stringTemplate>
+              {{ row[column]['value']}}
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="cashFlowColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: cashFlowColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+  </mat-tab>
+</mat-tab-group>
+
+
+

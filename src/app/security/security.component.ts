@@ -413,9 +413,15 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       this.dataService.setTop30Data(res['top30']);
       this.dataService.setFundamentalsData(res["securityOverview"]);
       this.dataService.setTechnicalsData(res["technicals"]);
-      console.log("upstream")
-      console.log(res["balancesheet"])
-      this.dataService.setBalanceSheetData(res["balancesheet"])
+
+      let annualData = {};
+      annualData["balancesheet"] = res["balancesheet"];
+      annualData["cashflow"] = res["cashflow"];
+      annualData["profitloss"] = res["profitloss"]
+
+
+      this.dataService.setAnnualData(annualData);
+      this.dataService.setQuarterliesData(res["quarterlies"])
 
     })
 
