@@ -8,18 +8,14 @@ export class DataService {
   technicalsData$: Observable<any>;
   top30Data$: Observable<any>;
   overviewDictData$ : Observable<any>;
-  balanceSheetData$ : Observable<any>;
-  profitLossData$:  Observable<any>;
-  cashFlowData$ : Observable<any>;
+  annualData$ : Observable<any>;
   quarterliesData$ : Observable<any>
 
   private overviewDictDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private fundamentalsDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private technicalsDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private top30DataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
-  private balanceSheetDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
-  private profitLossDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
-  private cashFlowDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
+  private annualDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private quarterliesDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
 
   constructor() {
@@ -27,12 +23,11 @@ export class DataService {
     this.fundamentalsData$ = this.fundamentalsDataSubject.asObservable();
     this.technicalsData$ = this.technicalsDataSubject.asObservable();
     this.top30Data$ = this.top30DataSubject.asObservable();
-    this.balanceSheetData$ = this.balanceSheetDataSubject.asObservable();
-    this.profitLossData$ = this.profitLossDataSubject.asObservable();
-    this.cashFlowData$ = this.cashFlowDataSubject.asObservable();
+    this.annualData$ = this.annualDataSubject.asObservable();
     this.quarterliesData$ = this.quarterliesDataSubject.asObservable();
   }
 
+  /*
   public setBalanceSheetData(data) {
      this.balanceSheetDataSubject.next(data);
   }
@@ -43,6 +38,11 @@ export class DataService {
 
   public setCashFlowData(data) {
     this.cashFlowDataSubject.next(data);
+  }
+  */
+
+  public setAnnualData(data) {
+    this.annualDataSubject.next(data);
   }
 
   public setQuarterliesData(data) {
