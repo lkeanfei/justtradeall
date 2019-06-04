@@ -18,6 +18,7 @@ import {AuthService} from "../shared/security/auth.service";
 import {User} from "../shared/security/user";
 import {ChartsComponent} from "./sub/charts/charts.component";
 import {DataService} from "./data.service";
+import {LayoutServiceService} from "../shared/layout-service.service";
 
 @Component({
   selector: 'app-security',
@@ -279,6 +280,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   lastClose: number;
   priceChange: number;
   pctChange: number;
+  isHandSet = false;
 
 
   chartConstructor = 'stockChart';
@@ -298,6 +300,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
 
   constructor(private route: ActivatedRoute , private httpService: HttpService ,
+              private layoutService: LayoutServiceService,
               private authService: AuthService, private loginService: LoginService ,
               private dataService: DataService) {
 
@@ -306,71 +309,6 @@ export class SecurityComponent implements OnInit, AfterViewInit {
     this.tableMap['wklow52'] = '52-week Low';
     this.tableMap['averagevol'] = 'Average Volume';
     const chartWidth = window.screen.width * 0.60;
-    this.interactiveChartOptions  = {
-      chart : {
-        width : chartWidth
-      },
-
-      series: [{
-        type : 'candlestick',
-        id : 'candlestick',
-        data: []
-      }
-        ,{
-          type: 'column',
-          name: 'Volume',
-          data: [],
-          yAxis: 1,
-        }
-        , {
-          type: 'bb',
-          linkedTo: 'candlestick'
-        }
-        , {
-          yAxis: 2,
-          type: 'rsi',
-          linkedTo: 'candlestick'
-        }],
-      yAxis:[{
-        crosshair: true,
-        height: '50%',
-        tickPixelInterval: 10,
-      },
-        {
-          labels: {
-            align: 'right',
-            x: -3
-          },
-          title: {
-            text: 'Volume'
-          },
-          top: '50%',
-          height: '25%',
-          offset: 0,
-          lineWidth: 2
-        },
-        {
-          labels: {
-            align: 'right',
-            x: -3
-          },
-          title: {
-            text: 'RSI'
-          },
-          top: '75%',
-          height: '25%',
-          offset: 0,
-          lineWidth: 2
-        }],
-      xAxis: {
-        crosshair: true,
-        events: {
-          setExtremes:(evt) => {
-            let minDate = new Date(evt.min);
-            //console.log('x axis ' + minDate + ' ' + evt.max);
-          }},
-      }
-    };
 
     const theSub = this.route.params.pipe(
       concatMap( prms => this.routeChangedDetected(prms))
@@ -388,17 +326,8 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       this.interactiveChartOptions['series'][1]['data'] = res['volume']
       this.isLoading = false;
       this.interactiveUpdateFlag = true;
-      console.log(res['daily']);
-      console.log('Volume*****')
-      console.log(res['volume']);
-
       let status = res['status'];
-      console.log('Corp')
-      console.log(res["corpdata"])
-      console.log('Technicals');
-      console.log(res['technicals'])
-      console.log('Top 30')
-      console.log(res['top30'])
+
 
       this.code = res["summary"]["Code"]
       this.symbol = res["summary"]["Symbol"]
@@ -480,7 +409,83 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
+      this.layoutService.getIsHandSetObservable().subscribe(val => {
+        this.isHandSet = val;
 
+        if(this.isHandSet) {
+           this.chartWidth = window.screen.width * 0.95;
+        }
+        else {
+          this.chartWidth = window.screen.width * 0.60;
+        }
+
+        this.interactiveChartOptions  = {
+          chart : {
+            width : this.chartWidth
+          },
+
+          series: [{
+            type : 'candlestick',
+            id : 'candlestick',
+            data: []
+          }
+            ,{
+              type: 'column',
+              name: 'Volume',
+              data: [],
+              yAxis: 1,
+            }
+            , {
+              type: 'bb',
+              linkedTo: 'candlestick'
+            }
+            , {
+              yAxis: 2,
+              type: 'rsi',
+              linkedTo: 'candlestick'
+            }],
+          yAxis:[{
+            crosshair: true,
+            height: '50%',
+            tickPixelInterval: 10,
+          },
+            {
+              labels: {
+                align: 'right',
+                x: -3
+              },
+              title: {
+                text: 'Volume'
+              },
+              top: '50%',
+              height: '25%',
+              offset: 0,
+              lineWidth: 2
+            },
+            {
+              labels: {
+                align: 'right',
+                x: -3
+              },
+              title: {
+                text: 'RSI'
+              },
+              top: '75%',
+              height: '25%',
+              offset: 0,
+              lineWidth: 2
+            }],
+          xAxis: {
+            crosshair: true,
+            events: {
+              setExtremes:(evt) => {
+                let minDate = new Date(evt.min);
+                //console.log('x axis ' + minDate + ' ' + evt.max);
+              }},
+          }
+        };
+
+      });
   }
 
   ngAfterViewInit() {

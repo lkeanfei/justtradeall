@@ -26,6 +26,56 @@
   margin-right: auto;
 }
 
+.rowOne {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.columnOne {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.summaryblock {
+  width: 20%;
+  padding: 25px 25px 25px 25px;
+}
+
+.summaryblock-device {
+  width: 100%;
+  padding: 5px 5px 5px 5px;
+}
+
+.oversold {
+  width: 20%;
+}
+
+.rowTwo {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.topgainers {
+  width: 20%;
+}
+
+.topgainerspct {
+  width: 20%;
+}
+
+.toplosers {
+  width: 20%;
+}
+
+.toploserspct {
+  width: 20%;
+}
+
 .marketoverview-center {
   align-self: center;
   width:70%;
@@ -169,15 +219,11 @@
 .example-full-width {
   width: 100%;
 }
-
-
-
-
-
-.mat-table {
-  overflow: auto;
-  max-height: 500px;
+.table-padding {
+  padding: 25px 25px 25px 25px;
 }
+
+
 
 .mat-header-cell.mat-sort-header-sorted {
   color: black;

@@ -58,11 +58,31 @@
   width: 55%;
 }
 
+.toprowdisplay {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.topcolumndisplay {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.chartcenter {
+  width: 95%;
+  margin: 0 auto;
+}
+
+.counter-mobile {
+  width: 95%;
+}
+
 .leftpart {
   width: 55%;
   display: flex;
   flex-direction: column;
-
 }
 
 .summary {

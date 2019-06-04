@@ -35,6 +35,197 @@
       </div>
     </div>
 
+    <div [ngClass]="isHandset ? 'columnOne' : 'rowOne'">
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Most Active</h5>
+        <mat-table [dataSource]="mostActiveDataSource">
+          <ng-container *ngFor="let column of mostActiveColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ mostActiveColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="mostActiveColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: mostActiveColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Highest Turn Over</h5>
+        <mat-table [dataSource]="turnOverDataSource">
+          <ng-container *ngFor="let column of turnOverColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ turnOverColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="turnOverColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: turnOverColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Overbought</h5>
+        <mat-table [dataSource]="overBoughtDataSource">
+          <ng-container *ngFor="let column of overBoughtColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ overBoughtColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="overBoughtColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: overBoughtColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Oversold</h5>
+        <mat-table [dataSource]="overSoldDataSource">
+          <ng-container *ngFor="let column of overSoldColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ overSoldColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="overSoldColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: overSoldColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+
+    <div [ngClass]="isHandset ? 'columnOne' : 'rowOne'">
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Top Gainers</h5>
+        <mat-table [dataSource]="topGainersDateSource">
+          <ng-container *ngFor="let column of topGainersColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ topGainersColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="topGainersColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: topGainersColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Top Gainers(%)</h5>
+        <mat-table [dataSource]="topGainersPctDateSource">
+          <ng-container *ngFor="let column of topGainersPctColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ topGainersPctColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="topGainersPctColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: topGainersPctColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Top Losers</h5>
+        <mat-table [dataSource]="topLosersDateSource">
+          <ng-container *ngFor="let column of topLosersColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ topLosersColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="topLosersColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: topLosersColumns;"></mat-row>
+        </mat-table>
+      </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Top Losers(%)</h5>
+        <mat-table [dataSource]="topLosersPctDateSource">
+          <ng-container *ngFor="let column of topLosersPctColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ topLosersPctColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                {{ row[column]['value']}}
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="topLosersPctColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: topLosersPctColumns;"></mat-row>
+        </mat-table>
+      </div>
+
+    </div>
+
     <div fxLayout="column" fxLayoutGap="10px">
       <div class="marketoverview"><h2>Bursa Market Overview</h2></div>
       <div class="inputclass">

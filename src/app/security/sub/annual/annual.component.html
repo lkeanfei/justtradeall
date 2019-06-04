@@ -1,20 +1,27 @@
 <mat-tab-group>
   <mat-tab label="Balance Sheet">
-    <div class="balancesheet">
+    <div [ngClass]="isHandSet ? 'balancesheet-mobile' : 'balancesheet'">
       <mat-table [dataSource]="balanceSheetDataSource">
         <ng-container *ngFor="let column of balanceSheetColumns ; let colIndex = index" [matColumnDef]="column">
           <mat-header-cell *matHeaderCellDef>{{ balanceSheetColumns[colIndex] }}</mat-header-cell>
           <mat-cell *matCellDef="let row" >
             <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
-              {{ row[column]['value'] | number:'1.2-3'}}
+              <div class="font-mobile">
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+
             </div>
             <ng-template #numberTemplate>
               <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                <div class="font-mobile">
                 {{ row[column]['value'] | number}}
+                </div>
               </div>
             </ng-template>
             <ng-template #stringTemplate>
+              <div class="font-mobile">
               {{ row[column]['value']}}
+                </div>
             </ng-template>
           </mat-cell>
         </ng-container>

@@ -60,6 +60,7 @@ export class HomeComponent implements OnInit {
   klseData = [];
   updateFlag = false;
   isLoading = false;
+  isHandset = false;
 
   marketOverviewDataSource: any;
   marketOverViewColumns = [ 'symbol' , 'marketcap'  , 'turnover1day' , 'moneyflowin5days', 'moneyflowout5days' , 'moneyflow5days' , 'moneyflowin15days' , 'moneyflowout15days' ,'moneyflow15days' ];
@@ -88,16 +89,24 @@ export class HomeComponent implements OnInit {
                   'Property' , 'Real Estate Investment Trusts' , 'Special Purpose Acquisition Company',
                  'Technology' , 'Telecommunications & Media' , 'Transportation & Logistics' , 'Utilities' ];
   latestUpdateDate = '';
-  topGainersDateSource = [];
-  topGainersPctDateSource = [];
-  topLosersDateSource = [];
-  topLosersPctDateSource = [];
-  newHighDataSource = [];
-  newLowDataSource = [];
-  unusualVolumeDataSource = [];
-  staticBoxBreakoutDataSource = [];
-  dynamicBoxBreakoutDataSource =[];
-  topGainersColumns: string[] = ['stock', 'last', 'change'];
+  turnOverDataSource = new MatTableDataSource();
+  mostActiveDataSource = new MatTableDataSource();
+  overBoughtDataSource = new MatTableDataSource();
+  overSoldDataSource = new MatTableDataSource();
+
+  topGainersDateSource = new MatTableDataSource();
+  topGainersPctDateSource =  new MatTableDataSource();
+  topLosersDateSource = new MatTableDataSource();
+  topLosersPctDateSource = new MatTableDataSource();
+  mostActiveColumns = [];
+  turnOverColumns = [];
+  overBoughtColumns = [];
+  overSoldColumns = [];
+  topLosersColumns: string[] = [];
+  topLosersPctColumns: string[] = [];
+  topGainersColumns: string[] = [];
+  topGainersPctColumns: string[] = [];
+
   newHighLowColumns: string[] = ['stock' , 'weeks'];
   unusualVolumeColumns: string[] = ['stock' , 'ratio'];
   staticBrekaoutColumns: string[] = ['stock' , 'breakoutcompare'];
@@ -118,7 +127,7 @@ export class HomeComponent implements OnInit {
       text : 'FBMKLCI'
     },
     subtitle : {
-      text :'21 Aug 2018'
+      text :''
     },
     yAxis: {
       crosshair: true,
@@ -148,54 +157,10 @@ export class HomeComponent implements OnInit {
     this.data = new Market( 'Bursa', '' , new Observable());
     this.subject = new BehaviorSubject(this.data.selectedDate);
     this.marketOverviewDataSource = new MatTableDataSource<MarketOverview>();
-
-
-
-
-
-
-    // this.httpService.getFrontPageView().subscribe( (frontPageData :any)=> {
-    //
-    //     this.topGainersDateSource = frontPageData["topgainers"];
-    //     this.topGainersPctDateSource = frontPageData["topgainerspct"];
-    //     this.topLosersDateSource = frontPageData["toplosers"];
-    //     this.topLosersPctDateSource = frontPageData["toploserspct"];
-    //     this.newHighDataSource = frontPageData['newhigh'];
-    //     this.newLowDataSource = frontPageData['newlow'];
-    //
-    //     this.staticBoxBreakoutDataSource = frontPageData['staticboxbreakout']
-    //     this.dynamicBoxBreakoutDataSource = frontPageData['dynamicboxbreakout']
-    //     this.isLoading = false;
-    //
-    // })
+    this.topGainersDateSource = new MatTableDataSource();
 
     const subscription = this.subject.subscribe(
       (dateSelected:string ) => {
-
-
-        // const momentSelected: moment.Moment = moment(dateSelected , 'DD-MMM-YYYY');
-        //
-        // for( let localMarketHighList of this.marketSummaryService.arrayMarketHighList)
-        // {
-        //
-        //   console.log("Inside subscribe date loop :" + localMarketHighList.getDate() );
-        //   if (localMarketHighList.getDate() ===  momentSelected.format('YYYY-MM-DD')) {
-        //     this.highListStockItems = localMarketHighList.getHighListItems();
-        //   }
-        // }
-        //
-        // for( let localMarketLowList of this.marketSummaryService.arrayMarketLowList)
-        // {
-        //   if (localMarketLowList.getDate() === momentSelected.format('YYYY-MM-DD')) {
-        //     this.lowListStockItems = localMarketLowList.getLowListItems();
-        //   }
-        // }
-
-
-
-
-
-
 
       } ,
       (err) => {} ,
@@ -209,22 +174,6 @@ export class HomeComponent implements OnInit {
         // itemList.push(tradingDayObj);
         }
     });
-    // this.firestore.collection().list('/tradingdays').valueChanges().subscribe((data: Array<Object>) => {
-    //   const itemList: Array<Object> = new Array();
-    //
-    //   for ( const tradingDayObj of data) {
-
-    //     itemList.push(tradingDayObj);
-    //   }
-    //
-    //   const maxDate =  _.maxBy(itemList);
-    //   this.data.selectedDate = maxDate;
-    //   // to watch for changes in date or country selection
-    //
-
-    //   const myMoment: moment.Moment =  moment(maxDate , 'YYYY-MM-DD');
-    //   this.subject.next(myMoment.format('DD-MMM-YYYY'));
-    // });
 
 
   }
@@ -288,27 +237,12 @@ export class HomeComponent implements OnInit {
   onFormSubmit()  {
 
   }
-
-
-
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
-
-  tiles = [
-    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
-
   ngOnInit() {
     this.searchField = new FormControl();
 
     this.layoutService.getIsHandSetObservable().subscribe(val => {
        // for mobile handsets
+      this.isHandset = val;
       if(val) {
         this.firstRowFxLayout = 'column';
       }
@@ -331,10 +265,64 @@ export class HomeComponent implements OnInit {
     //  this.tradingDates = arr['results'];
       this.selectedDate = this.tradingDates[0];
 
+    });    */
+
+    this.httpService.getFrontPage().subscribe(data => {
+
+      let overBoughtList = [] , overSoldList = [];
+
+      for(let item of data["rsi"])
+      {
+        console.log("RSI");
+         console.log(item);
+         if(item["RSI"]['value'] > 0.0 && item["RSI"]['value'] <= 30)
+         {
+           overSoldList.push(item);
+         }
+         else if(item["RSI"]['value'] >= 70) {
+           overBoughtList.push(item);
+         }
+      }
+
+      function compare( a, b ) {
+        if ( a["RSI"]['value'] < b["RSI"]['value'] ){
+          return -1;
+        }
+        if ( a["RSI"]['value']  > b["RSI"]['value']  ){
+          return 1;
+        }
+        return 0;
+      }
+
+      let sortedOverBoughtList = overBoughtList.sort(compare);
+      let sortedOverSoldList = overSoldList.sort(compare);
+      sortedOverSoldList = sortedOverSoldList.slice(0,10);
+      sortedOverBoughtList = sortedOverBoughtList.slice(0,10);
+
+
+      this.turnOverDataSource.data = data["turnover"];
+      this.turnOverColumns = data["turnovercolumns"];
+      this.mostActiveDataSource.data = data["mostactive"];
+      this.mostActiveColumns = data["mostactivecolumns"];
+      this.overSoldColumns = data["rsicolumns"];
+      this.overSoldDataSource.data = sortedOverSoldList;
+      this.overBoughtColumns = data["rsicolumns"];
+      this.overBoughtDataSource.data = sortedOverBoughtList;
+
+      this.topGainersColumns = data['gainerscolumns'];
+      this.topGainersDateSource.data = data['gainers'];
+      this.topGainersPctColumns = data['gainerspctcolumns'];
+      this.topGainersPctDateSource.data = data['gainerspct'];
+      this.topLosersColumns = data['loserscolumns'];
+      this.topLosersDateSource.data = data['losers']
+      this.topLosersPctColumns = data['loserspctcolumns']
+      this.topLosersPctDateSource.data = data['loserspct']
+
+
+
+      console.log(data['gainerspct']);
     });
 
-
-    */
     let obs = this.httpService.getTradingDays().pipe(
       concatMap(arr => this.processTradingDays(arr) ),
       concatMap( lastTradingDate => this.httpService.getMarketOverview(lastTradingDate , 'Construction'))
@@ -347,15 +335,6 @@ export class HomeComponent implements OnInit {
 
 
 
-    /*
-    this.httpService.getMarketOverview('20-Mar-2019' , 'Construction').subscribe( arr => {
-
-      //console.log('data is back');
-      //console.log(arr);
-      this.marketOverviewDataSource.data = arr['results'];
-
-    });
-    */
     this.httpService.getBursaPriceVolume().subscribe( (data:any) => {
 
       this.plotKLSEChart(data);

@@ -9,6 +9,7 @@ import {HttpService} from "../../../shared/httpservice.service";
 import {concatMap } from 'rxjs/operators';
 import {MatTableDataSource} from "@angular/material";
 import {DataService} from "../../data.service";
+import {LayoutServiceService} from "../../../shared/layout-service.service";
 HC_indic(Highcharts); // loads core and enables sma
 HC_BB(Highcharts);
 HC_RSI(Highcharts);
@@ -34,6 +35,7 @@ export class OverviewComponent implements OnInit {
   staticBoxLow: number;
 
   isLoading = true;
+  isHandset = false;
 
   fundamentalsDataSource =  new MatTableDataSource<any>();
   fundamentalsColumns: string[] = ['key' , 'value'];
@@ -61,7 +63,9 @@ export class OverviewComponent implements OnInit {
   NTA : number;
   PARValue: number;
 
-  constructor(private route: ActivatedRoute , private httpService: HttpService , private dataService: DataService ) {
+  constructor(private route: ActivatedRoute , private httpService: HttpService ,
+              private layoutService: LayoutServiceService,
+              private dataService: DataService ) {
 
     this.tableMap['rsi'] = 'RSI';
     this.tableMap['wkhigh52'] = '52-week High';
@@ -223,7 +227,9 @@ export class OverviewComponent implements OnInit {
 
   }
   ngOnInit() {
-
+      this.layoutService.getIsHandSetObservable().subscribe(val => {
+          this.isHandset = val;
+      });
 
   }
 

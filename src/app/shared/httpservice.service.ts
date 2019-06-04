@@ -191,6 +191,13 @@ export class HttpService {
 
     }
 
+    getFrontPage() {
+
+      const body = {};
+      return this.httpClient.post('/api/frontpage/' , body);
+
+    }
+
 
 
 
