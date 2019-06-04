@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatTableDataSource} from "@angular/material";
 import {DataService} from "../../data.service";
+import {LayoutServiceService} from "../../../shared/layout-service.service";
 
 @Component({
   selector: 'app-annual',
@@ -17,9 +18,15 @@ export class AnnualComponent implements OnInit {
   profitLossColumns = [];
   cashFlowColumns = []
 
-  constructor(private dateService: DataService) { }
+  isHandSet = false;
+
+  constructor(private dateService: DataService , private layoutService: LayoutServiceService) { }
 
   ngOnInit() {
+
+    this.layoutService.getIsHandSetObservable().subscribe(val => {
+      this.isHandSet = val;
+    });
     this.dateService.annualData$.subscribe( annualData => {
 
       if(annualData["ready"] == false)

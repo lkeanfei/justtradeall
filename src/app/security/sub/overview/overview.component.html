@@ -43,7 +43,7 @@
   <!--</mat-grid-list>-->
 <!--</div>-->
 <div fxFlexAlign="overview" fxLayout="row">
-  <div class="fundamentals" >
+  <div [ngClass]="isHandset ? 'fundamentals-mobile' : 'fundamentals'">
      <mat-table  matSort [dataSource]="fundamentalsDataSource">
 
       <!--'Symbol' , 'ToShares'  , 'SharesDiff' , 'SharesDiffPct'];-->

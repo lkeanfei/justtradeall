@@ -11,6 +11,10 @@
   justify-content: flex-start;
 }
 
+.fundamentals-mobile {
+  width: 95%;
+  margin: 10px 10px 10px 10px;
+}
 .fundamentals {
   width: 30%;
   margin: 10px 10px 10px 10px;

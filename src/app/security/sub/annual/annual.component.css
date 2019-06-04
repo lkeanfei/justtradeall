@@ -3,6 +3,17 @@
   margin: 0 auto;
 }
 
+.balancesheet-mobile {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 50% ;
+}
+
+.font-mobile {
+  font-size: 50%;
+}
+
+
 .profitloss {
   width: 70%;
   margin: 0 auto;
