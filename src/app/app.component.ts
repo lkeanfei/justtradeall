@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
 
 
     // Verify the user
+    /*
     this.authService.verifyUser().subscribe( (user:User) => {
        if (user === AuthService.UNKNOWN_USER ) {
            //console.log('App unknown user!!')
@@ -101,6 +102,7 @@ export class AppComponent implements OnInit {
        }
 
     });
+    */
 
     this.filteredOptions = this.myControl.valueChanges
       .pipe(

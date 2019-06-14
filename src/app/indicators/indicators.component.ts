@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 
 
 @Component({
-  selector: 'app-indicators',
+  selector: 'app-indicators-archive',
   templateUrl: './indicators.component.html',
   styleUrls: ['./indicators.component.css']
 })

@@ -219,7 +219,12 @@
 
             <ng-container matColumnDef="symbol">
               <mat-header-cell class="cell-class"  fxFlex="{{ symbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element"> {{element.symbol}} </mat-cell>
+              <mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element">
+                <a [routerLink]="['/security/', element.code + '.MY']">
+                  {{element.symbol}}
+                </a>
+
+              </mat-cell>
             </ng-container>
 
             <!-- marketcap Column -->
@@ -298,7 +303,12 @@
 
             <ng-container matColumnDef="symbol">
               <mat-header-cell class="cell-class"  fxFlex="{{ technicalSymbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
-              <mat-cell class="cell-class"  fxFlex="{{  technicalSymbolWidth }}" *matCellDef="let element"> {{element.symbol }} </mat-cell>
+              <mat-cell class="cell-class"  fxFlex="{{  technicalSymbolWidth }}" *matCellDef="let element">
+                <a [routerLink]="['/security/', element.code + '.MY']">
+                  {{element.symbol}}
+                </a>
+
+              </mat-cell>
             </ng-container>
 
             <!-- Close Column -->

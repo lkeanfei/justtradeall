@@ -37,6 +37,59 @@
 
     <div [ngClass]="isHandset ? 'columnOne' : 'rowOne'">
       <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Bullish Counters</h5>
+        <mat-table [dataSource]="bullishDataSource">
+          <ng-container *ngFor="let column of bullishColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ bullishColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="bullishColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: bullishColumns;"></mat-row>
+        </mat-table>
+    </div>
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
+        <h5>Bearish Counters</h5>
+        <mat-table [dataSource]="bearishDataSource">
+          <ng-container *ngFor="let column of bearishColumns ; let colIndex = index" [matColumnDef]="column">
+            <mat-header-cell *matHeaderCellDef>{{ bearishColumns[colIndex] }}</mat-header-cell>
+            <mat-cell *matCellDef="let row" >
+              <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+              <ng-template #numberTemplate>
+                <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                  {{ row[column]['value'] | number}}
+                </div>
+              </ng-template>
+              <ng-template #stringTemplate>
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
+              </ng-template>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="bearishColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: bearishColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+
+    <div [ngClass]="isHandset ? 'columnOne' : 'rowOne'">
+      <div [ngClass]="isHandset ? 'summaryblock-device' : 'summaryblock'">
         <h5>Most Active</h5>
         <mat-table [dataSource]="mostActiveDataSource">
           <ng-container *ngFor="let column of mostActiveColumns ; let colIndex = index" [matColumnDef]="column">
@@ -51,7 +104,10 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
+
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -74,7 +130,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -97,7 +155,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -120,7 +180,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -146,7 +208,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -169,7 +233,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -192,7 +258,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -215,7 +283,9 @@
                 </div>
               </ng-template>
               <ng-template #stringTemplate>
-                {{ row[column]['value']}}
+                <a [routerLink]="['/security/',row['FullId']['value']]">
+                  {{ row[column]['value']}}
+                </a>
               </ng-template>
             </mat-cell>
           </ng-container>
@@ -253,69 +323,69 @@
 
       </div>
 
-      <div class="marketoverview-center" fxFlexAlign="center" fxLayout="column">
-        <mat-table matSort (matSortChange)="sortData($event)"   [dataSource]="marketOverviewDataSource">
+      <!--<div class="marketoverview-center" fxFlexAlign="center" fxLayout="column">-->
+        <!--<mat-table matSort (matSortChange)="sortData($event)"   [dataSource]="marketOverviewDataSource">-->
 
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="symbol">
-            <mat-header-cell class="cell-class"  fxFlex="{{ symbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element"> {{element.symbol}} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Symbol Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="symbol">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ symbolWidth }}" *matHeaderCellDef mat-sort-header> Symbol </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{  symbolWidth }}" *matCellDef="let element"> {{element.symbol}} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- marketcap Column -->
-          <ng-container matColumnDef="marketcap">
-            <mat-header-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matHeaderCellDef mat-sort-header> Market Cap </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matCellDef="let element"> {{element.marketcap | number}} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; marketcap Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="marketcap">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matHeaderCellDef mat-sort-header> Market Cap </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ marketCapWidth }}" *matCellDef="let element"> {{element.marketcap | number}} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Turn Over Column -->
-          <ng-container matColumnDef="turnover1day">
-            <mat-header-cell class="cell-class"  fxFlex="{{ turnOverWidth }}" *matHeaderCellDef mat-sort-header> Turn Over (per day))</mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ turnOverWidth }}" *matCellDef="let element"> {{element.turnover1day | number:'1.3-3'}} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Turn Over Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="turnover1day">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ turnOverWidth }}" *matHeaderCellDef mat-sort-header> Turn Over (per day))</mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ turnOverWidth }}" *matCellDef="let element"> {{element.turnover1day | number:'1.3-3'}} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Money in 5 days Column -->
-          <ng-container matColumnDef="moneyflowin5days">
-            <mat-header-cell class="cell-class"  fxFlex="{{ moneyflowin5daysWidth }}" *matHeaderCellDef mat-sort-header> Money Flow In (5 days) </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ moneyflowin5daysWidth }}" *matCellDef="let element"> {{ element.moneyflowin5days | number }} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Money in 5 days Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="moneyflowin5days">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ moneyflowin5daysWidth }}" *matHeaderCellDef mat-sort-header> Money Flow In (5 days) </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ moneyflowin5daysWidth }}" *matCellDef="let element"> {{ element.moneyflowin5days | number }} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Money out 5 days Column -->
-          <ng-container matColumnDef="moneyflowout5days">
-            <mat-header-cell class="cell-class"  fxFlex="{{ moneyflowout5dayWidth }}" *matHeaderCellDef mat-sort-header> Money Flow out (5 days) </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ moneyflowout5dayWidth }}" *matCellDef="let element"> {{ element.moneyflowout5days | number }} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Money out 5 days Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="moneyflowout5days">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ moneyflowout5dayWidth }}" *matHeaderCellDef mat-sort-header> Money Flow out (5 days) </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ moneyflowout5dayWidth }}" *matCellDef="let element"> {{ element.moneyflowout5days | number }} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Net Money 5 days Column -->
-          <ng-container matColumnDef="moneyflow5days">
-            <mat-header-cell class="cell-class"  fxFlex="{{ netmoneyflow5daysWidth }}" *matHeaderCellDef mat-sort-header> Net Money Flow (5 days) </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ netmoneyflow5daysWidth }}" *matCellDef="let element"> {{ element.moneyflow5days | number }} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Net Money 5 days Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="moneyflow5days">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ netmoneyflow5daysWidth }}" *matHeaderCellDef mat-sort-header> Net Money Flow (5 days) </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ netmoneyflow5daysWidth }}" *matCellDef="let element"> {{ element.moneyflow5days | number }} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Money in 15 days Column -->
-          <ng-container matColumnDef="moneyflowin15days">
-            <mat-header-cell class="cell-class"  fxFlex="{{ moneyflowin15daysWidth }}" *matHeaderCellDef mat-sort-header> Money Flow In (15 days) </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ moneyflowin15daysWidth }}" *matCellDef="let element"> {{ element.moneyflowin15days | number }} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Money in 15 days Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="moneyflowin15days">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ moneyflowin15daysWidth }}" *matHeaderCellDef mat-sort-header> Money Flow In (15 days) </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ moneyflowin15daysWidth }}" *matCellDef="let element"> {{ element.moneyflowin15days | number }} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Money out 15 days Column -->
-          <ng-container matColumnDef="moneyflowout15days">
-            <mat-header-cell class="cell-class"  fxFlex="{{ moneyflowout15daysWidth }}" *matHeaderCellDef mat-sort-header> Money Flow out (15 days) </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ moneyflowout15daysWidth }}" *matCellDef="let element"> {{ element.moneyflowout15days | number }} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Money out 15 days Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="moneyflowout15days">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ moneyflowout15daysWidth }}" *matHeaderCellDef mat-sort-header> Money Flow out (15 days) </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ moneyflowout15daysWidth }}" *matCellDef="let element"> {{ element.moneyflowout15days | number }} </mat-cell>-->
+          <!--</ng-container>-->
 
-          <!-- Net Money 15 days Column -->
-          <ng-container matColumnDef="moneyflow15days">
-            <mat-header-cell class="cell-class"  fxFlex="{{ netmoneyflow15daysWidth }}" *matHeaderCellDef mat-sort-header> Net Money Flow (15 days) </mat-header-cell>
-            <mat-cell class="cell-class"  fxFlex="{{ netmoneyflow15daysWidth }}" *matCellDef="let element"> {{ element.moneyflow15days | number }} </mat-cell>
-          </ng-container>
+          <!--&lt;!&ndash; Net Money 15 days Column &ndash;&gt;-->
+          <!--<ng-container matColumnDef="moneyflow15days">-->
+            <!--<mat-header-cell class="cell-class"  fxFlex="{{ netmoneyflow15daysWidth }}" *matHeaderCellDef mat-sort-header> Net Money Flow (15 days) </mat-header-cell>-->
+            <!--<mat-cell class="cell-class"  fxFlex="{{ netmoneyflow15daysWidth }}" *matCellDef="let element"> {{ element.moneyflow15days | number }} </mat-cell>-->
+          <!--</ng-container>-->
 
 
 
-          <mat-header-row  class="my-mat-row" *matHeaderRowDef="marketOverViewColumns;sticky: true"></mat-header-row>
-          <mat-row class="my-mat-row" *matRowDef="let row; columns: marketOverViewColumns;"  ></mat-row>
-        </mat-table>
-      </div>
+          <!--<mat-header-row  class="my-mat-row" *matHeaderRowDef="marketOverViewColumns;sticky: true"></mat-header-row>-->
+          <!--<mat-row class="my-mat-row" *matRowDef="let row; columns: marketOverViewColumns;"  ></mat-row>-->
+        <!--</mat-table>-->
+      <!--</div>-->
 
 
 
