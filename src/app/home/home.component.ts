@@ -93,6 +93,8 @@ export class HomeComponent implements OnInit {
   mostActiveDataSource = new MatTableDataSource();
   overBoughtDataSource = new MatTableDataSource();
   overSoldDataSource = new MatTableDataSource();
+  bullishDataSource = new MatTableDataSource();
+  bearishDataSource = new MatTableDataSource();
 
   topGainersDateSource = new MatTableDataSource();
   topGainersPctDateSource =  new MatTableDataSource();
@@ -106,6 +108,8 @@ export class HomeComponent implements OnInit {
   topLosersPctColumns: string[] = [];
   topGainersColumns: string[] = [];
   topGainersPctColumns: string[] = [];
+  bullishColumns: string[] = [];
+  bearishColumns: string[] = [];
 
   newHighLowColumns: string[] = ['stock' , 'weeks'];
   unusualVolumeColumns: string[] = ['stock' , 'ratio'];
@@ -299,6 +303,10 @@ export class HomeComponent implements OnInit {
       sortedOverSoldList = sortedOverSoldList.slice(0,10);
       sortedOverBoughtList = sortedOverBoughtList.slice(0,10);
 
+      this.bullishDataSource.data = data["bullish"];
+      this.bullishColumns = data["bullishcolumns"];
+      this.bearishDataSource.data = data["bearish"];
+      this.bearishColumns = data["bearishcolumns"]
 
       this.turnOverDataSource.data = data["turnover"];
       this.turnOverColumns = data["turnovercolumns"];
