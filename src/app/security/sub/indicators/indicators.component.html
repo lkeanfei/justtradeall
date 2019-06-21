@@ -1,3 +1,29 @@
-<p>
-  indicators works!
-</p>
+<div [ngClass]="isHandSet ? 'indicators-mobile' : 'indicators'">
+  <mat-table [dataSource]="indicatorsDataSource">
+    <ng-container *ngFor="let column of indicatorsColumns ; let colIndex = index" [matColumnDef]="column">
+      <mat-header-cell *matHeaderCellDef>{{ indicatorsColumns[colIndex] }}</mat-header-cell>
+      <mat-cell *matCellDef="let row" >
+        <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+          <div class="font-mobile">
+            {{ row[column]['value'] | number:'1.2-3'}}
+          </div>
+
+        </div>
+        <ng-template #numberTemplate>
+          <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+            <div class="font-mobile">
+              {{ row[column]['value'] | number}}
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #stringTemplate>
+          <div class="font-mobile">
+            {{ row[column]['value']}}
+          </div>
+        </ng-template>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="indicatorsColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: indicatorsColumns;"></mat-row>
+  </mat-table>
+</div>

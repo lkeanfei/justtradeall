@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {DataService} from "../../data.service";
+import {LayoutServiceService} from "../../../shared/layout-service.service";
+import {MatTableDataSource} from "@angular/material";
 
 @Component({
   selector: 'app-indicators',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndicatorsComponent implements OnInit {
 
-  constructor() { }
+  isHandSet = false;
+  indicatorsDataSource  = new MatTableDataSource<any>();
+  indicatorsColumns = [];;
+
+  constructor(private dataService :DataService , private layoutService: LayoutServiceService) { }
 
   ngOnInit() {
+    this.layoutService.getIsHandSetObservable().subscribe(val => {
+      this.isHandSet = val;
+    });
+
+    this.dataService.indicatorsData$.subscribe(data=> {
+      this.indicatorsColumns = data["columns"];
+      this.indicatorsDataSource = data["indicators"];
+
+    });
+
   }
 
 }
