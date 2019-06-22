@@ -9,7 +9,8 @@ export class DataService {
   top30Data$: Observable<any>;
   overviewDictData$ : Observable<any>;
   annualData$ : Observable<any>;
-  quarterliesData$ : Observable<any>
+  quarterliesData$ : Observable<any>;
+  indicatorsData$: Observable<any>;
 
   private overviewDictDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private fundamentalsDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
@@ -17,6 +18,7 @@ export class DataService {
   private top30DataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private annualDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private quarterliesDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
+  private indicatorsDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
 
   constructor() {
     this.overviewDictData$ = this.overviewDictDataSubject.asObservable();
@@ -25,6 +27,7 @@ export class DataService {
     this.top30Data$ = this.top30DataSubject.asObservable();
     this.annualData$ = this.annualDataSubject.asObservable();
     this.quarterliesData$ = this.quarterliesDataSubject.asObservable();
+    this.indicatorsData$ = this.indicatorsDataSubject.asObservable();
   }
 
   /*
@@ -63,6 +66,10 @@ export class DataService {
 
   public setTop30Data(data) {
     this.top30DataSubject.next(data);
+  }
+
+  public setIndicatorsData(data) {
+    this.indicatorsDataSubject.next(data);
   }
 
 }
