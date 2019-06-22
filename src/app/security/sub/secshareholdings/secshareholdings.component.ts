@@ -43,7 +43,8 @@ export class SecshareholdingsComponent implements OnInit {
   yearDisplay: string;
   tableCellFontClass: string;
 
-  isLoading = true;
+  isLoading = true
+  isHandSet = false;
 
   color = 'primary';
   mode = 'indeterminate';
@@ -66,6 +67,7 @@ export class SecshareholdingsComponent implements OnInit {
     );
 
     this.layoutService.getIsHandSetObservable().subscribe(isHandset => {
+      this.isHandSet = isHandset;
        if(isHandset) {
          this.tableCellFontClass = 'handsetfont';
        }

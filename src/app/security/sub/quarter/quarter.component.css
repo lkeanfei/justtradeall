@@ -1,4 +1,14 @@
 .quarterlies {
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
+}
+
+.quarterlies-mobile {
+  width: 100%;
+  margin: 0 auto;
+  font-size: 50% ;
+}
+
+.font-mobile {
+  font-size: 70%;
 }

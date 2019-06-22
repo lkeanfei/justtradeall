@@ -1,4 +1,4 @@
-<div class="table-class" fxFlex="1 1 90%" fxLayoutAlign="center">
+<div [ngClass]="isHandSet ? 'table-mobile' : 'table-class'" >
   <mat-table fxFlex="1 1 85%" #table [dataSource]="top30DataSource">
 
     <!-- Size of holdings Column -->

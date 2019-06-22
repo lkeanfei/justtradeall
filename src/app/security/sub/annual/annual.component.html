@@ -6,20 +6,20 @@
           <mat-header-cell *matHeaderCellDef>{{ balanceSheetColumns[colIndex] }}</mat-header-cell>
           <mat-cell *matCellDef="let row" >
             <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
-              <div class="font-mobile">
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
                 {{ row[column]['value'] | number:'1.2-3'}}
               </div>
 
             </div>
             <ng-template #numberTemplate>
               <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
-                <div class="font-mobile">
+                <div [ngClass]="isHandSet ? 'font-mobile' : ''">
                 {{ row[column]['value'] | number}}
                 </div>
               </div>
             </ng-template>
             <ng-template #stringTemplate>
-              <div class="font-mobile">
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
               {{ row[column]['value']}}
                 </div>
             </ng-template>
@@ -31,22 +31,29 @@
     </div>
   </mat-tab>
   <mat-tab label="Profit & Loss">
-    <div class="profitloss">
+    <div [ngClass]="isHandSet ? 'balancesheet-mobile' : 'balancesheet'">
       <mat-table [dataSource]="profitLossDataSource">
         <ng-container *ngFor="let column of profitLossColumns ; let colIndex = index" [matColumnDef]="column">
           <mat-header-cell *matHeaderCellDef>{{ profitLossColumns[colIndex] }}</mat-header-cell>
           <mat-cell *matCellDef="let row" >
-            <  <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
-            {{ row[column]['value'] | number:'1.2-3'}}
+          <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+            <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+              {{ row[column]['value'] | number:'1.2-3'}}
+            </div>
+
           </div>
-            <ng-template #numberTemplate>
-              <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+          <ng-template #numberTemplate>
+            <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
                 {{ row[column]['value'] | number}}
               </div>
-            </ng-template>
-            <ng-template #stringTemplate>
+            </div>
+          </ng-template>
+          <ng-template #stringTemplate>
+            <div [ngClass]="isHandSet ? 'font-mobile' : ''">
               {{ row[column]['value']}}
-            </ng-template>
+            </div>
+          </ng-template>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="profitLossColumns"></mat-header-row>
@@ -57,21 +64,28 @@
 
   </mat-tab>
   <mat-tab label="Cash Flow">
-    <div class="cashflow">
+    <div [ngClass]="isHandSet ? 'balancesheet-mobile' : 'balancesheet'">
       <mat-table [dataSource]="cashFlowDataSource">
         <ng-container *ngFor="let column of cashFlowColumns ; let colIndex = index" [matColumnDef]="column">
           <mat-header-cell *matHeaderCellDef>{{ cashFlowColumns[colIndex] }}</mat-header-cell>
           <mat-cell *matCellDef="let row" >
             <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
-              {{ row[column]['value'] | number:'1.2-3'}}
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+
             </div>
             <ng-template #numberTemplate>
               <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
-                {{ row[column]['value'] | number}}
+                <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                  {{ row[column]['value'] | number}}
+                </div>
               </div>
             </ng-template>
             <ng-template #stringTemplate>
-              {{ row[column]['value']}}
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                {{ row[column]['value']}}
+              </div>
             </ng-template>
           </mat-cell>
         </ng-container>

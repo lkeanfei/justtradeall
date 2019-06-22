@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from "../../data.service";
 import {MatTableDataSource} from "@angular/material";
+import {LayoutServiceService} from '../../../shared/layout-service.service';
 
 @Component({
   selector: 'app-quarter',
@@ -11,10 +12,15 @@ export class QuarterComponent implements OnInit {
 
   quarterliesDataSource  = new MatTableDataSource<any>();
   quarterliesColumns = [];
+  isHandSet = false;
 
-  constructor(private dataService : DataService) { }
+  constructor(private dataService : DataService , private layoutService : LayoutServiceService) { }
 
   ngOnInit() {
+
+    this.layoutService.getIsHandSetObservable().subscribe( val => {
+      this.isHandSet = val;
+    });
     this.dataService.quarterliesData$.subscribe( quarterliesData => {
 
       if(quarterliesData["ready"] == false)

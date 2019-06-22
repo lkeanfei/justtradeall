@@ -45,7 +45,7 @@ import { ShareholdingsComponent } from './shareholdings/shareholdings.component'
 import { ResetComponent } from './reset/reset.component';
 import { CoolchartComponent } from './coolchart/coolchart.component';
 import { SubplotComponent } from './subplot/subplot.component';
-import { IndicatorsComponent } from './indicators/indicators.component';
+
 import { HighstockComponent } from './highstock/highstock.component';
 import { ExperimentComponent } from './experiment/experiment.component';
 import { SecurityComponent } from './security/security.component';
@@ -68,6 +68,8 @@ import { ScreenerComponent } from './screener/screener.component';
 import {DataService} from "./security/data.service";
 import { AnnualComponent } from './security/sub/annual/annual.component';
 import { QuarterComponent } from './security/sub/quarter/quarter.component';
+
+import {IndicatorsComponent} from './security/sub/indicators/indicators.component';
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
