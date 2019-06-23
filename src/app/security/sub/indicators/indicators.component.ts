@@ -22,6 +22,8 @@ export class IndicatorsComponent implements OnInit {
     });
 
     this.dataService.indicatorsData$.subscribe(data=> {
+      console.log('indicators')
+      console.log(data);
       this.indicatorsColumns = data["columns"];
       this.indicatorsDataSource = data["indicators"];
 
