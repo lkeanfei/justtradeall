@@ -12,7 +12,9 @@ export class IndicatorsComponent implements OnInit {
 
   isHandSet = false;
   indicatorsDataSource  = new MatTableDataSource<any>();
-  indicatorsColumns = [];;
+  indicatorsColumns = [];
+  candlePatternsDataSource = new MatTableDataSource<any>();
+  candlePatternsColumns = [];
 
   constructor(private dataService :DataService , private layoutService: LayoutServiceService) { }
 
@@ -21,9 +23,12 @@ export class IndicatorsComponent implements OnInit {
       this.isHandSet = val;
     });
 
+    this.dataService.candlePatternsData$.subscribe(data=> {
+      this.candlePatternsColumns = data["columns"];
+      this.candlePatternsDataSource = data["candlepatterns"];
+    });
+
     this.dataService.indicatorsData$.subscribe(data=> {
-      console.log('indicators')
-      console.log(data);
       this.indicatorsColumns = data["columns"];
       this.indicatorsDataSource = data["indicators"];
 

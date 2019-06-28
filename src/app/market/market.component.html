@@ -1,0 +1,91 @@
+<h3>Counters</h3>
+
+<div *ngIf="isLoading; else templateLoaded">
+<mat-progress-spinner
+class="example-margin"
+[color]="color"
+[mode]="mode"
+[value]="value">
+</mat-progress-spinner>
+</div>
+<ng-template #templateLoaded>
+
+  <mat-tab-group>
+    <mat-tab label="A - E">
+      <div class="alignmiddle" fxLayout="row">
+        <div class="firsttabclass">
+          <h5>0 - 9</h5>
+          <div *ngFor="let counter of activeCounters['3']">
+            <div>
+              <a routerLink="/security/{{counter['Symbol']}}"> {{ counter["Name"] }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="firsttabclass" *ngFor="let char of AEList">
+          <h5> {{char}}</h5>
+          <div *ngFor="let counter of activeCounters[char]">
+            <div>
+              <a routerLink="/security/{{counter['Symbol']}}"> {{ counter["Name"] }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-tab>
+    <mat-tab label="F - J">
+      <div class="alignmiddle" fxLayout="row">
+        <div class="middletab" *ngFor="let char of FJList">
+          <h5> {{char}}</h5>
+          <div *ngFor="let counter of activeCounters[char]">
+            <div>
+              <a routerLink="/security/{{counter['Symbol']}}"> {{ counter["Name"] }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-tab>
+    <mat-tab label="K - O">
+      <div class="alignmiddle" fxLayout="row">
+        <div class="middletab" *ngFor="let char of KOList">
+          <h5> {{char}}</h5>
+          <div *ngFor="let counter of activeCounters[char]">
+            <div>
+              <a routerLink="/security/{{counter['Symbol']}}"> {{ counter["Name"] }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-tab>
+    <mat-tab label="P - T">
+      <div class="alignmiddle" fxLayout="row">
+        <div class="middletab" *ngFor="let char of PTList">
+          <h5> {{char}}</h5>
+          <div *ngFor="let counter of activeCounters[char]">
+            <div>
+              <a routerLink="/security/{{counter['Symbol']}}"> {{ counter["Name"] }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="U - Z">
+      <div class="alignmiddle" fxLayout="row">
+        <div class="middletab" *ngFor="let char of UZList">
+          <h5> {{char}}</h5>
+          <div *ngFor="let counter of activeCounters[char]">
+            <div>
+              <a routerLink="/security/{{counter['Symbol']}}"> {{ counter["Name"] }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>
+
+</ng-template>
+
+
+

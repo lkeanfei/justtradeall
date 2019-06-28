@@ -101,17 +101,7 @@
   align-self: center;
 }
 
-.my-mat-row {
-  height: 16px !important;
-  min-height: 16px !important;
-  padding: 1px 0;
-}
 
-.cell-class {
-  font-size:15px;
-  height: 8px !important;
-  min-height: 8px !important;
-}
 
 .full-height {
   height : 100vh;

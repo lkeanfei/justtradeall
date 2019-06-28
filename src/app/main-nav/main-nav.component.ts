@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import {BehaviorSubject, Observable} from 'rxjs';
-import { map , startWith } from 'rxjs/operators';
+import { map , startWith , debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {HttpService} from '../shared/httpservice.service';
 import {Router} from '@angular/router';
@@ -36,6 +36,16 @@ export class MainNavComponent implements OnInit{
   loginSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false);
   layoutClass: string;
   currentHandsetState : boolean;
+  model: any;
+  states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
+    'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
+    'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
+    'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
+    'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+    'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
+    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
+    'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+  @ViewChild('mobileCounterInput') mobileCounterInput: ElementRef;
 
 
   constructor(private breakpointObserver: BreakpointObserver ,
@@ -112,14 +122,30 @@ export class MainNavComponent implements OnInit{
       );
   }
 
+  search = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : this.states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
+
 
   activateSearchInput() {
     this.showSearchButton = false;
+
+
   }
 
   toggleMobileSearchInput() {
-    console.log("Toggling the search " + this.showMobileSearchButton)
+     console.log("Toggling Mobile  the search " + this.showMobileSearchButton)
     this.showMobileSearchButton = !this.showMobileSearchButton;
+
+    if(this.showMobileSearchButton) {
+      setTimeout(() => {
+        this.mobileCounterInput.nativeElement.focus();
+      } , 300);
+    }
   }
 
   focusOutMobileSearchInput() {

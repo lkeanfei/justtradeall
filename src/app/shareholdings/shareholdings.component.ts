@@ -111,7 +111,7 @@ export class ShareholdingsComponent implements OnInit {
   // "PctDiff": 4.599700000000013
 
   ownershipDataSource: any;
-  ownershipSummaryColumns = [ 'Name' ,'Symbol' , 'ToShares', 'ToPercentage' , 'FromShares' , 'FromPercentage' , 'SharesDiff' , 'PctDiff'];
+  ownershipSummaryColumns = [ 'Name' ,'Symbol' , 'Shares', 'Percentage' , 'Rank' ];
   tradeSummarySignalColumns = ['Symbol' , 'MostBuyUpPrice' , 'MostSellDownPrice'];
   tradeSummarySignalDetailsColumns = [ 'Price' , 'Trades' , 'BuyUp' , 'AverageBuyUpTrades' , 'Selldown' , 'AverageSellDownTrades'];
 
@@ -176,14 +176,11 @@ export class ShareholdingsComponent implements OnInit {
   fromShareholdingsDateControl: FormControl;
   toShareholdingsDateControl: FormControl;
 
-  NameColumnWidth = 10;
-  SymbolColumnWidth = 10;
-  ToSharesColumnWidth = 15;
-  ToPercentageColumnWidth = 10;
-  FromSharesColumnWidth = 15;
-  FromPercentageColumnWidth = 10;
-  SharesDiffColumnWidth = 10;
-  PctDiffColumnWidth = 10;
+  NameColumnWidth = 20;
+  SymbolColumnWidth = 20;
+  ToSharesColumnWidth = 20;
+  ToPercentageColumnWidth = 20;
+
 
   @ViewChild('totalshare') equitiesTotalShareSort: MatSort;
   @ViewChild('ownership') ownershipSummarySort: MatSort;
@@ -371,7 +368,7 @@ export class ShareholdingsComponent implements OnInit {
     let toDateStr = Utils.GetDateString(this.toShareholdingsDateControl.value);
     let name = this.shareholderField.value
 
-    this.httpService.getOwnershipShares(fromDateStr, toDateStr , name).subscribe( data => {
+    this.httpService.getOwnershipShares(name).subscribe( data => {
 
       this.ownershipDataSource.data = data["results"];
       setTimeout( ()=>{

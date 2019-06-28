@@ -53,14 +53,19 @@ export class HttpService {
       return this.httpClient.post( '/api/latestmarketoverview/' , body );
     }
 
-    getOwnershipShares(fromDateStr: string , toDateStr: string , name: string) {
-       const body = { 'fromdate' : fromDateStr , 'todate' : toDateStr , 'name' : name};
+    getOwnershipShares(name: string) {
+       const body = {  'name' : name};
        return this.httpClient.post('/api/ownershareholdings/', body);
     }
 
     getCompanyShares(fromDateStr: string , toDateStr: string)  {
       const body = { 'fromdate' : fromDateStr , 'todate' : toDateStr};
       return this.httpClient.post('/api/companyshares/' , body);
+    }
+
+    getActiveCounters() {
+      const body = {};
+      return this.httpClient.post('/api/activecounters/' , body);
     }
 
 

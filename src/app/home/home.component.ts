@@ -95,6 +95,8 @@ export class HomeComponent implements OnInit {
   overSoldDataSource = new MatTableDataSource();
   bullishDataSource = new MatTableDataSource();
   bearishDataSource = new MatTableDataSource();
+  bearishCandlesDataSource = new MatTableDataSource();
+  bullishCandlesDataSource = new MatTableDataSource();
 
   topGainersDateSource = new MatTableDataSource();
   topGainersPctDateSource =  new MatTableDataSource();
@@ -110,6 +112,8 @@ export class HomeComponent implements OnInit {
   topGainersPctColumns: string[] = [];
   bullishColumns: string[] = [];
   bearishColumns: string[] = [];
+  bullishCandlesColumns: string[] = [];
+  bearishCandlesColumns: string[] = [];
 
   newHighLowColumns: string[] = ['stock' , 'weeks'];
   unusualVolumeColumns: string[] = ['stock' , 'ratio'];
@@ -277,8 +281,7 @@ export class HomeComponent implements OnInit {
 
       for(let item of data["rsi"])
       {
-        console.log("RSI");
-         console.log(item);
+
          if(item["RSI"]['value'] > 0.0 && item["RSI"]['value'] <= 30)
          {
            overSoldList.push(item);
@@ -306,7 +309,13 @@ export class HomeComponent implements OnInit {
       this.bullishDataSource.data = data["bullish"];
       this.bullishColumns = data["bullishcolumns"];
       this.bearishDataSource.data = data["bearish"];
-      this.bearishColumns = data["bearishcolumns"]
+      this.bearishColumns = data["bearishcolumns"];
+
+
+      this.bullishCandlesDataSource.data = data["candlepatterns"]["Bullish"];
+      this.bullishCandlesColumns = data["candlepatterns"]["Columns"];
+      this.bearishCandlesDataSource.data = data['candlepatterns']['Bearish'];
+      this.bearishCandlesColumns = data['candlepatterns']['Columns'];
 
       this.turnOverDataSource.data = data["turnover"];
       this.turnOverColumns = data["turnovercolumns"];
@@ -328,19 +337,18 @@ export class HomeComponent implements OnInit {
 
 
 
-      console.log(data['gainerspct']);
+     // console.log(data['gainerspct']);
     });
 
     let obs = this.httpService.getTradingDays().pipe(
-      concatMap(arr => this.processTradingDays(arr) ),
-      concatMap( lastTradingDate => this.httpService.getMarketOverview(lastTradingDate , 'Construction'))
+      concatMap(arr => this.processTradingDays(arr) )
     );
 
-    obs.subscribe(  arr => {
-
-      this.marketOverviewDataSource.data = arr['results'];
-    });
-
+    // obs.subscribe(  arr => {
+    //
+    //   this.marketOverviewDataSource.data = arr['results'];
+    // });
+    //
 
 
     this.httpService.getBursaPriceVolume().subscribe( (data:any) => {

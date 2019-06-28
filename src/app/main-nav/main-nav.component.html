@@ -16,9 +16,9 @@
          <!--Sign In / Register-->
       <!--</ng-template>-->
       <section>Analysis</section>
-      <a mat-list-item href="#">Shareholdings Analysis</a>
+      <a mat-list-item   (click)="drawer.toggle()" routerLink="/shareholdings">Shareholdings Analysis</a>
      <section>Screener</section>
-     <a mat-list-item href="#">Screener Analysis</a>
+     <a mat-list-item   (click)="drawer.toggle()" routerLink="/screener">Screener Analysis</a>
       <!--<button mat-list-item mat-button>Logout</button>-->
     </mat-nav-list>
   </mat-sidenav>
@@ -35,13 +35,11 @@
       <span><a routerLink="/home">Just Trade All</a></span>
 
       <div *ngIf="!(isHandset$ | async)">
+        <button mat-button routerLink="/market">Market</button>
         <button mat-button [matMenuTriggerFor]="appMenu">Analysis</button>
         <button mat-button (click)="navigateToScreener()">Screener</button>
-
         <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
-          <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Trade Analysis</button>-->
           <button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Shareholdings Analysis</button>
-          <!--<button mat-menu-item routerLinkActive="menu-active" routerLink="/breakoutanalysis">Breakout Analysis</button>-->
         </mat-menu>
 
       </div>
@@ -49,37 +47,20 @@
         <span class="spacer"></span>
 
       <div id="topright" class="toprightclass" *ngIf="!(isHandset$ | async)">
-        <button *ngIf="showSearchButton; else showSearchInputTemplate" mat-button (click)="activateSearchInput()" ><i class="fas fa-search"></i>Search</button>
+        <button *ngIf="showSearchButton; else showSearchInputTemplate" mat-button (click)="activateSearchInput()" >
+          <i class="fas fa-search"></i>Search</button>
         <ng-template #showSearchInputTemplate>
           <mat-form-field class="leftrightpadding" [floatLabel]="'never'">
-            <input [formControl]="myControl"  class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
+            <input [formControl]="myControl" #counterInput class="searchinput leftrightpadding" matInput placeholder="" [matAutocomplete]="auto" (keyup.enter)="navigateSecurity()" autofocus>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectCounter($event.option.value)' >
-              <mat-option  *ngFor="let option of filteredOptions | async" [value]="option"  (focusout)="focusOutSearchInput()" >
+              <!-- //(focusout)="focusOutSearchInput()" > -->
+              <mat-option  *ngFor="let option of filteredOptions | async" [value]="option">
                 {{option}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
         </ng-template>
-
-        <!--<span  *ngIf="(isLoggedIn | async); else templateName">-->
-        <!--<img class="profileimg leftrightpadding" title="{{userName}}" src="{{photourl}}"  height="35" width="35">-->
-        <!--<button class="zeropadding menuclass" mat-button [matMenuTriggerFor]="userMenu"><i class="fas fa-align-justify"></i></button>-->
-        <!--</span>-->
-
-        <!--<mat-menu #userMenu="matMenu" [overlapTrigger]="false" >-->
-        <!--<button mat-menu-item (click)="logout()">Logout</button>-->
-        <!--</mat-menu>-->
-
-        <!--<ng-template #templateName>-->
-          <!--<a routerLink="login">Sign In</a>-->
-          <!--<a routerLink="register">Sign Up</a>-->
-        <!--</ng-template>-->
-
-
-
-
       </div>
-
 
        <div *ngIf="(isHandset$ | async)" fxLayoutAlign="center center">
          <mat-icon (click)="toggleMobileSearchInput()">search</mat-icon>
@@ -89,12 +70,14 @@
     </mat-toolbar>
     <div *ngIf="showMobileSearchButton && (isHandset$ | async)">
       <mat-form-field class="leftrightpadding" [floatLabel]="'never'">
-        <input [formControl]="handsetControl"  class="searchinput leftrightpadding" matInput placeholder="Search" [matAutocomplete]="auto" (keyup.enter)="mobileNavigateSecurity()" autofocus>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectMobileCounter($event.option.value)' >
-          <mat-option  *ngFor="let option1 of mobileFilteredOptions | async" [value]="option1"  (focusout)="focusOutMobileSearchInput()" >
-            {{option1}}
-          </mat-option>
-        </mat-autocomplete>
+        <!--<input [formControl]="handsetControl"  #mobileCounterInput class="searchinput leftrightpadding" matInput placeholder="Search" [matAutocomplete]="auto" (keyup.enter)="mobileNavigateSecurity()">-->
+        <!--<mat-autocomplete #auto="matAutocomplete" (optionSelected)='selectMobileCounter($event.option.value)' >-->
+          <!--<mat-option  *ngFor="let option1 of mobileFilteredOptions | async" [value]="option1"  >-->
+            <!--{{option1}}-->
+          <!--</mat-option>-->
+        <!--</mat-autocomplete>-->
+
+
       </mat-form-field>
     </div>
 

@@ -310,14 +310,14 @@ export class SecurityComponent implements OnInit, AfterViewInit {
     this.tableMap['averagevol'] = 'Average Volume';
     const chartWidth = window.screen.width * 0.60;
 
+    this.isLoading = true;
+
     const theSub = this.route.params.pipe(
       concatMap( prms => this.routeChangedDetected(prms))
     );
 
-
-
     theSub.subscribe( res => {
-      console.log("blabla securityOverview " );
+
       this.securityOverviewDataSource = res["securityOverview"];
 
       this.dailyData = res['daily'];
@@ -343,6 +343,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
       this.dataService.setFundamentalsData(res["securityOverview"]);
       this.dataService.setTechnicalsData(res["technicals"]);
       this.dataService.setIndicatorsData(res["bullishbearish"]);
+      this.dataService.setCandlesData(res["candlepatterns"]);
 
       let annualData = {};
       annualData["balancesheet"] = res["balancesheet"];
@@ -352,6 +353,8 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
       this.dataService.setAnnualData(annualData);
       this.dataService.setQuarterliesData(res["quarterlies"])
+
+      this.isLoading = false;
 
     })
 
@@ -494,6 +497,8 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   }
 
   routeChangedDetected( prms) : Observable<any> {
+    console.log("Route change detected");
+    this.isLoading = true;
     return this.httpService.getSecurityView(prms['fullid']);
   }
 

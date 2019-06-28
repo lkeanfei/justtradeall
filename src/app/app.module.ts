@@ -68,10 +68,14 @@ import {DataService} from "./security/data.service";
 import { AnnualComponent } from './security/sub/annual/annual.component';
 import { QuarterComponent } from './security/sub/quarter/quarter.component';
 import {IndicatorsComponent} from "./security/sub/indicators/indicators.component";
+import { MarketComponent } from './market/market.component';
+
+
 
 const appRoutes: Routes = [
   {path: '' , component: HomeComponent} ,
   {path: 'home' , component: HomeComponent} ,
+  {path: 'market' , component: MarketComponent} ,
   {path: 'login' , component: LoginComponent} ,
   {path: 'register' , component: RegisterComponent} ,
   {path: 'reset' , component: ResetComponent} ,
@@ -124,7 +128,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SummaryComponent,
     ScreenerComponent,
     AnnualComponent,
-    QuarterComponent
+    QuarterComponent,
+    MarketComponent
   ],
   imports: [
     BrowserModule,
