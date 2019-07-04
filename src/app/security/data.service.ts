@@ -12,6 +12,8 @@ export class DataService {
   quarterliesData$ : Observable<any>;
   indicatorsData$: Observable<any>;
   candlePatternsData$: Observable<any>;
+  forecastData$: Observable<any>;
+  forecastAccuracyData$: Observable<any>;
 
   private overviewDictDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private fundamentalsDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
@@ -21,6 +23,8 @@ export class DataService {
   private quarterliesDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private indicatorsDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
   private candlesPatternDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
+  private forevastDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
+  private forevastAccuracyDataSubject: BehaviorSubject<any> = new BehaviorSubject({'ready' : false});
 
   constructor() {
     this.overviewDictData$ = this.overviewDictDataSubject.asObservable();
@@ -31,6 +35,8 @@ export class DataService {
     this.quarterliesData$ = this.quarterliesDataSubject.asObservable();
     this.indicatorsData$ = this.indicatorsDataSubject.asObservable();
     this.candlePatternsData$ = this.candlesPatternDataSubject.asObservable();
+    this.forecastData$ = this.forevastDataSubject.asObservable();
+    this.forecastAccuracyData$ = this.forevastAccuracyDataSubject.asObservable();
   }
 
   /*
@@ -46,6 +52,14 @@ export class DataService {
     this.cashFlowDataSubject.next(data);
   }
   */
+
+  public setForecastAccuracyData(data) {
+    this.forevastAccuracyDataSubject.next(data);
+  }
+
+  public setForecastData(data) {
+    this.forevastDataSubject.next(data);
+  }
 
   public setAnnualData(data) {
     this.annualDataSubject.next(data);

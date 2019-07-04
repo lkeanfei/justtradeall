@@ -288,6 +288,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   interactiveOneToOneFlag = false;
   interactiveChartOptions : any;
   showLogin = true;
+  selectedTab = 1;
 
   // Styling for the loading spinner
   color = 'primary';
@@ -353,6 +354,8 @@ export class SecurityComponent implements OnInit, AfterViewInit {
 
       this.dataService.setAnnualData(annualData);
       this.dataService.setQuarterliesData(res["quarterlies"])
+      this.dataService.setForecastData(res["arima"]);
+      this.dataService.setForecastAccuracyData(res["forecast"]);
 
       this.isLoading = false;
 
@@ -497,7 +500,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   }
 
   routeChangedDetected( prms) : Observable<any> {
-    console.log("Route change detected");
+    //console.log("Route change detected");
     this.isLoading = true;
     return this.httpService.getSecurityView(prms['fullid']);
   }

@@ -1,0 +1,105 @@
+<h5>Stock Price Forecast</h5>
+
+<div class="forecastResult" *ngIf="hasForecast; else templateNoForecast" fxLayout="row" fxLayoutGap="10px">
+
+  <mat-card>
+    <mat-card-title>Forecasting for  {{ forecastDate }} </mat-card-title>
+    <mat-card-content>
+      <div> There is <b>80%</b> chance to close in range [ <b>{{lower80}}</b> , <b> {{upper80}}</b> ] </div>
+      <div> There is <b>95%</b> chance to close in range [ <b>{{lower95}}</b> , <b> {{upper95}}</b> ] </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title> Related counters </mat-card-title>
+    <mat-card-content>
+      <div> There is <b>80%</b> chance to close in range [ <b>{{lower80}}</b> , <b> {{upper80}}</b> ] </div>
+      <div> There is <b>95%</b> chance to close in range [ <b>{{lower95}}</b> , <b> {{upper95}}</b> ] </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!--<div>Last updated : {{ tradeDate }}</div>-->
+  <!--<h5>Forecasting for  {{ forecastDate }} </h5>-->
+
+  <!--<div> There is <b>80%</b> chance to close in range [ <b>{{lower80}}</b> , <b> {{upper80}}</b> ] </div>-->
+  <!--<div> There is <b>95%</b> chance to close in range [ <b>{{lower95}}</b> , <b> {{upper95}}</b> ] </div>-->
+</div>
+
+<ng-template #templateNoForecast>
+  <div>Forecast is not available</div>
+</ng-template>
+
+<div *ngIf="hasForecastHistory; else templateNoForecastHistory">
+  <div [ngClass]="isHandset ? 'columnOne' : 'rowOne'">
+    <div [ngClass]="isHandset ? 'forecast-mobile' : 'forecast'">
+      <h5>Forecast Accuracy History for 80% confidence range</h5>
+      <mat-table [dataSource]="forecast80DataSource">
+        <ng-container *ngFor="let column of forecastAccuracyColumns ; let colIndex = index" [matColumnDef]="column">
+          <mat-header-cell fxFlex="{{colWidths[colIndex]}}"  *matHeaderCellDef>{{ forecastAccuracyColumns[colIndex] }}</mat-header-cell>
+          <mat-cell fxFlex="{{colWidths[colIndex]}}"  *matCellDef="let row" >
+            <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+
+            </div>
+            <ng-template #numberTemplate>
+              <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                  {{ row[column]['value'] | number}}
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #stringTemplate>
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                {{ row[column]['value']}}
+              </div>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="forecastAccuracyColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: forecastAccuracyColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+    <div [ngClass]="isHandset ? 'forecast-mobile' : 'forecast'">
+      <h5>Forecast Accuracy History for 95% confidence range</h5>
+      <mat-table [dataSource]="forecast95DataSource">
+        <ng-container *ngFor="let column of forecastAccuracyColumns ; let colIndex = index" [matColumnDef]="column">
+          <mat-header-cell fxFlex="{{colWidths[colIndex]}}"  *matHeaderCellDef>{{ forecastAccuracyColumns[colIndex] }}</mat-header-cell>
+          <mat-cell fxFlex="{{colWidths[colIndex]}}"  *matCellDef="let row" >
+            <div *ngIf="row[column]['type'] == 'float' else numberTemplate" >
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                {{ row[column]['value'] | number:'1.2-3'}}
+              </div>
+
+            </div>
+            <ng-template #numberTemplate>
+              <div *ngIf="row[column]['type'] == 'number' else stringTemplate" >
+                <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                  {{ row[column]['value'] | number}}
+                </div>
+              </div>
+            </ng-template>
+            <ng-template #stringTemplate>
+              <div [ngClass]="isHandSet ? 'font-mobile' : ''">
+                {{ row[column]['value']}}
+              </div>
+            </ng-template>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="forecastAccuracyColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: forecastAccuracyColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #templateNoForecastHistory>
+  <div>
+    Forecast History is not available
+  </div>
+</ng-template>
+
+

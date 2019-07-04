@@ -69,6 +69,8 @@ import { AnnualComponent } from './security/sub/annual/annual.component';
 import { QuarterComponent } from './security/sub/quarter/quarter.component';
 import {IndicatorsComponent} from "./security/sub/indicators/indicators.component";
 import { MarketComponent } from './market/market.component';
+import { ForecastComponent } from './security/sub/forecast/forecast.component';
+import { ForecastanalysisComponent } from './forecastanalysis/forecastanalysis.component';
 
 
 
@@ -86,7 +88,8 @@ const appRoutes: Routes = [
   {path: 'experiment' , component: ExperimentComponent},
   {path: 'security/:fullid' , component: SecurityComponent},
   {path: 'screener' , component: ScreenerComponent},
-  {path: 'breakoutanalysis' , component: BreakoutanalysisComponent}
+  {path: 'breakoutanalysis' , component: BreakoutanalysisComponent},
+  {path: 'forecastanalysis' , component: ForecastanalysisComponent}
 
 
 
@@ -129,7 +132,9 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     ScreenerComponent,
     AnnualComponent,
     QuarterComponent,
-    MarketComponent
+    MarketComponent,
+    ForecastComponent,
+    ForecastanalysisComponent
   ],
   imports: [
     BrowserModule,

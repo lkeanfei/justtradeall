@@ -3,11 +3,11 @@ import {HttpService} from "../shared/httpservice.service";
 import {LayoutServiceService} from "../shared/layout-service.service";
 
 @Component({
-  selector: 'app-market',
-  templateUrl: './market.component.html',
-  styleUrls: ['./market.component.css']
+  selector: 'app-forecastanalysis',
+  templateUrl: './forecastanalysis.component.html',
+  styleUrls: ['./forecastanalysis.component.css']
 })
-export class MarketComponent implements OnInit {
+export class ForecastanalysisComponent implements OnInit {
 
   activeCounters : any;
   AEList = [];
@@ -22,18 +22,15 @@ export class MarketComponent implements OnInit {
   value = 50;
 
   isHandSet = false;
+  forecastDate = '';
 
   constructor(private httpService: HttpService, private layoutService: LayoutServiceService) { }
 
   ngOnInit() {
 
-    this.layoutService.getIsHandSetObservable().subscribe(val => {
-      this.isHandSet = val;
-    });
-
     for(let c = 0; c < 5 ; c++ ) {
-       let char = String.fromCharCode(65 + c);
-       this.AEList.push(char);
+      let char = String.fromCharCode(65 + c);
+      this.AEList.push(char);
     }
 
     for(let c = 6; c < 10 ; c++ ) {
@@ -56,10 +53,16 @@ export class MarketComponent implements OnInit {
       this.UZList.push(char);
     }
 
-    this.httpService.getActiveCounters().subscribe(data => {
+    this.layoutService.getIsHandSetObservable().subscribe(val => {
+      this.isHandSet = val;
+    });
 
-        this.activeCounters = data['results'];
-        this.isLoading = false;
+
+    this.httpService.getForecastCounters().subscribe(data => {
+
+      this.forecastDate = data["forecastdate"];
+      this.activeCounters = data['results'];
+      this.isLoading = false;
     });
   }
 

@@ -15,8 +15,13 @@
       <!--<ng-template #sideMenuTemplate>-->
          <!--Sign In / Register-->
       <!--</ng-template>-->
+      <section>Market</section>
+        <a mat-list-item   (click)="drawer.toggle()" routerLink="/market">Counters</a>
+
+
       <section>Analysis</section>
       <a mat-list-item   (click)="drawer.toggle()" routerLink="/shareholdings">Shareholdings Analysis</a>
+      <a mat-list-item   (click)="drawer.toggle()" routerLink="/forecastanalysis">Forecast Analysis</a>
      <section>Screener</section>
      <a mat-list-item   (click)="drawer.toggle()" routerLink="/screener">Screener Analysis</a>
       <!--<button mat-list-item mat-button>Logout</button>-->
@@ -40,6 +45,7 @@
         <button mat-button (click)="navigateToScreener()">Screener</button>
         <mat-menu #appMenu="matMenu" [overlapTrigger]="false" >
           <button mat-menu-item routerLinkActive="menu-active" routerLink="/shareholdings">Shareholdings Analysis</button>
+          <button mat-menu-item routerLinkActive="menu-active" routerLink="/forecastanalysis">Forecast Analysis</button>
         </mat-menu>
 
       </div>

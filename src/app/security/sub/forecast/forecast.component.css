@@ -1,0 +1,29 @@
+
+.rowOne {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.forecastResult {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.columnOne {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.forecast-mobile {
+  width: 100%;
+  margin: 0 auto
+}
+
+.forecast {
+  width: 60%;
+  margin: 0 auto
+}

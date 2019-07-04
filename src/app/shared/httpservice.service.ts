@@ -63,6 +63,11 @@ export class HttpService {
       return this.httpClient.post('/api/companyshares/' , body);
     }
 
+    getForecastCounters() {
+      const body = {};
+      return this.httpClient.post('/api/forecastanalysis/' , body);
+    }
+
     getActiveCounters() {
       const body = {};
       return this.httpClient.post('/api/activecounters/' , body);

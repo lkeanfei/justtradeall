@@ -100,9 +100,10 @@
   </ng-template>
 
   <div>
-    <mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab-group (selectedTabChange)="tabChanged($event)" [selectedIndex]="selectedTab">
       <mat-tab label="Overview"> <app-overview></app-overview></mat-tab>
       <mat-tab label="Indicators"> <app-indicators></app-indicators></mat-tab>
+      <mat-tab label="Forecast"> <app-forecast></app-forecast></mat-tab>
       <mat-tab label="Financials (Annual)"> <app-annual></app-annual> </mat-tab>
       <mat-tab label="Financials (Quarterly)"><app-quarter></app-quarter> </mat-tab>
       <mat-tab label="Shareholdings"> <app-secshareholdings></app-secshareholdings> </mat-tab>
