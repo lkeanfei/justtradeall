@@ -24,6 +24,8 @@ export class ForecastComponent implements OnInit {
 
   forecast80DataSource = new MatTableDataSource();
   forecast95DataSource = new MatTableDataSource();
+  relatedCountersDataSource = new MatTableDataSource();
+  relatedColumns = []
   forecastAccuracyColumns = []
 
   constructor(private dataService: DataService, private layoutService: LayoutServiceService) {
@@ -34,6 +36,9 @@ export class ForecastComponent implements OnInit {
 
     this.dataService.forecastData$.subscribe( forecastData => {
         this.hasForecast =  forecastData["status"] == 'ok';
+
+        this.relatedCountersDataSource.data = forecastData["relatedlist"]
+        this.relatedColumns = forecastData["relatedcolumns"]
 
         if(this.hasForecast) {
            this.tradeDate = forecastData["tradedate"];

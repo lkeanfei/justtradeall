@@ -288,7 +288,7 @@ export class SecurityComponent implements OnInit, AfterViewInit {
   interactiveOneToOneFlag = false;
   interactiveChartOptions : any;
   showLogin = true;
-  selectedTab = 1;
+  selectedTab = 2;
 
   // Styling for the loading spinner
   color = 'primary';
