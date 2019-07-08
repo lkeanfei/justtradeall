@@ -1,4 +1,34 @@
-<h5>Forecast for {{forecastDate}} </h5>
+<h5>Forecast Accuracy for the Past 5 days</h5>
+
+<div [ngClass]="isHandSet ? 'oneColumn' : 'oneRow'" >
+  <div [ngClass]="isHandSet ? 'accSummary':''" *ngFor="let summary of accSummaryList">
+    <mat-card>
+      <mat-card-title>
+        {{summary["tradedate"]}}
+      </mat-card-title>
+      <mat-card-content>
+        <div> Accuracy for <b>80%</b> range : <b>{{ summary["accuracy80"] }}% </b></div>
+        <div> Accuracy for <b>90%</b> range : <b>{{ summary["accuracy90"] }}% </b></div>
+      </mat-card-content>
+    </mat-card>
+
+
+  </div>
+
+</div>
+
+<div class="spacer">
+
+</div>
+
+    <h5  [ngClass]="isHandSet ? 'forecastTitle-mobile' : 'forecastTitle1'">Support and Resistance Forecast</h5>
+
+    <h4   [ngClass]="isHandSet ? 'forecastTitle2-mobile' : 'forecastTitle2'">  {{forecastDate}} </h4>
+
+
+
+
+
 <h5>Counters available for forecasting</h5>
 
 

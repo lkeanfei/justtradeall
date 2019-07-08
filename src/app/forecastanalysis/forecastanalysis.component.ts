@@ -16,6 +16,7 @@ export class ForecastanalysisComponent implements OnInit {
   PTList = [];
   UZList = [];
   isLoading = true;
+  accSummaryList = []
 
   color = 'primary';
   mode = 'indeterminate';
@@ -60,6 +61,7 @@ export class ForecastanalysisComponent implements OnInit {
 
     this.httpService.getForecastCounters().subscribe(data => {
 
+      this.accSummaryList = data['accsummarylist'];
       this.forecastDate = data["forecastdate"];
       this.activeCounters = data['results'];
       this.isLoading = false;

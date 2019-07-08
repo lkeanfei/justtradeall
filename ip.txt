@@ -1,21 +1,27 @@
 
-Windows IP Configuration
+import { MatButtonModule} from '@angular/material/button';
+import {
+  MatAutocompleteModule,
 
-
-Ethernet adapter Ethernet:
-
-   Media State . . . . . . . . . . . : Media disconnected
-   Connection-specific DNS Suffix  . : dsone.3ds.com
-
-Wireless LAN adapter Local Area Connection* 1:
-
-   Media State . . . . . . . . . . . : Media disconnected
-   Connection-specific DNS Suffix  . : 
-
-Wireless LAN adapter Wi-Fi:
-
-   Connection-specific DNS Suffix  . : dsone.3ds.com
-   Link-local IPv6 Address . . . . . : fe80::c7e:f848:2f48:3d75%9
-   IPv4 Address. . . . . . . . . . . : 10.91.120.137
-   Subnet Mask . . . . . . . . . . . : 255.255.252.0
-   Default Gateway . . . . . . . . . : 10.91.120.1
+  MatDialogModule,
+  MatCardModule,
+  MatDividerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatTableModule,
+  MatGridListModule,
+  MatToolbarModule,
+  MatTabsModule,
+  MatIconModule,
+  MatAccordionDisplayMode,
+  MatExpansionModule,
+  MatSortModule,
+  MatTooltipModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule
+} from '@angular/material';

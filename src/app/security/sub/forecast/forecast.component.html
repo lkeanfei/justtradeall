@@ -7,7 +7,7 @@
       <mat-card-content>
         <div><b>Support and Resistance Levels</b></div>
         <div> There is <b>80%</b> chance to close in range [ <b>{{lower80}}</b> , <b> {{upper80}}</b> ] </div>
-        <div> There is <b>95%</b> chance to close in range [ <b>{{lower95}}</b> , <b> {{upper95}}</b> ] </div>
+        <div> There is <b>90%</b> chance to close in range [ <b>{{lower95}}</b> , <b> {{upper95}}</b> ] </div>
       </mat-card-content>
     </mat-card>
   </div>
@@ -105,7 +105,7 @@
     </div>
 
     <div [ngClass]="isHandset ? 'forecast-mobile' : 'forecast'">
-      <h5>Forecast Accuracy History for 95% confidence range</h5>
+      <h5>Forecast Accuracy History for 90% confidence range</h5>
       <mat-table [dataSource]="forecast95DataSource">
         <ng-container *ngFor="let column of forecastAccuracyColumns ; let colIndex = index" [matColumnDef]="column">
           <mat-header-cell fxFlex="{{colWidths[colIndex]}}"  *matHeaderCellDef>{{ forecastAccuracyColumns[colIndex] }}</mat-header-cell>

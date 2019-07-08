@@ -18,3 +18,60 @@
 .market-mobile {
   font-size: 70%;
 }
+
+.accSummary {
+  width: 80%;
+  margin: 5px 5px auto;
+}
+
+.topforecastTitle
+{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.forecastTitle-mobile {
+
+  width: 80%;
+  margin: 0 auto;
+}
+
+.forecastTitle2-mobile {
+
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+.forecastTitle1 {
+
+  width: 30%;
+  margin: 0 auto auto;
+}
+
+.spacer
+{
+  margin: 5px 5px auto;
+}
+
+.forecastTitle2 {
+  width: 15%;
+  margin: 0 auto auto;
+}
+
+.oneRow {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.oneColumn {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+

@@ -2,31 +2,33 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { AppComponent } from './app.component';
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatDialogModule,
-  MatCardModule,
-  MatDividerModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatTableModule,
-  MatGridListModule,
-  MatToolbarModule,
-  MatTabsModule,
-  MatIconModule,
-  MatAccordionDisplayMode,
-  MatExpansionModule,
-  MatSortModule,
-  MatTooltipModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule
-} from '@angular/material';
+import { MatButtonModule} from '@angular/material/button'
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatDialogModule} from '@angular/material/dialog';
+import { MatCardModule} from '@angular/material/card';
+import { MatDividerModule} from '@angular/material/divider';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule} from '@angular/material/input';
+import { MatListModule} from '@angular/material/list';
+import { MatMenuModule} from '@angular/material/menu';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSliderModule} from '@angular/material/slider';
+import {MatTableModule} from '@angular/material/table';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatIconModule} from '@angular/material/icon';
+import { MatExpansionModule} from '@angular/material/expansion';
+import { MatSortModule} from '@angular/material/sort';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+
+import {MatNativeDateModule} from '@angular/material';
+
 import { HomeComponent } from './home/home.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
